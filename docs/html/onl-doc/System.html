@@ -1,0 +1,3330 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Design &mdash; OpenNetLab-Edu-2022 0.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="User Guide" href="UserGuide.html" />
+    <link rel="prev" title="OpenNetLab-Edu-2022 Documentation" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> OpenNetLab-Edu-2022
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">System Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">1 系统结构总览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">2 数据对象</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2.1 用户</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">2.2 实验</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2.3 问题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">2.4 提交</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">2.5 其他</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">3 节点介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#controller">3.1 Controller</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#account">account</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#announcement">announcement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#config">config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#contest">contest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#problem">problem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submission">submission</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#judge">judge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deploy">deploy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#execution-node">3.2 Execution Node</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#service">service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#server">server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">4 节点通信</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id10">控制器与执行节点</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">执行节点之间</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">用户与平台的交互</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#onl">5 部署ONL平台</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">6 API说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#account-admin-post-api-admin-user">account/admin POST api/admin/user/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-admin-put-api-admin-user">account/admin PUT api/admin/user/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-admin-get-api-admin-user">account/admin GET api/admin/user/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-admin-delete-api-admin-user">account/admin DELETE api/admin/user/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-admin-get-api-admin-generate-user">account/admin GET api/admin/generate_user/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-admin-post-api-admin-generate-user">account/admin POST api/admin/generate_user/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-post-api-login">account/user POST api/login/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-get-api-logout">account/user GET api/logout/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-post-api-register">account/user POST api/register/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-post-api-change-password">account/user POST api/change_password/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-post-api-change-email">account/user POST api/change_email/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-post-api-apply-reset-password">account/user POST api/apply_reset_password/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-post-api-reset-password">account/user POST api/reset_password/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-post-api-check-username-or-email">account/user POST api/check_username_or_email</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-get-api-profile">account/user GET api/profile/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-put-api-profile">account/user PUT api/profile/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-get-api-profile-fresh-display-id">account/user GET api/profile/fresh_display_id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-post-api-upload-avatar">account/user POST api/upload_avatar/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-post-api-tfa-required">account/user POST api/tfa_required/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-get-api-two-factor-auth">account/user GET api/two_factor_auth/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-post-api-two-factor-auth">account/user POST api/two_factor_auth/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-put-api-two-factor-auth">account/user PUT api/two_factor_auth/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-get-api-sessions">account/user GET api/sessions/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-delete-api-two-factor-auth">account/user DELETE api/two_factor_auth/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-post-api-open-api-appkey">account/user POST api/open_api_appkey/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-get-api-sso">account/user GET api/sso?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-user-post-api-sso">account/user POST api/sso?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#announcement-admin-post-api-admin-announcement">announcement/admin POST api//admin/announcement/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#announcement-admin-put-api-admin-announcement">announcement/admin PUT api/admin/announcement/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#announcement-admin-get-api-admin-announcement">announcement/admin GET api/admin/announcement/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#announcement-admin-delete-api-admin-announcement">announcement/admin DELETE api/admin/announcement/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#announcement-user-get-api-announcement">announcement/user GET api/announcement/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-admin-get-api-admin-contest">contest/admin GET api/admin/contest/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-admin-post-api-admin-contest">contest/admin POST api/admin/contest/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-admin-put-api-admin-contest">contest/admin PUT api/admin/contest/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-admin-post-api-admin-contest-announcement">contest/admin POST api/admin/contest/announcement/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-admin-put-api-admin-contest-announcement">contest/admin PUT api/admin/contest/announcement/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-admin-delete-api-admin-contest-announcement">contest/admin DELETE api/admin/contest/announcement/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-admin-get-api-admin-contest-announcement">contest/admin GET api/admin/contest/announcement/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-admin-get-api-admin-download-submissions">contest/admin GET api/admin/download_submissions/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-user-get-api-contests">contest/user GET api/contests/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-user-get-api-contest">contest/user GET api/contest/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-user-post-api-contest-password">contest/user POST api/contest/password/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-user-get-api-contest-announcement">contest/user GET api/contest/announcement/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contest-user-get-api-contest-access">contest/user GET api/contest/access/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-admin-post-api-admin-problem">problem/admin POST api/admin/problem/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-admin-get-api-admin-problem">problem/admin GET api/admin/problem/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-admin-put-api-admin-problem">problem/admin PUT api/admin/problem/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-admin-delete-api-admin-problem">problem/admin DELETE api/admin/problem/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-admin-post-api-admin-contest-problem">problem/admin POST api/admin/contest/problem/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-admin-get-api-admin-contest-problem">problem/admin GET api/admin/contest/problem/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-admin-put-api-admin-contest-problem">problem/admin PUT api/admin/contest/problem/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-admin-delete-api-admin-contest-problem">problem/admin DELETE api/admin/contest/problem/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-admin-post-api-admin-contest-problem-make-public">problem/admin POST api/admin/contest_problem/make_public/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-admin-post-api-admin-contest-add-problem-from-public">problem/admin POST api/admin/contest/add_problem_from_public/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-admin-get-api-admin-export-problem">problem/admin GET api/admin/export_problem/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-user-get-api-problem-tags">problem/user GET api/problem/tags/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-user-get-api-problem">problem/user GET api/problem/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-user-get-api-pickone">problem/user GET api/pickone/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-user-get-api-contest-problem">problem/user GET api/contest/problem/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submission-user-post-api-submission">submission/user POST api/submission/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submission-user-get-api-submission">submission/user GET api/submission/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submission-user-put-api-submission">submission/user PUT api/submission/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submission-user-get-api-submissions">submission/user GET api/submissions/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submission-user-get-api-submission-exists">submission/user GET api/submission_exists/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submission-user-get-api-contest-submissions">submission/user GET api/contest_submissions/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submission-admin-get-api-admin-submission-rejudge">submission/admin GET api/admin/submission/rejudge/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submission-admin-post-api-admin-submission-excution">submission/admin POST api/admin/submission/excution/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submission-admin-get-api-admin-submission">submission/admin GET api/admin/submission/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submission-admin-put-api-admin-submission">submission/admin PUT api/admin/submission/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils-views-post-api-admin-upload-image">utils/views POST api/admin/upload_image/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utils-views-post-api-admin-upload-file">utils/views POST api/admin/upload_file/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-get-api-admin-smtp">conf/admin GET api/admin/smtp/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-post-api-admin-smtp">conf/admin POST api/admin/smtp/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-put-api-admin-smtp">conf/admin PUT api/admin/smtp/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-post-api-admin-smtp-test">conf/admin POST api/admin/smtp_test/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-get-api-admin-website">conf/admin GET api/admin/website/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-post-api-admin-website">conf/admin POST api/admin/website/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-get-api-admin-judge-server">conf/admin GET api/admin/judge_server/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-delete-api-admin-website">conf/admin DELETE api/admin/website/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-put-api-admin-website">conf/admin PUT api/admin/website/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-get-api-admin-prune-test-case">conf/admin GET api/admin/prune_test_case/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-delete-api-admin-prune-test-case">conf/admin DELETE api/admin/prune_test_case/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-get-api-admin-versions">conf/admin GET api/admin/versions/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conf-admin-get-api-admin-dashboard-info">conf/admin GET api/admin/dashboard_info/?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#judgeserver">JudgeServer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#post-judge">任务下发 POST /judge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#post-fetch">实验状态查询请求 POST /fetch</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onl-server">ONL Server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#put-admin-submission-excution">提交状态更新 PUT admin/submission/excution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="UserGuide.html">User Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OpenNetLab-Edu-2022</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>System Design</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/onl-doc/System.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="system-design">
+<h1>System Design<a class="headerlink" href="#system-design" title="Permalink to this headline"></a></h1>
+<section id="id1">
+<h2>1 系统结构总览<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<p><img alt="系统结构图示" src="../_images/System.png" />
+<code class="docutils literal notranslate"><span class="pre">Controller</span></code>：ONL平台的控制节点，管理ONL平台的各项功能。
+<code class="docutils literal notranslate"><span class="pre">Execution</span> <span class="pre">Node</span></code>：ONL实验的执行者，对实验的提交进行评判。
+<code class="docutils literal notranslate"><span class="pre">Client</span></code>：与用户交互。</p>
+</section>
+<section id="id2">
+<h2>2 数据对象<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<p>使用数据库保存各种对象，通过Django的ORM框架操作数据库。</p>
+<section id="id3">
+<h3>2.1 用户<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">User</span></code>继承自Django的<code class="docutils literal notranslate"><span class="pre">AbstractBaseUser</span></code>类，作为ONL平台的用户。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># account/model.py</span>
+<span class="k">class</span> <span class="nc">AdminType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">REGULAR_USER</span> <span class="o">=</span> <span class="s2">&quot;Regular User&quot;</span> <span class="c1">#student</span>
+    <span class="n">ADMIN</span> <span class="o">=</span> <span class="s2">&quot;Admin&quot;</span> <span class="c1"># tutor</span>
+    <span class="n">SUPER_ADMIN</span> <span class="o">=</span> <span class="s2">&quot;Super Admin&quot;</span> <span class="c1">#teacher</span>
+    
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">AbstractBaseUser</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">UUIDField</span><span class="p">(</span><span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">,</span> <span class="n">editable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">create_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1">#UserType</span>
+    <span class="n">admin_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">AdminType</span><span class="o">.</span><span class="n">REGULAR_USER</span><span class="p">)</span>
+    <span class="n">problem_permission</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">ProblemPermission</span><span class="o">.</span><span class="n">NONE</span><span class="p">)</span>
+    <span class="n">reset_password_token</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">reset_password_token_expire_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1">#SSO auth token</span>
+    <span class="n">auth_token</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">two_factor_auth</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">tfa_token</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">session_keys</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="c1"># open api key</span>
+    <span class="n">open_ap0i</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">open_api_appkey</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">is_disabled</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">USERNAME_FIELD</span> <span class="o">=</span> <span class="s2">&quot;username&quot;</span>
+    <span class="n">REQUIRED_FIELDS</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">is_admin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">is_super_admin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">is_admin_role</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">can_mgmt_all_problem</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">is_contest_admin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contest</span><span class="p">):</span>
+        <span class="o">...</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">db_table</span> <span class="o">=</span> <span class="s2">&quot;user&quot;</span>
+
+<span class="k">class</span> <span class="nc">UserProfile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+
+    <span class="n">problems_status</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">real_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">blog</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">URLField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">github</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">school</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">major</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">language</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1">#for Contest</span>
+    <span class="n">accepted_number</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">total_score</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_accepted_problem_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">add_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">this_time_score</span><span class="p">,</span> <span class="n">last_time_score</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="o">...</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">db_table</span> <span class="o">=</span> <span class="s2">&quot;user_profile&quot;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">User</span></code>类包含所有与ONL平台（包括实验）相关的参数，和检查用户信息、权限的函数。
+<code class="docutils literal notranslate"><span class="pre">UserProfile</span></code>类主要是可以自定义的个人信息。</p>
+</section>
+<section id="id4">
+<h3>2.2 实验<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Contest</span></code>类代表ONL实验。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># /contest/model.py</span>
+<span class="k">class</span> <span class="nc">Contest</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">RichTextField</span><span class="p">()</span>
+    <span class="c1"># show real time rank or cached rank</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># enum of ContestRuleType</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">create_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">last_update_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="c1"># 是否可见 false的话相当于删除</span>
+    <span class="n">visible</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">contest_admin</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">allowed_ip_ranges</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">contest_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">problem_details_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">db_table</span> <span class="o">=</span> <span class="s2">&quot;contest&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;-start_time&quot;</span><span class="p">,)</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>2.3 问题<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Problem</span></code>是实验的内容，一个实验下可能有多个Problem。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Problem</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c1"># display ID</span>
+    <span class="n">_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">db_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">contest</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contest</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="c1"># for contest problem</span>
+    <span class="n">lab_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">lab_config</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">is_public</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="c1"># HTML</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">RichTextField</span><span class="p">()</span>
+    <span class="n">hint</span> <span class="o">=</span> <span class="n">RichTextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">languages</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">()</span>
+    <span class="c1">#需要的节点数量</span>
+    <span class="n">vm_num</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="c1">#各个节点所需要的端口数量</span>
+    <span class="n">port_num</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="c1">#学生需要编写的代码段数量</span>
+    <span class="n">code_num</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">create_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># we can not use auto_now here</span>
+    <span class="n">last_update_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+
+    <span class="c1"># judge related</span>
+    <span class="n">visible</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">ProblemTag</span><span class="p">)</span>
+    <span class="n">total_score</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">submission_number</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BigIntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">accepted_number</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BigIntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># {JudgeStatus.ACCEPTED: 3, JudgeStaus.WRONG_ANSWER: 11}, the number means count</span>
+    <span class="n">statistic_info</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">share_submission</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">db_table</span> <span class="o">=</span> <span class="s2">&quot;problem&quot;</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">((</span><span class="s2">&quot;_id&quot;</span><span class="p">,</span> <span class="s2">&quot;contest&quot;</span><span class="p">),)</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;create_time&quot;</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="nf">add_submission_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">add_ac_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>2.4 提交<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Submission</span></code>是学生的提交，之后会分配执行节点，对提交的代码进行评判。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Submission</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">rand_str</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">db_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">contest</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contest</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">problem</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Problem</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">create_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">db_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">code_list</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">server_list</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">ports_list</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">db_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">JudgeStatus</span><span class="o">.</span><span class="n">PENDING</span><span class="p">)</span>
+    <span class="c1"># 从JudgeServer返回的判题详情</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">language</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">shared</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># 存储该提交所用时间和内存值，方便提交列表显示</span>
+    <span class="c1"># {time_cost: &quot;&quot;, memory_cost: &quot;&quot;, err_info: &quot;&quot;, score: 0}</span>
+    <span class="n">ip</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">check_user_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">check_share</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">modify_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">check_share</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">db_table</span> <span class="o">=</span> <span class="s2">&quot;submission&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;-create_time&quot;</span><span class="p">,)</span>
+
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>2.5 其他<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Announcement</span></code>:用来发布通知。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Announcement</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="c1"># HTML</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">RichTextField</span><span class="p">()</span>
+    <span class="n">create_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">last_update_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">visible</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">db_table</span> <span class="o">=</span> <span class="s2">&quot;announcement&quot;</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;-create_time&quot;</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">JudgeServer</span></code>:表示执行节点的状态。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">JudgeServer</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">hostname</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ip</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">available_ports</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">using_ports</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">available_ports_num</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">is_public</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">cpu_core</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">memory_usage</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">cpu_usage</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">last_heartbeat</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+    <span class="n">create_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">expired_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">task_number</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">service_url</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ca_pem</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">c_cert</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">c_key</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">is_ready</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">is_disabled</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">db_table</span> <span class="o">=</span> <span class="s2">&quot;judge_server&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id8">
+<h2>3 节点介绍<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h2>
+<p>系统有两类节点：控制器<code class="docutils literal notranslate"><span class="pre">Controller</span></code>与执行节点<code class="docutils literal notranslate"><span class="pre">Execution</span> <span class="pre">Node</span></code></p>
+<section id="controller">
+<h3>3.1 Controller<a class="headerlink" href="#controller" title="Permalink to this headline"></a></h3>
+<section id="account">
+<h4>account<a class="headerlink" href="#account" title="Permalink to this headline"></a></h4>
+<p>账号模块。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># account.views.admin</span>
+<span class="k">class</span> <span class="nc">UserAdminAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">GenerateUserAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">UserAdminAPI</span></code>：用户管理(POST/GET/PUT/DELETE)。
+<code class="docutils literal notranslate"><span class="pre">GenerateUserAPI</span></code>：获取用户表与批量生成用户。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># account.view.user</span>
+<span class="k">class</span> <span class="nc">UserProfileAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">AvatarUploadAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">TwoFactorAuthAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">CheckTFARequiredAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">UserLoginAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">UserLogoutAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">UsernameOrEmailCheck</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">UserRegisterAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">UserChangeEmailAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">UserChangePasswordAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">ApplyResetPasswordAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">ResetPasswordAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">SessionManagementAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">ProfileProblemDisplayIDRefreshAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">OpenAPIAppkeyAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">SSOAPI</span><span class="p">(</span><span class="n">CSRFExemptAPIView</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">UserProfileAPI</span></code>,<code class="docutils literal notranslate"><span class="pre">UserChangeEmailAPI</span></code>,<code class="docutils literal notranslate"><span class="pre">UserChangePasswordAPI</span></code>,<code class="docutils literal notranslate"><span class="pre">ApplyResetPasswordAPI</span></code> and <code class="docutils literal notranslate"><span class="pre">ResetPasswordAPI</span></code>：获取和修改用户信息.
+<code class="docutils literal notranslate"><span class="pre">UserRegisterAPI</span></code>,<code class="docutils literal notranslate"><span class="pre">UserLoginAPI</span></code> and <code class="docutils literal notranslate"><span class="pre">UserLogoutAPI</span></code>：注册，登入与退出。
+其他：账号的安全检测。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># decorators</span>
+<span class="k">class</span> <span class="nc">BasePermissionDecorator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">BasePermissionDecorator</span></code>:装饰器的基类，有多个派生类，用于状态检查，如是否已登录、是否有管理权限等。</p>
+</section>
+<section id="announcement">
+<h4>announcement<a class="headerlink" href="#announcement" title="Permalink to this headline"></a></h4>
+<p>公告模块，用于网站公告和实验通知。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># announcement.views.admin</span>
+<span class="k">class</span> <span class="nc">AnnouncementAdminAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">AnnouncementAdminAPI</span></code>：公告管理（POST/PUT/GET/DELETE）.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># announcement.views.user</span>
+<span class="k">class</span> <span class="nc">AnnouncementAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">AnnouncementAPI</span></code>:获取公告</p>
+</section>
+<section id="config">
+<h4>config<a class="headerlink" href="#config" title="Permalink to this headline"></a></h4>
+<p>配置模块，管理平台全局的配置信息。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># conf.views</span>
+<span class="k">class</span> <span class="nc">JudgeServerAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">JudgeServerHeartbeatAPI</span><span class="p">(</span><span class="n">CSRFExemptAPIView</span><span class="p">):</span>
+    <span class="o">...</span>
+
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">JudgeServerAPI</span></code>：管理资源节点的状态（GET/PUT）。
+<code class="docutils literal notranslate"><span class="pre">JudgeServerHeartbeatAPI</span></code>：心跳检测，检测到新的资源节点时自动进行资源注册.</p>
+</section>
+<section id="contest">
+<h4>contest<a class="headerlink" href="#contest" title="Permalink to this headline"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># contest.views.admin</span>
+<span class="k">class</span> <span class="nc">ContestAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ContestAPI</span></code>：实验模块，对实验进行操作的方法（POST/PUT/GET）</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># contest.views.user</span>
+<span class="k">class</span> <span class="nc">ContestAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ContestAPI</span></code>：获取实验对象（GET）。</p>
+</section>
+<section id="problem">
+<h4>problem<a class="headerlink" href="#problem" title="Permalink to this headline"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># problem.views.admin</span>
+<span class="k">class</span> <span class="nc">ProblemAPI</span><span class="p">(</span><span class="n">ProblemBase</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">ContestProblemAPI</span><span class="p">(</span><span class="n">ProblemBase</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">MakeContestProblemPublicAPIView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">AddContestProblemAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">ExportProblemAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ContestProblemAPI</span></code>：被教师修改过配置的Problem。
+其他：Problem的操作方法。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># problem.views.user</span>
+<span class="k">class</span> <span class="nc">ProblemTagAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">PickOneAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">ProblemAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">ContestProblemAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ContestProblemAPI</span></code>：获取单个Problem的详情，或按条件筛选得到的Problem的状态。</p>
+</section>
+<section id="submission">
+<h4>submission<a class="headerlink" href="#submission" title="Permalink to this headline"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># submission.views.admin</span>
+<span class="k">class</span> <span class="nc">SubmissionAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">SubmissionRejudgeAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>管理submission，如获取状态，重新评判，修改分数等。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># submission.views.user</span>
+<span class="k">class</span> <span class="nc">SubmissionAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">SubmissionListAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">ContestSubmissionListAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">SubmissionUpdateAPI</span><span class="p">(</span><span class="n">CSRFExemptAPIView</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>获取资源节点上submission的状态变化。</p>
+</section>
+<section id="judge">
+<h4>judge<a class="headerlink" href="#judge" title="Permalink to this headline"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># judge.dispatcher</span>
+<span class="k">class</span> <span class="nc">ChooseJudgeServer</span><span class="p">:</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">JudgeDispatcher</span><span class="p">(</span><span class="n">DispatcherBase</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">def</span> <span class="nf">process_pending_task</span><span class="p">():</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ChooseJudgeServer</span></code>：分配资源节点作为实验的执行节点。
+<code class="docutils literal notranslate"><span class="pre">JudgeDispatcher</span></code>：任务下发。
+<code class="docutils literal notranslate"><span class="pre">process_pending_task</span></code>：使用队列管理需要下发的任务。</p>
+</section>
+<section id="deploy">
+<h4>deploy<a class="headerlink" href="#deploy" title="Permalink to this headline"></a></h4>
+<p>部署平台所需的文件和<code class="docutils literal notranslate"><span class="pre">entrypoint.sh</span></code></p>
+</section>
+</section>
+<section id="execution-node">
+<h3>3.2 Execution Node<a class="headerlink" href="#execution-node" title="Permalink to this headline"></a></h3>
+<section id="service">
+<h4>service<a class="headerlink" href="#service" title="Permalink to this headline"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HeartBeatService</span><span class="p">(</span><span class="n">BasicService</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">ResultPushService</span><span class="p">(</span><span class="n">BasicService</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">RsyncService</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">HeartBeatService</span></code>：心跳检测，定期与控制器交互，进行服务器状态的更新。
+<code class="docutils literal notranslate"><span class="pre">ResultPushService</span></code>：将该执行节点上的submission的状态推送到控制器。
+<code class="docutils literal notranslate"><span class="pre">RsyncService</span></code>：将实验模板同步到该节点。</p>
+</section>
+<section id="server">
+<h4>server<a class="headerlink" href="#server" title="Permalink to this headline"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">JudgeServer</span><span class="p">:</span>
+    <span class="o">...</span>
+<span class="k">def</span> <span class="nf">server</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">JudgeServer</span></code>：实现执行节点的各项功能的方法（ping/judge/fetch/sync）。
+<code class="docutils literal notranslate"><span class="pre">server</span></code>：根据Controller访问请求的类型，调用<code class="docutils literal notranslate"><span class="pre">JudgeServer</span></code>的方法进行回复</p>
+</section>
+</section>
+</section>
+<section id="id9">
+<h2>4 节点通信<a class="headerlink" href="#id9" title="Permalink to this headline"></a></h2>
+<p>ONL平台节点之间主要使用Python的requests库，基于HTTP进行通信。
+<img alt="节点通信" src="../_images/Communication.drawio.png" /></p>
+<section id="id10">
+<h3>控制器与执行节点<a class="headerlink" href="#id10" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p>心跳检测，检测执行节点的可用性。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HeartBeatService</span><span class="p">(</span><span class="n">BasicService</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">heartbeat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">server_info</span><span class="p">()</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">net_info</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">tlsStatus</span><span class="o">.</span><span class="n">TLS</span> <span class="ow">in</span> <span class="p">[</span><span class="n">tlsStatus</span><span class="o">.</span><span class="n">Status</span><span class="o">.</span><span class="n">INITIAL</span><span class="p">,</span> <span class="n">tlsStatus</span><span class="o">.</span><span class="n">Status</span><span class="o">.</span><span class="n">RENEW</span><span class="p">]:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">tls_info</span><span class="p">())</span>
+            <span class="n">tlsStatus</span><span class="o">.</span><span class="n">TLS</span> <span class="o">=</span> <span class="n">tlsStatus</span><span class="o">.</span><span class="n">Status</span><span class="o">.</span><span class="n">NORMAL</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;heartBeat&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">route</span><span class="o">=</span><span class="s2">&quot;/judge_server_heartbeat&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;HeatBeat&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>更新submissions的评判状态，将该执行节点上运行的submission的状态推送到Controller。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ResultPushService</span><span class="p">(</span><span class="n">BasicService</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">result_push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">submission_id</span><span class="p">):</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">submission_info</span><span class="p">(</span><span class="n">submission_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">route</span><span class="o">=</span><span class="s2">&quot;/submission/update&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;Submission update&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>执行节点之间<a class="headerlink" href="#id11" title="Permalink to this headline"></a></h3>
+<p>实验运行的数据传输，基于ONL协议。</p>
+</section>
+<section id="id12">
+<h3>用户与平台的交互<a class="headerlink" href="#id12" title="Permalink to this headline"></a></h3>
+<p>使用ONL Client与控制节点连接。
+<code class="docutils literal notranslate"><span class="pre">Login</span></code>：登录和注册模块
+<code class="docutils literal notranslate"><span class="pre">main.py</span></code>：通过命令行进行操作。</p>
+</section>
+</section>
+<section id="onl">
+<h2>5 部署ONL平台<a class="headerlink" href="#onl" title="Permalink to this headline"></a></h2>
+<p>控制节点<strong>Controller</strong>、执行节点<strong>Execution node</strong>和客户端<strong>Client</strong>使用安装脚本部署。
+<code class="docutils literal notranslate"><span class="pre">Controller</span></code>:
+<code class="docutils literal notranslate"><span class="pre">Execution</span> <span class="pre">node</span></code>:
+<code class="docutils literal notranslate"><span class="pre">Client</span></code>:</p>
+</section>
+<section id="api">
+<h2>6 API说明<a class="headerlink" href="#api" title="Permalink to this headline"></a></h2>
+<section id="account-admin-post-api-admin-user">
+<h3>account/admin POST api/admin/user/?<a class="headerlink" href="#account-admin-post-api-admin-user" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>
+// POST /user
+{
+    &quot;header&quot;:{
+
+    },
+    //request.data
+    &quot;json&quot;:{
+        //data
+        &quot;user&quot;:[
+            //user_data
+            [   
+                username,   //string,
+                password,   //string
+                email,      //string
+                real_name,
+            ],
+            ...
+
+        ],
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success:
+{
+    &quot;error&quot;: None, 
+    &quot;data&quot;: None,
+}
+
+//APIView.error:
+{
+    &quot;error&quot;: &quot;error&quot;,      
+    &quot;data&quot;: &quot;Error occurred while processing data &#39;{user_data}&#39;&quot; / IntegrityError,//user_data in &quot;request&quot;
+}
+</pre></div>
+</div>
+</section>
+<section id="account-admin-put-api-admin-user">
+<h3>account/admin PUT api/admin/user/?<a class="headerlink" href="#account-admin-put-api-admin-user" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    //request.data
+    &quot;json&quot;:{
+        &quot;id&quot;:id,                                    //UUIDField
+        &quot;username&quot;:username,                        //TextField
+        &quot;password&quot;:password,
+        &quot;email&quot;:email,                              //TextField
+        &quot;admin_type&quot;:admin_type,                    //AdminType { REGULAR_USER = &quot;Regular User&quot;, ADMIN = &quot;Admin&quot;, SUPER_ADMIN = &quot;Super Admin&quot; }
+        &quot;id_disabled&quot;:is_disabled,                  //BooleanField
+        &quot;problem_permission&quot;:problem_permission,    //TextField, ProblemPermission{ NONE = &quot;None&quot;,OWN = &quot;Own&quot;, ALL = &quot;All&quot;}
+        &quot;open_api&quot;: ,                               //BooleanField
+        &quot;two_factor_auth&quot;: ,                        //BooleanField
+        &quot;real_name&quot;: ,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;User does not exist&quot; / &quot;Username already exists&quot; / &quot;Email already exists&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success:
+{
+    &quot;error&quot;: None, 
+    &quot;data&quot;: data   //data: UserAdminSerializer(user).data       model = User; fields = [&quot;id&quot;, &quot;username&quot;, &quot;email&quot;, &quot;admin_type&quot;, &quot;problem_permission&quot;, &quot;real_name&quot;, &quot;create_time&quot;, &quot;last_login&quot;, &quot;two_factor_auth&quot;, &quot;open_api&quot;, &quot;is_disabled&quot;]
+}
+
+</pre></div>
+</div>
+</section>
+<section id="account-admin-get-api-admin-user">
+<h3>account/admin GET api/admin/user/?<a class="headerlink" href="#account-admin-get-api-admin-user" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;id&quot;: id,
+    &quot;keyword&quot;:keyword,          //optional
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;User does not exist&quot; ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success:
+{
+    &quot;error&quot;: None, 
+    &quot;data&quot;: data   //data: UserAdminSerializer(user).data       
+    //model = User; fields = [&quot;id&quot;, &quot;username&quot;, &quot;email&quot;, &quot;admin_type&quot;, &quot;problem_permission&quot;, &quot;real_name&quot;, &quot;create_time&quot;, &quot;last_login&quot;, &quot;two_factor_auth&quot;, &quot;open_api&quot;, &quot;is_disabled&quot;]
+    // if &quot;keyword&quot; : data = paginate_data
+}
+</pre></div>
+</div>
+</section>
+<section id="account-admin-delete-api-admin-user">
+<h3>account/admin DELETE api/admin/user/?<a class="headerlink" href="#account-admin-delete-api-admin-user" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;id&quot;: id,
+
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Invalid Parameter, id is required&quot; / &quot;Current user can not be deleted&quot; ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success:
+{
+    &quot;error&quot;: None, 
+    &quot;data&quot;: None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-admin-get-api-admin-generate-user">
+<h3>account/admin GET api/admin/generate_user/?<a class="headerlink" href="#account-admin-get-api-admin-generate-user" title="Permalink to this headline"></a></h3>
+<p>下载user excel<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: &quot;file_id&quot;
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Invalid Parameter, file_id is required&quot; / &quot;Illegal file_id&quot; / &quot;File does not exist&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//HttpResponse
+{
+    &quot;content&quot;: data,   //xlsx file
+    &quot;Content-Disposition&quot;:&quot;attachment; filename=users.xlsx&quot;,
+    &quot;Content-Type&quot;:&quot;application/xlsx&quot;
+}
+</pre></div>
+</div>
+</section>
+<section id="account-admin-post-api-admin-generate-user">
+<h3>account/admin POST api/admin/generate_user/?<a class="headerlink" href="#account-admin-post-api-admin-generate-user" title="Permalink to this headline"></a></h3>
+<p>批量添加用户<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;number_from&quot;: number_from,
+        &quot;number_to&quot;: number_to,
+        &quot;prefix&quot;: prefix,
+        &quot;suffix&quot;: suffix,
+        &quot;password_length&quot;: password_length,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Username should not more than 32 characters&quot; / &quot;Start number must be lower than end number&quot; / IntegrityError,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:{&quot;file_id&quot;: file_id,},
+    &quot;error&quot;:&quot;error&quot;,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-post-api-login">
+<h3>account/user POST api/login/?<a class="headerlink" href="#account-user-post-api-login" title="Permalink to this headline"></a></h3>
+<p>用户登录<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;username&quot;:username,
+        &quot;password&quot;:password,
+        &quot;tfa_code&quot;:tfa_code,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:&quot;Succeeded&quot;,
+    &quot;error&quot;:None,
+}
+//APIView,error
+{
+    &quot;msg&quot;:&quot;Your account has been disabled&quot; / &quot;tfa_required&quot; / &quot;Invalid two factor verification code&quot; / &quot;Invalid username or password&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-get-api-logout">
+<h3>account/user GET api/logout/?<a class="headerlink" href="#account-user-get-api-logout" title="Permalink to this headline"></a></h3>
+<p>登出<br />
+<code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-post-api-register">
+<h3>account/user POST api/register/?<a class="headerlink" href="#account-user-post-api-register" title="Permalink to this headline"></a></h3>
+<p>注册<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;username&quot;:username,
+        &quot;email&quot;:email,
+        &quot;password&quot;:password,
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Register function has been disabled by admin&quot; / &quot;Username already exists&quot; / &quot;Email already exists&quot; / ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:&quot;Succeeded&quot; ,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-post-api-change-password">
+<h3>account/user POST api/change_password/?<a class="headerlink" href="#account-user-post-api-change-password" title="Permalink to this headline"></a></h3>
+<p>改密码<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;old_password&quot;:old_password,
+        &quot;tfa_code&quot;:tfa_code,        //&quot;tfa_required&quot; error
+        &quot;new_password&quot;:new_password,
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Invalid two factor verification code&quot; / &quot;tfa_required&quot; / &quot;Invalid old password&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:&quot;Succeed&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-post-api-change-email">
+<h3>account/user POST api/change_email/?<a class="headerlink" href="#account-user-post-api-change-email" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;password&quot;:password,
+        &quot;tfa_code&quot;:tfa_code,
+        &quot;new_email&quot;:new_email,
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Wrong password&quot; / &quot;tfa_required&quot;/ &quot;Invalid two factor verification code&quot; / &quot;The email is owned by other account&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:&quot;Succeeded&quot; ,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-post-api-apply-reset-password">
+<h3>account/user POST api/apply_reset_password/?<a class="headerlink" href="#account-user-post-api-apply-reset-password" title="Permalink to this headline"></a></h3>
+<p>根据邮箱重置密码（验证邮箱？）<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;email&quot;:email,
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;You have already logged in, are you kidding me? &quot; / &quot;User does not exist&quot; / &quot;You can only reset password once per 20 minutes&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:&quot;Succeeded&quot; ,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-post-api-reset-password">
+<h3>account/user POST api/reset_password/?<a class="headerlink" href="#account-user-post-api-reset-password" title="Permalink to this headline"></a></h3>
+<p>配合apply_reset_password（重置密码）<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;token&quot;:token,
+        &quot;password&quot;:password,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Token does not exist&quot; / &quot;Token has expired&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:&quot;Succeeded&quot; ,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-post-api-check-username-or-email">
+<h3>account/user POST api/check_username_or_email<a class="headerlink" href="#account-user-post-api-check-username-or-email" title="Permalink to this headline"></a></h3>
+<p>check username or email is duplicate<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;username&quot;: username,
+        &quot;email&quot;: email,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:{
+        &quot;username&quot;: Boolean,
+        &quot;email&quot;: Boolean,
+    } ,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-get-api-profile">
+<h3>account/user GET api/profile/?<a class="headerlink" href="#account-user-get-api-profile" title="Permalink to this headline"></a></h3>
+<p>判断是否登录，成功就返回用户信息<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter:username
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;User does not exist&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:None / request.user.userprofile,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-put-api-profile">
+<h3>account/user PUT api/profile/?<a class="headerlink" href="#account-user-put-api-profile" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="c1">//request.data, </span><span class="w"></span>
+<span class="cm">/*</span>
+<span class="cm">class UserProfile(models.Model):</span>
+<span class="cm">    user = models.OneToOneField(User, on_delete=models.CASCADE)</span>
+<span class="cm">    problems_status = JSONField(default=dict)</span>
+<span class="cm">    real_name = models.TextField(null=True)</span>
+<span class="cm">    blog = models.URLField(null=True)</span>
+<span class="cm">    github = models.TextField(null=True)</span>
+<span class="cm">    school = models.TextField(null=True)</span>
+<span class="cm">    major = models.TextField(null=True)</span>
+<span class="cm">    language = models.TextField(null=True)</span>
+<span class="cm">    #for Contest</span>
+<span class="cm">    accepted_number = models.IntegerField(default=0)</span>
+<span class="cm">    total_score = models.IntegerField(default=0)</span>
+<span class="cm">*/</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:request.user.userprofile, // user_profile &lt;-- request.data,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-get-api-profile-fresh-display-id">
+<h3>account/user GET api/profile/fresh_display_id<a class="headerlink" href="#account-user-get-api-profile-fresh-display-id" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="c1">//profile = request.user.userprofile</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-post-api-upload-avatar">
+<h3>account/user POST api/upload_avatar/?<a class="headerlink" href="#account-user-post-api-upload-avatar" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>文件上传，request.FILES。request.FILES 只有当请求方法是 POST，至少有一个文件字段被实际发布，并且发布请求的 &lt;form&gt; 有 enctype=&quot;multipart/form-data&quot; 属性时，才会包含数据。否则 request.FILES 将为空。
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Invalid file content&quot; / &quot;Picture is too large&quot; / &quot;Unsupported file format&quot; / ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:&quot;Succeed&quot; / request.user.userprofile,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-post-api-tfa-required">
+<h3>account/user POST api/tfa_required/?<a class="headerlink" href="#account-user-post-api-tfa-required" title="Permalink to this headline"></a></h3>
+<p>Check TFA is required<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;username&quot;:username,
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:{
+        &quot;result&quot;:Boolean,
+    },
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-get-api-two-factor-auth">
+<h3>account/user GET api/two_factor_auth/?<a class="headerlink" href="#account-user-get-api-two-factor-auth" title="Permalink to this headline"></a></h3>
+<p>GET QR code<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="c1">//request.user</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;2FA is already turned on&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;: base64,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-post-api-two-factor-auth">
+<h3>account/user POST api/two_factor_auth/?<a class="headerlink" href="#account-user-post-api-two-factor-auth" title="Permalink to this headline"></a></h3>
+<p>Open 2FA<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//request.user
+{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;code&quot;:code,
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Invalid code&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;: &quot;Succeed&quot;,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-put-api-two-factor-auth">
+<h3>account/user PUT api/two_factor_auth/?<a class="headerlink" href="#account-user-put-api-two-factor-auth" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//request.user
+{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;code&quot;:code,
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;2FA is already turned off&quot; / &quot;Invalid code&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;: &quot;Succeed&quot;,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-get-api-sessions">
+<h3>account/user GET api/sessions/?<a class="headerlink" href="#account-user-get-api-sessions" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//request.session.session_key, request.user.session_keys
+{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;code&quot;:code,
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>
+//APIView.success
+{
+    &quot;msg&quot;: [
+        [
+            &quot;current_session&quot;:Boolean,
+            &quot;ip&quot;:ip,
+            &quot;user_agent&quot;:user_agent,
+            &quot;last_activity&quot;:string,
+            &quot;session_key&quot;:session_key,
+        ],
+        ...
+    ]:,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-delete-api-two-factor-auth">
+<h3>account/user DELETE api/two_factor_auth/?<a class="headerlink" href="#account-user-delete-api-two-factor-auth" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter:session_key
+{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;code&quot;:code,
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Parameter Error&quot; / &quot;Invalid session_key&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;: &quot;Succeed&quot;,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-post-api-open-api-appkey">
+<h3>account/user POST api/open_api_appkey/?<a class="headerlink" href="#account-user-post-api-open-api-appkey" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="c1">//request.user</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;OpenAPI function is truned off for you&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;: {
+        
+        &quot;appkey&quot;:string,
+    },
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-get-api-sso">
+<h3>account/user GET api/sso?<a class="headerlink" href="#account-user-get-api-sso" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="c1">//request.user</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;: {
+        
+        &quot;token&quot;:string,
+    },
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="account-user-post-api-sso">
+<h3>account/user POST api/sso?<a class="headerlink" href="#account-user-post-api-sso" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;token&quot;:string
+    }
+}
+
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;: &quot;User does not exist&quot;,
+    &quot;error&quot;:None,
+}
+//APIView.success
+{
+    &quot;msg&quot;: {
+        &quot;username&quot;: user.username, 
+        &quot;avatar&quot;: user.userprofile.avatar, 
+        &quot;admin_type&quot;: user.admin_type,
+    },
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="announcement-admin-post-api-admin-announcement">
+<h3>announcement/admin POST api//admin/announcement/?<a class="headerlink" href="#announcement-admin-post-api-admin-announcement" title="Permalink to this headline"></a></h3>
+<p>publish announcement<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+    //data:
+        &quot;title&quot;:title,
+        &quot;content&quot;:content,
+        &quot;visible&quot;:Boolean,
+        
+    }
+}
+//request.user
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:{
+    //data
+        &quot;title&quot;:title,
+        &quot;create_time&quot;:Datetime,
+        &quot;created_by&quot;:User,  //ForeignKey
+        &quot;content&quot;:content,  //RichTextField
+        &quot;visible&quot;:Boolean,
+
+    },
+    &quot;error&quot;:None,
+}    
+//request.user
+</pre></div>
+</div>
+</section>
+<section id="announcement-admin-put-api-admin-announcement">
+<h3>announcement/admin PUT api/admin/announcement/?<a class="headerlink" href="#announcement-admin-put-api-admin-announcement" title="Permalink to this headline"></a></h3>
+<p>edit announcement<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;id&quot;:id,
+    }
+}
+
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Announcement does not exist&quot; / ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:{    
+    //announcement     , announcement &lt;--request.data
+        &quot;title&quot;:title,
+        &quot;create_time&quot;:Datetime,
+        &quot;created_by&quot;:User,  //ForeignKey
+        &quot;content&quot;:content,  //RichTextField
+        &quot;last_update_time&quot;:Datetime,
+        &quot;visible&quot;:Boolean,
+    },
+
+    /*
+    class Announcement(models.Model):
+        title = models.TextField()
+        # HTML
+        content = RichTextField()
+        create_time = models.DateTimeField(auto_now_add=True)
+        created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+        last_update_time = models.DateTimeField(auto_now=True)
+        visible = models.BooleanField(default=True)
+    */
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="announcement-admin-get-api-admin-announcement">
+<h3>announcement/admin GET api/admin/announcement/?<a class="headerlink" href="#announcement-admin-get-api-admin-announcement" title="Permalink to this headline"></a></h3>
+<p>get announcements / an announcement<br />
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
+
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Announcement does not exist&quot; ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:
+    {    
+        &quot;title&quot;:title,
+        &quot;create_time&quot;:Datetime,
+        &quot;created_by&quot;:User,  //ForeignKey
+        &quot;content&quot;:content,  //RichTextField
+        &quot;last_update_time&quot;:Datetime,
+        &quot;visible&quot;:Boolean,
+    }   OR   
+    {
+        &quot;result&quot;:[
+            //maybe 10 announcements in one Page
+            announcement 1,
+            announcement 2,
+            ...
+        ],
+        &quot;total&quot;:number of announcement,
+    },
+    //announcement,     
+    /*
+    class Announcement(models.Model):
+        title = models.TextField()
+        # HTML
+        content = RichTextField()
+        create_time = models.DateTimeField(auto_now_add=True)
+        created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+        last_update_time = models.DateTimeField(auto_now=True)
+        visible = models.BooleanField(default=True)
+    */
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="announcement-admin-delete-api-admin-announcement">
+<h3>announcement/admin DELETE api/admin/announcement/?<a class="headerlink" href="#announcement-admin-delete-api-admin-announcement" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
+
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="announcement-user-get-api-announcement">
+<h3>announcement/user GET api/announcement/?<a class="headerlink" href="#announcement-user-get-api-announcement" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;: {
+        &quot;result&quot;:[
+            //maybe 10 announcements in one Page
+            announcement 1,
+            announcement 2,
+            ...
+        ],
+        &quot;total&quot;:number of announcement,
+    },
+    &quot;error&quot;:None,
+}    
+
+</pre></div>
+</div>
+</section>
+<section id="contest-admin-get-api-admin-contest">
+<h3>contest/admin GET api/admin/contest/?<a class="headerlink" href="#contest-admin-get-api-admin-contest" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id &amp; keyword
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:Contest
+        OR
+    {
+        &quot;result&quot;:[
+            //maybe 10 in one page
+            Contest 1,
+            Contest 2,
+            ...
+        ],
+        &quot;total&quot;:number of Contest
+    },
+    &quot;error&quot;:None,
+}
+//APIView.error
+{
+    &quot;msg&quot;:&quot;Contest does not exist&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+</pre></div>
+</div>
+</section>
+<section id="contest-admin-post-api-admin-contest">
+<h3>contest/admin POST api/admin/contest/?<a class="headerlink" href="#contest-admin-post-api-admin-contest" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;title&quot;:title,
+        &quot;start_time&quot;:start_time,
+        &quot;end_time&quot;:end_time,
+        &quot;created_by&quot;:created_by,
+        &quot;contest_admin&quot;:contest_admin,
+        &quot;start_time&quot;:start_time,
+        &quot;end_time&quot;:end_time,
+        &quot;password&quot;:password,
+        &quot;allowed_ip_ranges&quot;:[
+            ip_range,
+            ...
+        ],
+        /*
+        class Contest(models.Model):
+            title = models.TextField()
+            description = RichTextField()
+            password = models.TextField(null=True)
+            start_time = models.DateTimeField(timezone.now())
+            end_time = models.DateTimeField(null=True)
+            create_time = models.DateTimeField(auto_now_add=True)
+            last_update_time = models.DateTimeField(auto_now=True)
+            created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+            visible = models.BooleanField(default=True)
+            contest_admin = models.JSONField(default=list)
+            allowed_ip_ranges = JSONField(default=list)
+        */
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:Contest,
+    &quot;error&quot;:None,
+}
+//APIView.error
+{
+    &quot;msg&quot;:&quot;Start time must occur earlier than end time&quot; / &quot;{ip_range} is not a valid cidr network&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+</pre></div>
+</div>
+</section>
+<section id="contest-admin-put-api-admin-contest">
+<h3>contest/admin PUT api/admin/contest/?<a class="headerlink" href="#contest-admin-put-api-admin-contest" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;id&quot;:id,
+        //&quot;title&quot;:title,
+        &quot;start_time&quot;:start_time,
+        &quot;end_time&quot;:end_time,
+        //&quot;created_by&quot;:created_by,
+        &quot;contest_admin&quot;:[
+            contest_admin,
+            ...
+        ],
+        &quot;start_time&quot;:start_time,
+        &quot;end_time&quot;:end_time,
+        &quot;password&quot;:password,
+        &quot;allowed_ip_ranges&quot;:[
+            ip_range,
+            ...
+        ],
+        /*
+        class Contest(models.Model):
+            title = models.TextField()
+            description = RichTextField()
+            password = models.TextField(null=True)
+            start_time = models.DateTimeField(timezone.now())
+            end_time = models.DateTimeField(null=True)
+            create_time = models.DateTimeField(auto_now_add=True)
+            last_update_time = models.DateTimeField(auto_now=True)
+            created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+            visible = models.BooleanField(default=True)
+            contest_admin = models.JSONField(default=list)
+            allowed_ip_ranges = JSONField(default=list)
+        */
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:Contest,      //class Contest:
+    &quot;error&quot;:None,
+}
+//APIView.error
+{
+    &quot;msg&quot;:&quot;Contest does not exist&quot; / &quot;User:{user_id} not exist&quot; / &quot;Start time must occur earlier than end time&quot; / &quot;{ip_range} is not a valid cidr network&quot; / ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+</pre></div>
+</div>
+</section>
+<section id="contest-admin-post-api-admin-contest-announcement">
+<h3>contest/admin POST api/admin/contest/announcement/?<a class="headerlink" href="#contest-admin-post-api-admin-contest-announcement" title="Permalink to this headline"></a></h3>
+<p>Create one contest_announcement.
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;contest_id&quot;:contest_id,
+        &quot;title&quot;:title,
+        /*
+        class ContestAnnouncement(models.Model):
+            contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
+            title = models.TextField()
+            content = RichTextField()
+            created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+            visible = models.BooleanField(default=True)
+            create_time = models.DateTimeField(auto_now_add=True)
+        */
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:ContestAnnouncement,      //class ContestAnnouncement:
+    &quot;error&quot;:None,
+}
+//APIView.error
+{
+    &quot;msg&quot;:&quot;Contest does not exist&quot; /  ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+</pre></div>
+</div>
+</section>
+<section id="contest-admin-put-api-admin-contest-announcement">
+<h3>contest/admin PUT api/admin/contest/announcement/?<a class="headerlink" href="#contest-admin-put-api-admin-contest-announcement" title="Permalink to this headline"></a></h3>
+<p>update contest_announcement.
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;id&quot;:id,
+        [Optional]
+        /*
+        class ContestAnnouncement(models.Model):
+            contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
+            title = models.TextField()
+            content = RichTextField()
+            created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+            visible = models.BooleanField(default=True)
+            create_time = models.DateTimeField(auto_now_add=True)
+        */
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:None,      //class ContestAnnouncement:
+    &quot;error&quot;:None,
+}
+//APIView.error
+{
+    &quot;msg&quot;:&quot;Contest announcement does not exist&quot; /  ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+</pre></div>
+</div>
+</section>
+<section id="contest-admin-delete-api-admin-contest-announcement">
+<h3>contest/admin DELETE api/admin/contest/announcement/?<a class="headerlink" href="#contest-admin-delete-api-admin-contest-announcement" title="Permalink to this headline"></a></h3>
+<p>delete one contest_announcement.
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:None,      //class ContestAnnouncement:
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="contest-admin-get-api-admin-contest-announcement">
+<h3>contest/admin GET api/admin/contest/announcement/?<a class="headerlink" href="#contest-admin-get-api-admin-contest-announcement" title="Permalink to this headline"></a></h3>
+<p>Get one contest_announcement or contest_announcement list.
+<code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id &amp; contest_id &amp; keyword
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:ContestAnnouncements,      //class ContestAnnouncement:
+    &quot;error&quot;:None,
+}
+//APIView.error
+{
+    &quot;msg&quot;:&quot;Contest announcement does not exist&quot; /  &quot;Parameter error&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+</pre></div>
+</div>
+</section>
+<section id="contest-admin-get-api-admin-download-submissions">
+<h3>contest/admin GET api/admin/download_submissions/?<a class="headerlink" href="#contest-admin-get-api-admin-download-submissions" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: contest_id &amp; exclude_admin 
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Contest does not exist&quot; /  &quot;Parameter error&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//download submission
+FileResponse(open_file,``kwargs)
+/*
+    kwargs = {
+        &quot;Content-Type&quot;:&quot;application/zip&quot;,
+        &quot;Content-Disposition&quot;:&quot;attachment;filename={os.path.basename(zip_path)}&quot;,
+    }
+*/
+</pre></div>
+</div>
+</section>
+<section id="contest-user-get-api-contests">
+<h3>contest/user GET api/contests/?<a class="headerlink" href="#contest-user-get-api-contests" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: keyword &amp; rule_type &amp; status
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:
+    {
+        &quot;result&quot;:[
+            //maybe 10 in one page
+            Contest 1,
+            Contest 2,
+            ...
+        ],
+        &quot;total&quot;:number of Contest
+    },
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="contest-user-get-api-contest">
+<h3>contest/user GET api/contest/?<a class="headerlink" href="#contest-user-get-api-contest" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Invalid parameter, id is required&quot; / &quot;Contest does not exist&quot; ,
+    &quot;error&quot;: &quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:
+    {
+        &quot;title&quot; : title,
+        &quot;description&quot; : description,  //RichTextField
+        &quot;start_time&quot; :Datetime,
+        &quot;end_time&quot; :Datetime,
+        &quot;create_time Datetime,
+        last_update_time&quot; : Datetime,
+        &quot;created_by&quot; :User,
+        &quot;contest_admin&quot; :[
+                //JSONField(default=list)
+        ],
+        &quot;now&quot;:Datetime,
+    },
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="contest-user-post-api-contest-password">
+<h3>contest/user POST api/contest/password/?<a class="headerlink" href="#contest-user-post-api-contest-password" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;contest_id&quot;:contest_id,
+        &quot;password&quot;:password,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Invalid parameter, id is required&quot; / &quot;Contest does not exist&quot; / &quot;Wrong password or password expired&quot;,
+    &quot;error&quot;: &quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:True,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="contest-user-get-api-contest-announcement">
+<h3>contest/user GET api/contest/announcement/?<a class="headerlink" href="#contest-user-get-api-contest-announcement" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: contest_id &amp; max_id &amp;
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Invalid parameter, contest_id is required&quot;,
+    &quot;error&quot;: &quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:
+    {
+        &quot;result&quot;:[
+            //maybe 10 in one page
+            Contest 1,
+            Contest 2,
+            ...
+        ],
+        &quot;total&quot;:number of Contest
+    },
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="contest-user-get-api-contest-access">
+<h3>contest/user GET api/contest/access/?<a class="headerlink" href="#contest-user-get-api-contest-access" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: contest_id 
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Contest does not exist&quot;,
+    &quot;error&quot;: &quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:
+    {
+        &quot;access&quot;:Boolean,
+    },
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-admin-post-api-admin-problem">
+<h3>problem/admin POST api/admin/problem/?<a class="headerlink" href="#problem-admin-post-api-admin-problem" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;_id&quot;:_id,
+        &quot;languages&quot;:[
+            language 1,
+            ...
+        ],
+        &quot;tags&quot;:tags,
+        &quot;created_by&quot;:User,
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Display ID is required&quot; / &quot;Display ID already exists&quot; / list() error,
+    &quot;error&quot;: &quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:Problem,  //class Problem(Model)
+    &quot;error&quot;:None,
+}
+/*
+class Problem(models.Model):
+    # display ID
+    _id = models.TextField(db_index=True)
+    contest = models.ForeignKey(Contest, null=True, on_delete=models.CASCADE)
+    # for contest problem
+    lab_id = models.IntegerField(null=True)
+    lab_config = models.JSONField(default=dict)
+    is_public = models.BooleanField(default=False)
+    title = models.TextField()
+    # HTML
+    description = RichTextField()
+    hint = RichTextField(null=True)
+    languages = JSONField()
+    #需要的节点数量
+    vm_num = models.IntegerField()
+    #各个节点所需要的端口数量
+    port_num = models.JSONField(default=list)
+    #学生需要编写的代码段数量
+    code_num = models.IntegerField()
+    template = JSONField(null=True)
+    create_time = models.DateTimeField(auto_now_add=True)
+    # we can not use auto_now here
+    last_update_time = models.DateTimeField(null=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    # judge related
+    visible = models.BooleanField(default=True)
+    tags = models.ManyToManyField(ProblemTag)
+    total_score = models.IntegerField(default=0)
+    submission_number = models.BigIntegerField(default=0)
+    accepted_number = models.BigIntegerField(default=0)
+    # {JudgeStatus.ACCEPTED: 3, JudgeStaus.WRONG_ANSWER: 11}, the number means count
+    statistic_info = JSONField(default=dict)
+    share_submission = models.BooleanField(default=False)
+
+*/
+</pre></div>
+</div>
+</section>
+<section id="problem-admin-get-api-admin-problem">
+<h3>problem/admin GET api/admin/problem/?<a class="headerlink" href="#problem-admin-get-api-admin-problem" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id &amp; keyword
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Problem does not exist&quot; / ,
+    &quot;error&quot;: &quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:Problem
+    OR
+    {
+        &quot;result&quot;:[
+            //maybe 10 in one page
+            Problem 1,
+            Problem 2,
+            ...
+        ],
+        &quot;total&quot;:number of Problem
+    },
+    //class Problem(Model)
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-admin-put-api-admin-problem">
+<h3>problem/admin PUT api/admin/problem/?<a class="headerlink" href="#problem-admin-put-api-admin-problem" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;id&quot;:id,
+        &quot;tags&quot;:
+        [
+            tag 1,
+            ...
+        ],
+        &quot;language&quot;:[
+            language 1,
+            ...
+        ]
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Problem does not exist&quot;/ &quot;Display ID is required&quot; / &quot;Display ID already exists&quot; / list() error,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-admin-delete-api-admin-problem">
+<h3>problem/admin DELETE api/admin/problem/?<a class="headerlink" href="#problem-admin-delete-api-admin-problem" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Invalid parameter, id is required&quot; / &quot;Problem does not exists&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-admin-post-api-admin-contest-problem">
+<h3>problem/admin POST api/admin/contest/problem/?<a class="headerlink" href="#problem-admin-post-api-admin-contest-problem" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:
+    {
+        &quot;contest_id&quot;:contest_id,
+        &quot;problem_id&quot;:problem_id,
+        &quot;lab_id&quot;:lab_id,
+        &quot;contest&quot;:Contest,
+        &quot;created_by&quot;:User,
+        &quot;display_id&quot;:display_id,
+        &quot;title&quot;:title,
+        &quot;description&quot;:description,
+        //&quot;visible&quot;
+        &quot;language&quot;:[],
+        &quot;hint&quot;:hint,
+        &quot;lab_config&quot;:lab_config,
+        &quot;vm_num&quot;:vm_num,
+        &quot;port_num&quot;:port_num,
+        &quot;total_score&quot;:total_score,
+        //&quot;share_submission&quot;
+        &quot;code_num&quot;:code_num,
+        //&quot;_id&quot;
+        //&quot;id_public&quot;
+        //&quot;accepted_number&quot;
+        //&quot;submission_number&quot;
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Contest or Problem does not exist&quot; / &quot;Contest has ended&quot; / &quot;Duplicate display id in this contest&quot; / ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:Problem,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-admin-get-api-admin-contest-problem">
+<h3>problem/admin GET api/admin/contest/problem/?<a class="headerlink" href="#problem-admin-get-api-admin-contest-problem" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: if &amp; contest_id &amp; keyword
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Problem does not exist&quot; / &quot;Contest id is required&quot; / &quot;Contest does not exist&quot; / ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:Problem
+    OR
+    {
+        &quot;result&quot;:[
+            //maybe 10 in one page
+            Problem 1,
+            Problem 2,
+            ...
+        ],
+        &quot;total&quot;:number of Problem
+
+    },
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-admin-put-api-admin-contest-problem">
+<h3>problem/admin PUT api/admin/contest/problem/?<a class="headerlink" href="#problem-admin-put-api-admin-contest-problem" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;contest_id&quot;:contest_id,
+        &quot;id&quot;:id,
+        &quot;_id&quot;:_id,  //display_id
+        &quot;tags&quot;:[],
+        &quot;language&quot;:[]
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Contest does not exist&quot; / &quot;Problem does not exist&quot; / &quot;Display ID is required&quot; / &quot;Display ID already exists&quot; / list() error,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-admin-delete-api-admin-contest-problem">
+<h3>problem/admin DELETE api/admin/contest/problem/?<a class="headerlink" href="#problem-admin-delete-api-admin-contest-problem" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id 
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Invalid parameter, id is required&quot; / &quot;Problem does not exists&quot; / &quot;Can&#39;t delete the problem as it has submissions&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-admin-post-api-admin-contest-problem-make-public">
+<h3>problem/admin POST api/admin/contest_problem/make_public/?<a class="headerlink" href="#problem-admin-post-api-admin-contest-problem-make-public" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;display_id&quot;:display_id,
+        &quot;id&quot;:id,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Duplicate display ID&quot; / &quot;Problem does not exist&quot; / &quot;Already be a public problem&quot; ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-admin-post-api-admin-contest-add-problem-from-public">
+<h3>problem/admin POST api/admin/contest/add_problem_from_public/?<a class="headerlink" href="#problem-admin-post-api-admin-contest-add-problem-from-public" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;contest_id&quot;:contest_id,
+        &quot;problem_id&quot;:problem_id,
+        &quot;lab_id&quot;:lab_id,
+        &quot;created_by&quot;:User,
+        &quot;display_id&quot;:display_id,
+        //&quot;title&quot;
+        //&quot;description&quot;
+        //&quot;hint&quot;
+        &quot;lab_config&quot;:lab_config,
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Contest or Problem does not exist&quot; / &quot;Contest has ended&quot; / &quot;Duplicate display id in this contest&quot; /  ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-admin-get-api-admin-export-problem">
+<h3>problem/admin GET api/admin/export_problem/?<a class="headerlink" href="#problem-admin-get-api-admin-export-problem" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;problem_id&quot;:problem_id, 
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>FileResponse(open_file,``kwargs)
+/*
+    kwargs = {
+        &quot;Content-Type&quot;:&quot;application/zip&quot;,
+        &quot;Content-Disposition&quot;:&quot;attachment;filename=problem-export.zip&quot;,
+    }
+*/
+</pre></div>
+</div>
+</section>
+<section id="problem-user-get-api-problem-tags">
+<h3>problem/user GET api/problem/tags/?<a class="headerlink" href="#problem-user-get-api-problem-tags" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: keyword
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>
+//APIView.success
+{
+    &quot;msg&quot;:
+    {
+        &quot;result&quot;:[
+            //maybe 10 in one page
+            Tag 1,
+            Tag 2,
+            ...
+        ],
+        &quot;total&quot;:number of Tag
+    },
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-user-get-api-problem">
+<h3>problem/user GET api/problem/?<a class="headerlink" href="#problem-user-get-api-problem" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: problem_id &amp; limit &amp; tag &amp; keyword
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Problem does not exist&quot;/&quot;Limit is needed&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:Problem
+    OR
+    {
+        &quot;result&quot;:[
+            //maybe 10 in one page
+            Problem 1,
+            Problem 2,
+            ...
+        ],
+        &quot;total&quot;:number of Problem
+    },
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-user-get-api-pickone">
+<h3>problem/user GET api/pickone/?<a class="headerlink" href="#problem-user-get-api-pickone" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: problem_id &amp; limit &amp; tag &amp; keyword
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;No problem to pick&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:Problem._id,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="problem-user-get-api-contest-problem">
+<h3>problem/user GET api/contest/problem/?<a class="headerlink" href="#problem-user-get-api-contest-problem" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: problem_id
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Problem does not exist.&quot; / ,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:{
+    //class  ProblemSafeSerializer(BaseProblemSerializer):
+        &quot;_id&quot; // models.TextField(db_index=True)
+        &quot;contest&quot; // models.ForeignKey(Contest, null=True, on_delete=models.CASCADE)
+        # for contest problem
+        &quot;lab_id&quot; // models.IntegerField(null=True)
+        &quot;lab_config&quot; // models.JSONField(default=dict)
+        &quot;title&quot; // models.TextField()
+        # HTML
+        &quot;description&quot; //RichTextField()
+        &quot;hint&quot; // RichTextField(null=True)
+        &quot;languages&quot; // JSONField()
+        #需要的节点数量
+        &quot;vm_num&quot; // models.IntegerField()
+        #各个节点所需要的端口数量
+        &quot;port_num&quot; // models.JSONField(default=list)
+        #学生需要编写的代码段数量
+        &quot;code_num&quot; // models.IntegerField()
+        &quot;template&quot; // JSONField(null=True)
+        &quot;create_time&quot; // models.DateTimeField(auto_now_add=True)
+        # we can not use auto_now here
+        &quot;last_update_time&quot; // models.DateTimeField(null=True)
+        &quot;created_by&quot; // models.ForeignKey(User, on_delete=models.CASCADE)
+        # judge related
+        &quot;tags&quot; // models.ManyToManyField(ProblemTag)
+        &quot;total_score&quot; // models.IntegerField(default=0)
+        # {JudgeStatus.ACCEPTED: 3, JudgeStaus.WRONG_ANSWER: 11}, the number means count
+        &quot;share_submission&quot; // models.BooleanField(default=False)
+    },
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="submission-user-post-api-submission">
+<h3>submission/user POST api/submission/?<a class="headerlink" href="#submission-user-post-api-submission" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;contest_id&quot;:contest_id,
+        &quot;auth_method&quot;:auth_method,
+        &quot;problem_id&quot;:problem_id,
+        &quot;language&quot;:language,
+        &quot;code_list&quot;:[],
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;The contest have ended&quot; / &quot;Your IP is not allowed in this contest&quot; / &quot;Please wait %d seconds&quot; / &quot;Problem not exist&quot; / &quot;{language} is now allowed in the problem&quot;/&quot;Code segment can&#39;t meet the requirement&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:Submission
+    OR
+    None,
+    /*
+    class Submission(models.Model):
+        id = models.TextField(default=rand_str, primary_key=True, db_index=True)
+        contest = models.ForeignKey(Contest, null=True, on_delete=models.CASCADE)
+        problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
+        create_time = models.DateTimeField(auto_now_add=True)
+        user_id = models.CharField(db_index=True, max_length=50)
+        username = models.TextField()
+        code_list = models.JSONField(default=list)
+        server_list = models.JSONField(default=list)
+        ports_list = models.JSONField(default=dict)
+        result = models.IntegerField(db_index=True, default=JudgeStatus.PENDING)
+        # 从JudgeServer返回的判题详情
+        info = JSONField(default=dict)
+        language = models.TextField()
+        shared = models.BooleanField(default=False)
+        # 存储该提交所用时间和内存值，方便提交列表显示
+        # {time_cost: &quot;&quot;, memory_cost: &quot;&quot;, err_info: &quot;&quot;, score: 0}
+        ip = models.TextField(null=True)
+    */
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="submission-user-get-api-submission">
+<h3>submission/user GET api/submission/?<a class="headerlink" href="#submission-user-get-api-submission" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id 
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Parameter id doesn&#39;t exist&quot; / &quot;Submission doesn&#39;t exist&quot;/ &quot;No permission for this submission&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:Submission,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="submission-user-put-api-submission">
+<h3>submission/user PUT api/submission/?<a class="headerlink" href="#submission-user-put-api-submission" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:
+    {
+        &quot;id&quot;:id,
+        &quot;shared&quot;:shared,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Submission doesn&#39;t exist&quot; / &quot;No permission to share the submission&quot; / &quot;Can not share submission now&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="submission-user-get-api-submissions">
+<h3>submission/user GET api/submissions/?<a class="headerlink" href="#submission-user-get-api-submissions" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: limit &amp; contest_id &amp; problem_id &amp; result
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Problem doesn&#39;t exist&quot; / &quot;Parameter error&quot; / &quot;Limit is needed&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:
+    {
+        &quot;result&quot;:[
+            //maybe 10 in one page
+            Submission 1,   //Submission exclude (&quot;info&quot;, &quot;contest&quot;, &quot;code_list&quot;, &quot;ip&quot;)
+            Submission 2,
+            ...
+        ],
+        &quot;total&quot;:number of Problem
+    },
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="submission-user-get-api-submission-exists">
+<h3>submission/user GET api/submission_exists/?<a class="headerlink" href="#submission-user-get-api-submission-exists" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: problem_id
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Parameter error, problem_id is required&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:Boolean,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="submission-user-get-api-contest-submissions">
+<h3>submission/user GET api/contest_submissions/?<a class="headerlink" href="#submission-user-get-api-contest-submissions" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: limit &amp; contest_id &amp; problem_id &amp; result
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Limit is needed&quot;/&quot;Problem doesn&#39;t exist&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:
+    {
+        &quot;result&quot;:[
+            //maybe 10 in one page
+            Submission 1,   //Submission exclude (&quot;info&quot;, &quot;contest&quot;, &quot;code_list&quot;, &quot;ip&quot;)
+            Submission 2,
+            ...
+        ],
+        &quot;total&quot;:number of Problem,
+    },
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="submission-admin-get-api-admin-submission-rejudge">
+<h3>submission/admin GET api/admin/submission/rejudge/?<a class="headerlink" href="#submission-admin-get-api-admin-submission-rejudge" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Parameter error, id is required&quot; / &quot;Submission does not exists&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="submission-admin-post-api-admin-submission-excution">
+<h3>submission/admin POST api/admin/submission/excution/?<a class="headerlink" href="#submission-admin-post-api-admin-submission-excution" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+        &quot;HTTP_X_JUDGE_SERVER_TOKEN&quot;:token,
+    },
+    &quot;json&quot;:{
+        &quot;submission_id&quot;:id,
+        &quot;result&quot;:result,
+        &quot;info&quot;:submission_info,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;HTTP_X_JUDGE_SERVER_TOKEN&quot; / &quot;illegal server submission put&quot; / &quot;submission_id is needed&quot; / &quot;submmission not exist or expired&quot; /&quot;submission result is needed&quot; / &quot;resource Fetch error&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:Submission,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="submission-admin-get-api-admin-submission">
+<h3>submission/admin GET api/admin/submission/?<a class="headerlink" href="#submission-admin-get-api-admin-submission" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id &amp; find_user_id &amp; problem_id &amp; contest_id
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;Submission not exist&quot; / &quot;Contest not exist&quot; /&quot;Problem not exist&quot;/&quot;User not exist&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:    
+    {
+        &quot;result&quot;:[
+            //maybe 10 in one page
+            Submission 1,   //Submission exclude (&quot;info&quot;, &quot;contest&quot;, &quot;code_list&quot;, &quot;ip&quot;)
+            Submission 2,
+            ...
+        ],
+        &quot;total&quot;:number of Problem,
+    },
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="submission-admin-put-api-admin-submission">
+<h3>submission/admin PUT api/admin/submission/?<a class="headerlink" href="#submission-admin-put-api-admin-submission" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;submission_id&quot;:submission_id,
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.error
+{
+    &quot;msg&quot;:&quot;submission_id is needed&quot; / &quot;Submission not exist&quot;,
+    &quot;error&quot;:&quot;error&quot;,
+}
+
+//APIView.success
+{
+    &quot;msg&quot;:  None,
+    &quot;error&quot;:None:
+}
+</pre></div>
+</div>
+</section>
+<section id="utils-views-post-api-admin-upload-image">
+<h3>utils/views POST api/admin/upload_image/?<a class="headerlink" href="#utils-views-post-api-admin-upload-image" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>    request.POST &amp; request.FILES
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>HttpResponse:
+{
+    &quot;success&quot;: False,
+    &quot;msg&quot;: &quot;Unsupported file format&quot;,
+    &quot;file_path&quot;: &quot;&quot;
+}
+OR
+{
+    &quot;success&quot;: False,
+    &quot;msg&quot;: &quot;Upload Error&quot;,
+    &quot;file_path&quot;: &quot;&quot;}
+OR
+{
+    &quot;success&quot;: True,
+    &quot;msg&quot;: &quot;Success&quot;,
+    &quot;file_path&quot;: f&quot;{settings.UPLOAD_PREFIX}/{img_name}&quot;
+}
+</pre></div>
+</div>
+</section>
+<section id="utils-views-post-api-admin-upload-file">
+<h3>utils/views POST api/admin/upload_file/?<a class="headerlink" href="#utils-views-post-api-admin-upload-file" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>    request.POST &amp; request.FILES
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>HttpResponse:
+{
+    &quot;success&quot;: False,
+    &quot;msg&quot;: &quot;Upload failed&quot;
+}
+OR
+{
+    &quot;success&quot;: False,
+    &quot;msg&quot;: &quot;Upload Error&quot;
+}
+OR
+{
+    &quot;success&quot;: True,
+    &quot;msg&quot;: &quot;Success&quot;,
+    &quot;file_path&quot;: f&quot;{settings.UPLOAD_PREFIX}/{file_name}&quot;,
+    &quot;file_name&quot;: file.name
+}
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-get-api-admin-smtp">
+<h3>conf/admin GET api/admin/smtp/?<a class="headerlink" href="#conf-admin-get-api-admin-smtp" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:None  OR  SysOptions.value,   //JSONField()
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-post-api-admin-smtp">
+<h3>conf/admin POST api/admin/smtp/?<a class="headerlink" href="#conf-admin-post-api-admin-smtp" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:
+    {
+        &quot;smtp_config&quot;:smtp_config
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-put-api-admin-smtp">
+<h3>conf/admin PUT api/admin/smtp/?<a class="headerlink" href="#conf-admin-put-api-admin-smtp" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:
+    {
+        &quot;server&quot;:server,
+        &quot;port&quot;:port,
+        &quot;email&quot;:email,
+        &quot;tls&quot;:tls,
+        &quot;password&quot;:password,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-post-api-admin-smtp-test">
+<h3>conf/admin POST api/admin/smtp_test/?<a class="headerlink" href="#conf-admin-post-api-admin-smtp-test" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:
+    {
+        &quot;server&quot;:server,
+        &quot;port&quot;:port,
+        &quot;email&quot;:email,
+        &quot;tls&quot;:tls,
+        &quot;password&quot;:password,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None,
+}
+//APIView.error
+{
+    &quot;msg&quot;:&quot;Please setup SMTP config at first&quot; / STMP Error,
+    &quot;error&quot;:&quot;error&quot;,
+}
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-get-api-admin-website">
+<h3>conf/admin GET api/admin/website/?<a class="headerlink" href="#conf-admin-get-api-admin-website" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;header&quot;</span><span class="p">:{</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;json&quot;</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:{
+        &quot;website_base_url&quot;, 
+        &quot;website_name&quot;, 
+        &quot;website_name_shortcut&quot;,
+        &quot;website_footer&quot;, 
+        &quot;allow_register&quot;, 
+        &quot;submission_list_show_all&quot;
+    },
+    &quot;error&quot;:None,
+}
+
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-post-api-admin-website">
+<h3>conf/admin POST api/admin/website/?<a class="headerlink" href="#conf-admin-post-api-admin-website" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;header&quot;</span><span class="p">:{</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;json&quot;</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;website_base_url&quot;</span><span class="p">:,</span><span class="w"> </span>
+<span class="w">        </span><span class="nt">&quot;website_name&quot;</span><span class="p">:,</span><span class="w"> </span>
+<span class="w">        </span><span class="nt">&quot;website_name_shortcut&quot;</span><span class="p">:,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;website_footer&quot;</span><span class="p">:,</span><span class="w"> </span>
+<span class="w">        </span><span class="nt">&quot;allow_register&quot;</span><span class="p">:,</span><span class="w"> </span>
+<span class="w">        </span><span class="nt">&quot;submission_list_show_all&quot;</span><span class="p">:,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-get-api-admin-judge-server">
+<h3>conf/admin GET api/admin/judge_server/?<a class="headerlink" href="#conf-admin-get-api-admin-judge-server" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:{
+        &quot;token&quot;: judge_server_token,
+        &quot;servers&quot;: JudgeServer
+    },
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-delete-api-admin-website">
+<h3>conf/admin DELETE api/admin/website/?<a class="headerlink" href="#conf-admin-delete-api-admin-website" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: hostname
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-put-api-admin-website">
+<h3>conf/admin PUT api/admin/website/?<a class="headerlink" href="#conf-admin-put-api-admin-website" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;header&quot;:{
+
+    },
+    &quot;json&quot;:{
+        &quot;is_disabled&quot;:Boolean,
+        &quot;id&quot;:id,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-get-api-admin-prune-test-case">
+<h3>conf/admin GET api/admin/prune_test_case/?<a class="headerlink" href="#conf-admin-get-api-admin-prune-test-case" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:[
+        {
+            &quot;id&quot;:name,
+            &quot;create_time&quot;:Datetime,
+        }
+    ],
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-delete-api-admin-prune-test-case">
+<h3>conf/admin DELETE api/admin/prune_test_case/?<a class="headerlink" href="#conf-admin-delete-api-admin-prune-test-case" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:None,
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-get-api-admin-versions">
+<h3>conf/admin GET api/admin/versions/?<a class="headerlink" href="#conf-admin-get-api-admin-versions" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:releases,     // releases info from github, add &quot;local_version&quot;
+    &quot;error&quot;:None,
+}
+</pre></div>
+</div>
+</section>
+<section id="conf-admin-get-api-admin-dashboard-info">
+<h3>conf/admin GET api/admin/dashboard_info/?<a class="headerlink" href="#conf-admin-get-api-admin-dashboard-info" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
+{
+    &quot;msg&quot;:{
+            &quot;user_count&quot;: User.objects.count(),
+            &quot;recent_contest_count&quot;: recent_contest_count,
+            &quot;today_submission_count&quot;: today_submission_count,
+            &quot;judge_server_count&quot;: judge_server_count,
+            &quot;env&quot;: {
+                &quot;FORCE_HTTPS&quot;: get_env(&quot;FORCE_HTTPS&quot;, default=False),
+                &quot;STATIC_CDN_HOST&quot;: get_env(&quot;STATIC_CDN_HOST&quot;, default=&quot;&quot;)
+            },
+    &quot;error&quot;:None,
+    }
+}
+</pre></div>
+</div>
+</section>
+<section id="judgeserver">
+<h3>JudgeServer<a class="headerlink" href="#judgeserver" title="Permalink to this headline"></a></h3>
+<section id="post-judge">
+<h4>任务下发 POST /judge<a class="headerlink" href="#post-judge" title="Permalink to this headline"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>// POST /judge
+{
+    //认证 token为控制节点与实验运行节点之间的认证令牌
+	&quot;headers&quot;:{
+        &quot;X-Judge-Server-Token&quot;: token
+    },
+    &quot;json&quot;:{
+        //submission字段ID
+        &quot;submission_id&quot;: submission_id,
+        //语言字段 暂时默认为python
+        &quot;language_config&quot;: lang,
+        //实验ID
+        &quot;lab_id&quot;: lab_id,
+        //实验相关参数配置
+        &quot;lab_config&quot;:{
+            &quot;loss_rate&quot;: 0.01,
+            &quot;packet_size&quot;: 64KB,
+            //...
+        },
+        //学生提交的代码段
+        &quot;src&quot;:[&quot;code_segment1&quot;,
+               &quot;code_segment2&quot;,
+               &quot;code_segment3&quot;,
+               //...
+        ],
+        //在实验中的Node编号。一般编号为0的节点负责反馈实验状态
+        &quot;vm_index&quot;: 0,
+        //实验使用的端口号
+        &quot;ports&quot;: [8000,8080,...],
+    }
+} 
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//normal 正确
+{&quot;status&quot;:success}
+
+//error 错误
+//主要是在Token认证不通过，已经实验配置不合法的情况下报错
+{
+    //err字段记录错误原因
+    &quot;err&quot;: (&quot;Token illegal&quot;/&quot;lab resource not found&quot;
+    	   &quot;lab config error&quot;/ &quot;port blocked&quot;),
+   //info记录原请求信息Debug
+    &quot;info&quot;: {
+        &quot;X-Judge-Server-Token&quot;: token,
+        &quot;submission_id&quot;: submission_id,
+    	&quot;language_config&quot;: lang,
+        &quot;lab_id&quot;: lab_id,
+        &quot;lab_config&quot;:{
+            &quot;loss_rate&quot;: 0.01,
+            &quot;packet_size&quot;: 64KB,
+            //...
+        },
+        &quot;src&quot;:[&quot;code_segment1&quot;,
+               &quot;code_segment2&quot;,
+               &quot;code_segment3&quot;,
+               //...
+        ],
+        &quot;vm_index&quot;: 0,
+        &quot;ports&quot;: [8000,8080,...],
+    }
+}
+</pre></div>
+</div>
+</section>
+<section id="post-fetch">
+<h4>实验状态查询请求 POST /fetch<a class="headerlink" href="#post-fetch" title="Permalink to this headline"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>// POST /fetch
+{
+    //认证 token为控制节点与实验运行节点之间的认证令牌
+	&quot;headers&quot;:{
+        &quot;X-Judge-Server-Token&quot;: token,...
+    },
+    &quot;json&quot;:{
+        //同上
+        &quot;submission_id&quot;: submission_id,
+        &quot;lab_id&quot;: lab_id,
+        &quot;vm_index&quot;: 0,
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//正确
+{
+    &quot;status&quot;:success,
+    //提交状态
+    &quot;result&quot;: 0
+}
+
+//error 错误
+//主要是在Token认证不通过，已经实验配置不合法的情况下报错
+{
+    //err字段记录错误原因
+    &quot;err&quot;: (&quot;Token illegal&quot;/&quot;submission not found&quot;/&quot;vm index error&quot;),
+   //info记录原请求信息Debug
+    &quot;info&quot;: {
+        &quot;X-Judge-Server-Token&quot;: token,
+        &quot;submission_id&quot;: submission_id,
+        &quot;lab_id&quot;: lab_id,
+        &quot;vm_index&quot;: 0,
+    }
+}
+</pre></div>
+</div>
+<p>除了简单在response中返回对应状态，JudgeServer会主动进行一次状态推送。以更新详细信息</p>
+</section>
+</section>
+<section id="onl-server">
+<h3>ONL Server<a class="headerlink" href="#onl-server" title="Permalink to this headline"></a></h3>
+<section id="put-admin-submission-excution">
+<h4>提交状态更新 PUT admin/submission/excution<a class="headerlink" href="#put-admin-submission-excution" title="Permalink to this headline"></a></h4>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    //认证 token为控制节点与实验运行节点之间的认证令牌
+	&quot;headers&quot;:{
+        &quot;X-Judge-Server-Token&quot;: token,...
+    },
+    &quot;json&quot;:{
+        //同上
+        &quot;submission_id&quot;: submission_id,
+        //实验ID
+        &quot;lab_id&quot;: lab_id,
+        //实验结果
+        &quot;result&quot;: 0,
+        //实验信息记录
+        &quot;info&quot;:{
+            &quot;test_case1&quot;: true,
+            &quot;test_case2&quot;: true,
+            &quot;lab_start&quot;: XXXX/XX/XX,
+            &quot;lab_end&quot;: XXXX/XX/XX,
+        },
+    }
+}
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="OpenNetLab-Edu-2022 Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="UserGuide.html" class="btn btn-neutral float-right" title="User Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, zdszero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
