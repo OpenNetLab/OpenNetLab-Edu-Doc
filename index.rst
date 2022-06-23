@@ -10,9 +10,10 @@ OpenNetLab-Edu-2022 Documentation
    :maxdepth: 2
    :caption: Contents:
 
+   ./onl-doc/User.md
+   ./onl-doc/Teacher.md
+   ./onl-doc/Developer.md
    ./onl-doc/System.md
-   ./onl-doc/UserGuide.md
-
 Library Reference
 ==================
 

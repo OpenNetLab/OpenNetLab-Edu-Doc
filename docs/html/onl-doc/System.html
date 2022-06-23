@@ -14,12 +14,12 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="User Guide" href="UserGuide.html" />
-    <link rel="prev" title="OpenNetLab-Edu-2022 Documentation" href="../index.html" /> 
+    <link rel="prev" title="Advanced Manual: Developer" href="Developer.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -39,24 +39,27 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="User.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Teacher.html">Advanced Manual: Teacher</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Developer.html">Advanced Manual: Developer</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">System Design</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">1 系统结构总览</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">2 数据对象</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id3">2.1 用户</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">2.2 实验</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">2.3 问题</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">2.4 提交</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">2.5 其他</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#overview">1 Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-objects">2 Data Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#user">2.1 User</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">2.2 实验</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem">2.3 Problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submission">2.4 Submission</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#others">2.5 Others</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">3 节点介绍</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#node-introduction">3 Node introduction</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#controller">3.1 Controller</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#account">account</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#announcement">announcement</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#config">config</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#contest">contest</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#problem">problem</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#submission">submission</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">problem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">submission</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#judge">judge</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#deploy">deploy</a></li>
 </ul>
@@ -68,14 +71,14 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id9">4 节点通信</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id10">控制器与执行节点</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id11">执行节点之间</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id12">用户与平台的交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#node-communication">4 Node communication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#controller-and-execution-node">Controller and Execution Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#execution-nodes">Execution Nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-interaction-with-the-platform">User interaction with the platform</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#onl">5 部署ONL平台</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#api">6 API说明</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#deploy-onl-platform">5 Deploy ONL platform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api-description">6 API description</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#account-admin-post-api-admin-user">account/admin POST api/admin/user/?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#account-admin-put-api-admin-user">account/admin PUT api/admin/user/?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#account-admin-get-api-admin-user">account/admin GET api/admin/user/?</a></li>
@@ -174,7 +177,6 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="UserGuide.html">User Guide</a></li>
 </ul>
 
         </div>
@@ -202,20 +204,20 @@
            <div itemprop="articleBody">
              
   <section id="system-design">
-<h1>System Design<a class="headerlink" href="#system-design" title="Permalink to this headline"></a></h1>
-<section id="id1">
-<h2>1 系统结构总览<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
-<p><img alt="系统结构图示" src="../_images/System.png" />
-<code class="docutils literal notranslate"><span class="pre">Controller</span></code>：ONL平台的控制节点，管理ONL平台的各项功能。
-<code class="docutils literal notranslate"><span class="pre">Execution</span> <span class="pre">Node</span></code>：ONL实验的执行者，对实验的提交进行评判。
-<code class="docutils literal notranslate"><span class="pre">Client</span></code>：与用户交互。</p>
+<h1>System Design<a class="headerlink" href="#system-design" title="Permalink to this heading"></a></h1>
+<section id="overview">
+<h2>1 Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p><img alt="" src="../_images/System.png" />
+<code class="docutils literal notranslate"><span class="pre">Controller</span></code>: controller node of the ONL platform, which manages all functions of the ONL platform
+<code class="docutils literal notranslate"><span class="pre">Execution</span> <span class="pre">Node</span></code>: the executor of the ONL experiment, who judges the submission of the experiment
+<code class="docutils literal notranslate"><span class="pre">Client</span></code>: interact with users</p>
 </section>
-<section id="id2">
-<h2>2 数据对象<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
-<p>使用数据库保存各种对象，通过Django的ORM框架操作数据库。</p>
-<section id="id3">
-<h3>2.1 用户<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">User</span></code>继承自Django的<code class="docutils literal notranslate"><span class="pre">AbstractBaseUser</span></code>类，作为ONL平台的用户。</p>
+<section id="data-objects">
+<h2>2 Data Objects<a class="headerlink" href="#data-objects" title="Permalink to this heading"></a></h2>
+<p>Use the database to save various objects, and operate the database through Django’s ORM framework.</p>
+<section id="user">
+<h3>2.1 User<a class="headerlink" href="#user" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">User</span></code> inherits from Django’s <code class="docutils literal notranslate"><span class="pre">AbstractBaseUser</span></code> class as a user of the ONL platform.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># account/model.py</span>
 <span class="k">class</span> <span class="nc">AdminType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="n">REGULAR_USER</span> <span class="o">=</span> <span class="s2">&quot;Regular User&quot;</span> <span class="c1">#student</span>
@@ -285,12 +287,12 @@
         <span class="n">db_table</span> <span class="o">=</span> <span class="s2">&quot;user_profile&quot;</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">User</span></code>类包含所有与ONL平台（包括实验）相关的参数，和检查用户信息、权限的函数。
-<code class="docutils literal notranslate"><span class="pre">UserProfile</span></code>类主要是可以自定义的个人信息。</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">User</span></code> class contains all parameters related to the ONL platform (including experiments), and functions to check user information and permissions.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">UserProfile</span></code> class is mainly personal information that can be customized.</p>
 </section>
-<section id="id4">
-<h3>2.2 实验<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">Contest</span></code>类代表ONL实验。</p>
+<section id="id1">
+<h3>2.2 实验<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Contest</span></code> class represents ONL labs.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># /contest/model.py</span>
 <span class="k">class</span> <span class="nc">Contest</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
@@ -303,7 +305,7 @@
     <span class="n">create_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">last_update_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">created_by</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
-    <span class="c1"># 是否可见 false的话相当于删除</span>
+    <span class="c1"># is visible. If false, it is equivalent to delete</span>
     <span class="n">visible</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">contest_admin</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
     <span class="n">allowed_ip_ranges</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
@@ -325,9 +327,9 @@
 </pre></div>
 </div>
 </section>
-<section id="id5">
-<h3>2.3 问题<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">Problem</span></code>是实验的内容，一个实验下可能有多个Problem。</p>
+<section id="problem">
+<h3>2.3 Problem<a class="headerlink" href="#problem" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Problem</span></code> is the content of the experiment. There may be multiple Problems in one lab.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Problem</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="c1"># display ID</span>
     <span class="n">_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">db_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -341,11 +343,11 @@
     <span class="n">description</span> <span class="o">=</span> <span class="n">RichTextField</span><span class="p">()</span>
     <span class="n">hint</span> <span class="o">=</span> <span class="n">RichTextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">languages</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">()</span>
-    <span class="c1">#需要的节点数量</span>
+    <span class="c1"># number of nodes required</span>
     <span class="n">vm_num</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
-    <span class="c1">#各个节点所需要的端口数量</span>
+    <span class="c1"># number of port</span>
     <span class="n">port_num</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
-    <span class="c1">#学生需要编写的代码段数量</span>
+    <span class="c1"># Number of code snippets students need to write</span>
     <span class="n">code_num</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
     <span class="n">template</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">create_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -376,9 +378,9 @@
 </pre></div>
 </div>
 </section>
-<section id="id6">
-<h3>2.4 提交<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">Submission</span></code>是学生的提交，之后会分配执行节点，对提交的代码进行评判。</p>
+<section id="submission">
+<h3>2.4 Submission<a class="headerlink" href="#submission" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Submission</span></code> is a student’s submission, and then an execution node is assigned to judge the submitted code.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Submission</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">rand_str</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">db_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">contest</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Contest</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
@@ -390,11 +392,11 @@
     <span class="n">server_list</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
     <span class="n">ports_list</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">db_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">JudgeStatus</span><span class="o">.</span><span class="n">PENDING</span><span class="p">)</span>
-    <span class="c1"># 从JudgeServer返回的判题详情</span>
+    <span class="c1"># Judgment details returned from JudgeServer</span>
     <span class="n">info</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
     <span class="n">language</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
     <span class="n">shared</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="c1"># 存储该提交所用时间和内存值，方便提交列表显示</span>
+    <span class="c1"># Store the time and memory values ​​used by the commit for easy display of the commit list</span>
     <span class="c1"># {time_cost: &quot;&quot;, memory_cost: &quot;&quot;, err_info: &quot;&quot;, score: 0}</span>
     <span class="n">ip</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -411,9 +413,9 @@
 </pre></div>
 </div>
 </section>
-<section id="id7">
-<h3>2.5 其他<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">Announcement</span></code>:用来发布通知。</p>
+<section id="others">
+<h3>2.5 Others<a class="headerlink" href="#others" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Announcement</span></code>: Used to publish an announcement.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Announcement</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
     <span class="c1"># HTML</span>
@@ -428,7 +430,7 @@
         <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;-create_time&quot;</span><span class="p">,)</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">JudgeServer</span></code>:表示执行节点的状态。</p>
+<p><code class="docutils literal notranslate"><span class="pre">JudgeServer</span></code>: Indicates the status of the execution node.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">JudgeServer</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">hostname</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">JSONField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">ip</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -461,14 +463,14 @@
 </div>
 </section>
 </section>
-<section id="id8">
-<h2>3 节点介绍<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h2>
-<p>系统有两类节点：控制器<code class="docutils literal notranslate"><span class="pre">Controller</span></code>与执行节点<code class="docutils literal notranslate"><span class="pre">Execution</span> <span class="pre">Node</span></code></p>
+<section id="node-introduction">
+<h2>3 Node introduction<a class="headerlink" href="#node-introduction" title="Permalink to this heading"></a></h2>
+<p>There are two types of nodes in the system: the controller <code class="docutils literal notranslate"><span class="pre">Controller</span></code> and the execution node <code class="docutils literal notranslate"><span class="pre">Execution</span> <span class="pre">Node</span></code></p>
 <section id="controller">
-<h3>3.1 Controller<a class="headerlink" href="#controller" title="Permalink to this headline"></a></h3>
+<h3>3.1 Controller<a class="headerlink" href="#controller" title="Permalink to this heading"></a></h3>
 <section id="account">
-<h4>account<a class="headerlink" href="#account" title="Permalink to this headline"></a></h4>
-<p>账号模块。</p>
+<h4>account<a class="headerlink" href="#account" title="Permalink to this heading"></a></h4>
+<p>Account module</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># account.views.admin</span>
 <span class="k">class</span> <span class="nc">UserAdminAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
     <span class="o">...</span>
@@ -476,8 +478,8 @@
     <span class="o">...</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">UserAdminAPI</span></code>：用户管理(POST/GET/PUT/DELETE)。
-<code class="docutils literal notranslate"><span class="pre">GenerateUserAPI</span></code>：获取用户表与批量生成用户。</p>
+<p><code class="docutils literal notranslate"><span class="pre">UserAdminAPI</span></code>: User management (POST/GET/PUT/DELETE).
+<code class="docutils literal notranslate"><span class="pre">GenerateUserAPI</span></code>: Get the user table and generate users in batches.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># account.view.user</span>
 <span class="k">class</span> <span class="nc">UserProfileAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
     <span class="o">...</span>
@@ -513,35 +515,35 @@
     <span class="o">...</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">UserProfileAPI</span></code>,<code class="docutils literal notranslate"><span class="pre">UserChangeEmailAPI</span></code>,<code class="docutils literal notranslate"><span class="pre">UserChangePasswordAPI</span></code>,<code class="docutils literal notranslate"><span class="pre">ApplyResetPasswordAPI</span></code> and <code class="docutils literal notranslate"><span class="pre">ResetPasswordAPI</span></code>：获取和修改用户信息.
-<code class="docutils literal notranslate"><span class="pre">UserRegisterAPI</span></code>,<code class="docutils literal notranslate"><span class="pre">UserLoginAPI</span></code> and <code class="docutils literal notranslate"><span class="pre">UserLogoutAPI</span></code>：注册，登入与退出。
-其他：账号的安全检测。</p>
+<p><code class="docutils literal notranslate"><span class="pre">UserProfileAPI</span></code>, <code class="docutils literal notranslate"><span class="pre">UserChangeEmailAPI</span></code>, <code class="docutils literal notranslate"><span class="pre">UserChangePasswordAPI</span></code>, <code class="docutils literal notranslate"><span class="pre">ApplyResetPasswordAPI</span></code> and <code class="docutils literal notranslate"><span class="pre">ResetPasswordAPI</span></code>: Get and modify user information.
+<code class="docutils literal notranslate"><span class="pre">UserRegisterAPI</span></code>, <code class="docutils literal notranslate"><span class="pre">UserLoginAPI</span></code> and <code class="docutils literal notranslate"><span class="pre">UserLogoutAPI</span></code>: register, log in and log out.
+Others: Account security detection.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># decorators</span>
 <span class="k">class</span> <span class="nc">BasePermissionDecorator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="o">...</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">BasePermissionDecorator</span></code>:装饰器的基类，有多个派生类，用于状态检查，如是否已登录、是否有管理权限等。</p>
+<p><code class="docutils literal notranslate"><span class="pre">BasePermissionDecorator</span></code>: The base class of decorators, there are multiple derived classes for status checking, such as whether you are logged in, whether you have administrative permissions, etc.</p>
 </section>
 <section id="announcement">
-<h4>announcement<a class="headerlink" href="#announcement" title="Permalink to this headline"></a></h4>
-<p>公告模块，用于网站公告和实验通知。</p>
+<h4>announcement<a class="headerlink" href="#announcement" title="Permalink to this heading"></a></h4>
+<p>Announcement module for website announcements and experiment notifications.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># announcement.views.admin</span>
 <span class="k">class</span> <span class="nc">AnnouncementAdminAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
     <span class="o">...</span>
 
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">AnnouncementAdminAPI</span></code>：公告管理（POST/PUT/GET/DELETE）.</p>
+<p><code class="docutils literal notranslate"><span class="pre">AnnouncementAdminAPI</span></code>: Announcement management (POST/PUT/GET/DELETE).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># announcement.views.user</span>
 <span class="k">class</span> <span class="nc">AnnouncementAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">AnnouncementAPI</span></code>:获取公告</p>
+<p><code class="docutils literal notranslate"><span class="pre">AnnouncementAPI</span></code>: get the announcement</p>
 </section>
 <section id="config">
-<h4>config<a class="headerlink" href="#config" title="Permalink to this headline"></a></h4>
-<p>配置模块，管理平台全局的配置信息。</p>
+<h4>config<a class="headerlink" href="#config" title="Permalink to this heading"></a></h4>
+<p>The configuration module manages the global configuration information of the platform.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># conf.views</span>
 <span class="k">class</span> <span class="nc">JudgeServerAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
     <span class="o">...</span>
@@ -550,27 +552,27 @@
 
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">JudgeServerAPI</span></code>：管理资源节点的状态（GET/PUT）。
-<code class="docutils literal notranslate"><span class="pre">JudgeServerHeartbeatAPI</span></code>：心跳检测，检测到新的资源节点时自动进行资源注册.</p>
+<p><code class="docutils literal notranslate"><span class="pre">JudgeServerAPI</span></code>: Manage the state of resource nodes (GET/PUT).
+<code class="docutils literal notranslate"><span class="pre">JudgeServerHeartbeatAPI</span></code>: Heartbeat detection, automatic resource registration when a new resource node is detected.</p>
 </section>
 <section id="contest">
-<h4>contest<a class="headerlink" href="#contest" title="Permalink to this headline"></a></h4>
+<h4>contest<a class="headerlink" href="#contest" title="Permalink to this heading"></a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># contest.views.admin</span>
 <span class="k">class</span> <span class="nc">ContestAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
     <span class="o">...</span>
 
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">ContestAPI</span></code>：实验模块，对实验进行操作的方法（POST/PUT/GET）</p>
+<p><code class="docutils literal notranslate"><span class="pre">ContestAPI</span></code>: Experimental module, methods for operating experiments (POST/PUT/GET)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># contest.views.user</span>
 <span class="k">class</span> <span class="nc">ContestAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
     <span class="o">...</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">ContestAPI</span></code>：获取实验对象（GET）。</p>
+<p><code class="docutils literal notranslate"><span class="pre">ContestAPI</span></code>: Get the test object (GET).</p>
 </section>
-<section id="problem">
-<h4>problem<a class="headerlink" href="#problem" title="Permalink to this headline"></a></h4>
+<section id="id2">
+<h4>problem<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># problem.views.admin</span>
 <span class="k">class</span> <span class="nc">ProblemAPI</span><span class="p">(</span><span class="n">ProblemBase</span><span class="p">):</span>
     <span class="o">...</span>
@@ -584,8 +586,8 @@
     <span class="o">...</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">ContestProblemAPI</span></code>：被教师修改过配置的Problem。
-其他：Problem的操作方法。</p>
+<p><code class="docutils literal notranslate"><span class="pre">ContestProblemAPI</span></code>: The problem whose configuration has been modified by the teacher.
+Others: How to operate the Problem.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># problem.views.user</span>
 <span class="k">class</span> <span class="nc">ProblemTagAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
     <span class="o">...</span>
@@ -597,10 +599,10 @@
     <span class="o">...</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">ContestProblemAPI</span></code>：获取单个Problem的详情，或按条件筛选得到的Problem的状态。</p>
+<p><code class="docutils literal notranslate"><span class="pre">ContestProblemAPI</span></code>: Get the details of a single Problem, or filter the status of the Problem obtained by condition.</p>
 </section>
-<section id="submission">
-<h4>submission<a class="headerlink" href="#submission" title="Permalink to this headline"></a></h4>
+<section id="id3">
+<h4>submission<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># submission.views.admin</span>
 <span class="k">class</span> <span class="nc">SubmissionAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
     <span class="o">...</span>
@@ -608,7 +610,7 @@
     <span class="o">...</span>
 </pre></div>
 </div>
-<p>管理submission，如获取状态，重新评判，修改分数等。</p>
+<p>Manage submissions, such as obtaining status, re-judging, modifying scores, etc.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># submission.views.user</span>
 <span class="k">class</span> <span class="nc">SubmissionAPI</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
     <span class="o">...</span>
@@ -620,10 +622,10 @@
     <span class="o">...</span>
 </pre></div>
 </div>
-<p>获取资源节点上submission的状态变化。</p>
+<p>Get the status change of the submission on the resource node.</p>
 </section>
 <section id="judge">
-<h4>judge<a class="headerlink" href="#judge" title="Permalink to this headline"></a></h4>
+<h4>judge<a class="headerlink" href="#judge" title="Permalink to this heading"></a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># judge.dispatcher</span>
 <span class="k">class</span> <span class="nc">ChooseJudgeServer</span><span class="p">:</span>
     <span class="o">...</span>
@@ -632,19 +634,19 @@
 <span class="k">def</span> <span class="nf">process_pending_task</span><span class="p">():</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">ChooseJudgeServer</span></code>：分配资源节点作为实验的执行节点。
-<code class="docutils literal notranslate"><span class="pre">JudgeDispatcher</span></code>：任务下发。
-<code class="docutils literal notranslate"><span class="pre">process_pending_task</span></code>：使用队列管理需要下发的任务。</p>
+<p><code class="docutils literal notranslate"><span class="pre">ChooseJudgeServer</span></code>: Allocate resource nodes as execution nodes for experiments.
+<code class="docutils literal notranslate"><span class="pre">JudgeDispatcher</span></code>: The task is dispatched.
+<code class="docutils literal notranslate"><span class="pre">process_pending_task</span></code>: Use queues to manage tasks that need to be delivered.</p>
 </section>
 <section id="deploy">
-<h4>deploy<a class="headerlink" href="#deploy" title="Permalink to this headline"></a></h4>
-<p>部署平台所需的文件和<code class="docutils literal notranslate"><span class="pre">entrypoint.sh</span></code></p>
+<h4>deploy<a class="headerlink" href="#deploy" title="Permalink to this heading"></a></h4>
+<p>Required files and <code class="docutils literal notranslate"><span class="pre">entrypoint.sh</span></code> for the deployment platform</p>
 </section>
 </section>
 <section id="execution-node">
-<h3>3.2 Execution Node<a class="headerlink" href="#execution-node" title="Permalink to this headline"></a></h3>
+<h3>3.2 Execution Node<a class="headerlink" href="#execution-node" title="Permalink to this heading"></a></h3>
 <section id="service">
-<h4>service<a class="headerlink" href="#service" title="Permalink to this headline"></a></h4>
+<h4>service<a class="headerlink" href="#service" title="Permalink to this heading"></a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HeartBeatService</span><span class="p">(</span><span class="n">BasicService</span><span class="p">):</span>
     <span class="o">...</span>
 <span class="k">class</span> <span class="nc">ResultPushService</span><span class="p">(</span><span class="n">BasicService</span><span class="p">):</span>
@@ -653,31 +655,31 @@
     <span class="o">...</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">HeartBeatService</span></code>：心跳检测，定期与控制器交互，进行服务器状态的更新。
-<code class="docutils literal notranslate"><span class="pre">ResultPushService</span></code>：将该执行节点上的submission的状态推送到控制器。
-<code class="docutils literal notranslate"><span class="pre">RsyncService</span></code>：将实验模板同步到该节点。</p>
+<p><code class="docutils literal notranslate"><span class="pre">HeartBeatService</span></code>: Heartbeat detection, interacts with the controller regularly, and updates the server status.
+<code class="docutils literal notranslate"><span class="pre">ResultPushService</span></code>: Pushes the status of the submission on this execution node to the controller.
+<code class="docutils literal notranslate"><span class="pre">RsyncService</span></code>: Sync experiment templates to this node.</p>
 </section>
 <section id="server">
-<h4>server<a class="headerlink" href="#server" title="Permalink to this headline"></a></h4>
+<h4>server<a class="headerlink" href="#server" title="Permalink to this heading"></a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">JudgeServer</span><span class="p">:</span>
     <span class="o">...</span>
 <span class="k">def</span> <span class="nf">server</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="o">...</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">JudgeServer</span></code>：实现执行节点的各项功能的方法（ping/judge/fetch/sync）。
-<code class="docutils literal notranslate"><span class="pre">server</span></code>：根据Controller访问请求的类型，调用<code class="docutils literal notranslate"><span class="pre">JudgeServer</span></code>的方法进行回复</p>
+<p><code class="docutils literal notranslate"><span class="pre">JudgeServer</span></code>: Implements methods for executing various functions of the node (ping/judge/fetch/sync).
+<code class="docutils literal notranslate"><span class="pre">server</span></code>: According to the type of Controller access request, call the method of <code class="docutils literal notranslate"><span class="pre">JudgeServer</span></code> to reply</p>
 </section>
 </section>
 </section>
-<section id="id9">
-<h2>4 节点通信<a class="headerlink" href="#id9" title="Permalink to this headline"></a></h2>
-<p>ONL平台节点之间主要使用Python的requests库，基于HTTP进行通信。
-<img alt="节点通信" src="../_images/Communication.drawio.png" /></p>
-<section id="id10">
-<h3>控制器与执行节点<a class="headerlink" href="#id10" title="Permalink to this headline"></a></h3>
+<section id="node-communication">
+<h2>4 Node communication<a class="headerlink" href="#node-communication" title="Permalink to this heading"></a></h2>
+<p>The ONL platform nodes mainly use the Python requests library to communicate based on HTTP.
+<img alt="" src="../_images/Communication.drawio.png" /></p>
+<section id="controller-and-execution-node">
+<h3>Controller and Execution Node<a class="headerlink" href="#controller-and-execution-node" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p>心跳检测，检测执行节点的可用性。</p></li>
+<li><p>Heartbeat detection to detect the availability of execution nodes.</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HeartBeatService</span><span class="p">(</span><span class="n">BasicService</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">heartbeat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -692,7 +694,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>更新submissions的评判状态，将该执行节点上运行的submission的状态推送到Controller。</p></li>
+<li><p>Update the evaluation status of submissions, and push the status of submissions running on the execution node to the Controller.</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ResultPushService</span><span class="p">(</span><span class="n">BasicService</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">result_push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">submission_id</span><span class="p">):</span>
@@ -701,28 +703,28 @@
 </pre></div>
 </div>
 </section>
-<section id="id11">
-<h3>执行节点之间<a class="headerlink" href="#id11" title="Permalink to this headline"></a></h3>
-<p>实验运行的数据传输，基于ONL协议。</p>
+<section id="execution-nodes">
+<h3>Execution Nodes<a class="headerlink" href="#execution-nodes" title="Permalink to this heading"></a></h3>
+<p>The data transmission of the experimental run is based on the ONL protocol.</p>
 </section>
-<section id="id12">
-<h3>用户与平台的交互<a class="headerlink" href="#id12" title="Permalink to this headline"></a></h3>
-<p>使用ONL Client与控制节点连接。
-<code class="docutils literal notranslate"><span class="pre">Login</span></code>：登录和注册模块
-<code class="docutils literal notranslate"><span class="pre">main.py</span></code>：通过命令行进行操作。</p>
+<section id="user-interaction-with-the-platform">
+<h3>User interaction with the platform<a class="headerlink" href="#user-interaction-with-the-platform" title="Permalink to this heading"></a></h3>
+<p>Use ONL Client to connect with the control node.
+<code class="docutils literal notranslate"><span class="pre">Login</span></code>: login and registration module
+<code class="docutils literal notranslate"><span class="pre">main.py</span></code>: Operates from the command line.</p>
 </section>
 </section>
-<section id="onl">
-<h2>5 部署ONL平台<a class="headerlink" href="#onl" title="Permalink to this headline"></a></h2>
-<p>控制节点<strong>Controller</strong>、执行节点<strong>Execution node</strong>和客户端<strong>Client</strong>使用安装脚本部署。
+<section id="deploy-onl-platform">
+<h2>5 Deploy ONL platform<a class="headerlink" href="#deploy-onl-platform" title="Permalink to this heading"></a></h2>
+<p>The controller node, the execution node and the client are deployed using the installation script.
 <code class="docutils literal notranslate"><span class="pre">Controller</span></code>:
 <code class="docutils literal notranslate"><span class="pre">Execution</span> <span class="pre">node</span></code>:
 <code class="docutils literal notranslate"><span class="pre">Client</span></code>:</p>
 </section>
-<section id="api">
-<h2>6 API说明<a class="headerlink" href="#api" title="Permalink to this headline"></a></h2>
+<section id="api-description">
+<h2>6 API description<a class="headerlink" href="#api-description" title="Permalink to this heading"></a></h2>
 <section id="account-admin-post-api-admin-user">
-<h3>account/admin POST api/admin/user/?<a class="headerlink" href="#account-admin-post-api-admin-user" title="Permalink to this headline"></a></h3>
+<h3>account/admin POST api/admin/user/?<a class="headerlink" href="#account-admin-post-api-admin-user" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>
 // POST /user
@@ -765,7 +767,7 @@
 </div>
 </section>
 <section id="account-admin-put-api-admin-user">
-<h3>account/admin PUT api/admin/user/?<a class="headerlink" href="#account-admin-put-api-admin-user" title="Permalink to this headline"></a></h3>
+<h3>account/admin PUT api/admin/user/?<a class="headerlink" href="#account-admin-put-api-admin-user" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -803,7 +805,7 @@
 </div>
 </section>
 <section id="account-admin-get-api-admin-user">
-<h3>account/admin GET api/admin/user/?<a class="headerlink" href="#account-admin-get-api-admin-user" title="Permalink to this headline"></a></h3>
+<h3>account/admin GET api/admin/user/?<a class="headerlink" href="#account-admin-get-api-admin-user" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;id&quot;: id,
@@ -828,7 +830,7 @@
 </div>
 </section>
 <section id="account-admin-delete-api-admin-user">
-<h3>account/admin DELETE api/admin/user/?<a class="headerlink" href="#account-admin-delete-api-admin-user" title="Permalink to this headline"></a></h3>
+<h3>account/admin DELETE api/admin/user/?<a class="headerlink" href="#account-admin-delete-api-admin-user" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;id&quot;: id,
@@ -851,7 +853,7 @@
 </div>
 </section>
 <section id="account-admin-get-api-admin-generate-user">
-<h3>account/admin GET api/admin/generate_user/?<a class="headerlink" href="#account-admin-get-api-admin-generate-user" title="Permalink to this headline"></a></h3>
+<h3>account/admin GET api/admin/generate_user/?<a class="headerlink" href="#account-admin-get-api-admin-generate-user" title="Permalink to this heading"></a></h3>
 <p>下载user excel<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: &quot;file_id&quot;
@@ -873,7 +875,7 @@
 </div>
 </section>
 <section id="account-admin-post-api-admin-generate-user">
-<h3>account/admin POST api/admin/generate_user/?<a class="headerlink" href="#account-admin-post-api-admin-generate-user" title="Permalink to this headline"></a></h3>
+<h3>account/admin POST api/admin/generate_user/?<a class="headerlink" href="#account-admin-post-api-admin-generate-user" title="Permalink to this heading"></a></h3>
 <p>批量添加用户<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
@@ -905,7 +907,7 @@
 </div>
 </section>
 <section id="account-user-post-api-login">
-<h3>account/user POST api/login/?<a class="headerlink" href="#account-user-post-api-login" title="Permalink to this headline"></a></h3>
+<h3>account/user POST api/login/?<a class="headerlink" href="#account-user-post-api-login" title="Permalink to this heading"></a></h3>
 <p>用户登录<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
@@ -935,7 +937,7 @@
 </div>
 </section>
 <section id="account-user-get-api-logout">
-<h3>account/user GET api/logout/?<a class="headerlink" href="#account-user-get-api-logout" title="Permalink to this headline"></a></h3>
+<h3>account/user GET api/logout/?<a class="headerlink" href="#account-user-get-api-logout" title="Permalink to this heading"></a></h3>
 <p>登出<br />
 <code class="docutils literal notranslate"><span class="pre">response</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView
@@ -947,7 +949,7 @@
 </div>
 </section>
 <section id="account-user-post-api-register">
-<h3>account/user POST api/register/?<a class="headerlink" href="#account-user-post-api-register" title="Permalink to this headline"></a></h3>
+<h3>account/user POST api/register/?<a class="headerlink" href="#account-user-post-api-register" title="Permalink to this heading"></a></h3>
 <p>注册<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
@@ -978,7 +980,7 @@
 </div>
 </section>
 <section id="account-user-post-api-change-password">
-<h3>account/user POST api/change_password/?<a class="headerlink" href="#account-user-post-api-change-password" title="Permalink to this headline"></a></h3>
+<h3>account/user POST api/change_password/?<a class="headerlink" href="#account-user-post-api-change-password" title="Permalink to this heading"></a></h3>
 <p>改密码<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
@@ -1009,7 +1011,7 @@
 </div>
 </section>
 <section id="account-user-post-api-change-email">
-<h3>account/user POST api/change_email/?<a class="headerlink" href="#account-user-post-api-change-email" title="Permalink to this headline"></a></h3>
+<h3>account/user POST api/change_email/?<a class="headerlink" href="#account-user-post-api-change-email" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -1039,7 +1041,7 @@
 </div>
 </section>
 <section id="account-user-post-api-apply-reset-password">
-<h3>account/user POST api/apply_reset_password/?<a class="headerlink" href="#account-user-post-api-apply-reset-password" title="Permalink to this headline"></a></h3>
+<h3>account/user POST api/apply_reset_password/?<a class="headerlink" href="#account-user-post-api-apply-reset-password" title="Permalink to this heading"></a></h3>
 <p>根据邮箱重置密码（验证邮箱？）<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
@@ -1068,7 +1070,7 @@
 </div>
 </section>
 <section id="account-user-post-api-reset-password">
-<h3>account/user POST api/reset_password/?<a class="headerlink" href="#account-user-post-api-reset-password" title="Permalink to this headline"></a></h3>
+<h3>account/user POST api/reset_password/?<a class="headerlink" href="#account-user-post-api-reset-password" title="Permalink to this heading"></a></h3>
 <p>配合apply_reset_password（重置密码）<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
@@ -1097,7 +1099,7 @@
 </div>
 </section>
 <section id="account-user-post-api-check-username-or-email">
-<h3>account/user POST api/check_username_or_email<a class="headerlink" href="#account-user-post-api-check-username-or-email" title="Permalink to this headline"></a></h3>
+<h3>account/user POST api/check_username_or_email<a class="headerlink" href="#account-user-post-api-check-username-or-email" title="Permalink to this heading"></a></h3>
 <p>check username or email is duplicate<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
@@ -1124,7 +1126,7 @@
 </div>
 </section>
 <section id="account-user-get-api-profile">
-<h3>account/user GET api/profile/?<a class="headerlink" href="#account-user-get-api-profile" title="Permalink to this headline"></a></h3>
+<h3>account/user GET api/profile/?<a class="headerlink" href="#account-user-get-api-profile" title="Permalink to this heading"></a></h3>
 <p>判断是否登录，成功就返回用户信息<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter:username
@@ -1145,7 +1147,7 @@
 </div>
 </section>
 <section id="account-user-put-api-profile">
-<h3>account/user PUT api/profile/?<a class="headerlink" href="#account-user-put-api-profile" title="Permalink to this headline"></a></h3>
+<h3>account/user PUT api/profile/?<a class="headerlink" href="#account-user-put-api-profile" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="c1">//request.data, </span><span class="w"></span>
 <span class="cm">/*</span>
@@ -1174,7 +1176,7 @@
 </div>
 </section>
 <section id="account-user-get-api-profile-fresh-display-id">
-<h3>account/user GET api/profile/fresh_display_id<a class="headerlink" href="#account-user-get-api-profile-fresh-display-id" title="Permalink to this headline"></a></h3>
+<h3>account/user GET api/profile/fresh_display_id<a class="headerlink" href="#account-user-get-api-profile-fresh-display-id" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="c1">//profile = request.user.userprofile</span><span class="w"></span>
 </pre></div>
@@ -1189,7 +1191,7 @@
 </div>
 </section>
 <section id="account-user-post-api-upload-avatar">
-<h3>account/user POST api/upload_avatar/?<a class="headerlink" href="#account-user-post-api-upload-avatar" title="Permalink to this headline"></a></h3>
+<h3>account/user POST api/upload_avatar/?<a class="headerlink" href="#account-user-post-api-upload-avatar" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>文件上传，request.FILES。request.FILES 只有当请求方法是 POST，至少有一个文件字段被实际发布，并且发布请求的 &lt;form&gt; 有 enctype=&quot;multipart/form-data&quot; 属性时，才会包含数据。否则 request.FILES 将为空。
 </pre></div>
@@ -1209,7 +1211,7 @@
 </div>
 </section>
 <section id="account-user-post-api-tfa-required">
-<h3>account/user POST api/tfa_required/?<a class="headerlink" href="#account-user-post-api-tfa-required" title="Permalink to this headline"></a></h3>
+<h3>account/user POST api/tfa_required/?<a class="headerlink" href="#account-user-post-api-tfa-required" title="Permalink to this heading"></a></h3>
 <p>Check TFA is required<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
@@ -1235,7 +1237,7 @@
 </div>
 </section>
 <section id="account-user-get-api-two-factor-auth">
-<h3>account/user GET api/two_factor_auth/?<a class="headerlink" href="#account-user-get-api-two-factor-auth" title="Permalink to this headline"></a></h3>
+<h3>account/user GET api/two_factor_auth/?<a class="headerlink" href="#account-user-get-api-two-factor-auth" title="Permalink to this heading"></a></h3>
 <p>GET QR code<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="c1">//request.user</span><span class="w"></span>
@@ -1256,7 +1258,7 @@
 </div>
 </section>
 <section id="account-user-post-api-two-factor-auth">
-<h3>account/user POST api/two_factor_auth/?<a class="headerlink" href="#account-user-post-api-two-factor-auth" title="Permalink to this headline"></a></h3>
+<h3>account/user POST api/two_factor_auth/?<a class="headerlink" href="#account-user-post-api-two-factor-auth" title="Permalink to this heading"></a></h3>
 <p>Open 2FA<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//request.user
@@ -1286,7 +1288,7 @@
 </div>
 </section>
 <section id="account-user-put-api-two-factor-auth">
-<h3>account/user PUT api/two_factor_auth/?<a class="headerlink" href="#account-user-put-api-two-factor-auth" title="Permalink to this headline"></a></h3>
+<h3>account/user PUT api/two_factor_auth/?<a class="headerlink" href="#account-user-put-api-two-factor-auth" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//request.user
 {
@@ -1315,7 +1317,7 @@
 </div>
 </section>
 <section id="account-user-get-api-sessions">
-<h3>account/user GET api/sessions/?<a class="headerlink" href="#account-user-get-api-sessions" title="Permalink to this headline"></a></h3>
+<h3>account/user GET api/sessions/?<a class="headerlink" href="#account-user-get-api-sessions" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//request.session.session_key, request.user.session_keys
 {
@@ -1349,7 +1351,7 @@
 </div>
 </section>
 <section id="account-user-delete-api-two-factor-auth">
-<h3>account/user DELETE api/two_factor_auth/?<a class="headerlink" href="#account-user-delete-api-two-factor-auth" title="Permalink to this headline"></a></h3>
+<h3>account/user DELETE api/two_factor_auth/?<a class="headerlink" href="#account-user-delete-api-two-factor-auth" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter:session_key
 {
@@ -1378,7 +1380,7 @@
 </div>
 </section>
 <section id="account-user-post-api-open-api-appkey">
-<h3>account/user POST api/open_api_appkey/?<a class="headerlink" href="#account-user-post-api-open-api-appkey" title="Permalink to this headline"></a></h3>
+<h3>account/user POST api/open_api_appkey/?<a class="headerlink" href="#account-user-post-api-open-api-appkey" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="c1">//request.user</span><span class="w"></span>
 </pre></div>
@@ -1401,7 +1403,7 @@
 </div>
 </section>
 <section id="account-user-get-api-sso">
-<h3>account/user GET api/sso?<a class="headerlink" href="#account-user-get-api-sso" title="Permalink to this headline"></a></h3>
+<h3>account/user GET api/sso?<a class="headerlink" href="#account-user-get-api-sso" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="c1">//request.user</span><span class="w"></span>
 </pre></div>
@@ -1419,7 +1421,7 @@
 </div>
 </section>
 <section id="account-user-post-api-sso">
-<h3>account/user POST api/sso?<a class="headerlink" href="#account-user-post-api-sso" title="Permalink to this headline"></a></h3>
+<h3>account/user POST api/sso?<a class="headerlink" href="#account-user-post-api-sso" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -1451,7 +1453,7 @@
 </div>
 </section>
 <section id="announcement-admin-post-api-admin-announcement">
-<h3>announcement/admin POST api//admin/announcement/?<a class="headerlink" href="#announcement-admin-post-api-admin-announcement" title="Permalink to this headline"></a></h3>
+<h3>announcement/admin POST api//admin/announcement/?<a class="headerlink" href="#announcement-admin-post-api-admin-announcement" title="Permalink to this heading"></a></h3>
 <p>publish announcement<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
@@ -1488,7 +1490,7 @@
 </div>
 </section>
 <section id="announcement-admin-put-api-admin-announcement">
-<h3>announcement/admin PUT api/admin/announcement/?<a class="headerlink" href="#announcement-admin-put-api-admin-announcement" title="Permalink to this headline"></a></h3>
+<h3>announcement/admin PUT api/admin/announcement/?<a class="headerlink" href="#announcement-admin-put-api-admin-announcement" title="Permalink to this heading"></a></h3>
 <p>edit announcement<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
@@ -1536,7 +1538,7 @@
 </div>
 </section>
 <section id="announcement-admin-get-api-admin-announcement">
-<h3>announcement/admin GET api/admin/announcement/?<a class="headerlink" href="#announcement-admin-get-api-admin-announcement" title="Permalink to this headline"></a></h3>
+<h3>announcement/admin GET api/admin/announcement/?<a class="headerlink" href="#announcement-admin-get-api-admin-announcement" title="Permalink to this heading"></a></h3>
 <p>get announcements / an announcement<br />
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
@@ -1586,7 +1588,7 @@
 </div>
 </section>
 <section id="announcement-admin-delete-api-admin-announcement">
-<h3>announcement/admin DELETE api/admin/announcement/?<a class="headerlink" href="#announcement-admin-delete-api-admin-announcement" title="Permalink to this headline"></a></h3>
+<h3>announcement/admin DELETE api/admin/announcement/?<a class="headerlink" href="#announcement-admin-delete-api-admin-announcement" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
 
@@ -1602,7 +1604,7 @@
 </div>
 </section>
 <section id="announcement-user-get-api-announcement">
-<h3>announcement/user GET api/announcement/?<a class="headerlink" href="#announcement-user-get-api-announcement" title="Permalink to this headline"></a></h3>
+<h3>announcement/user GET api/announcement/?<a class="headerlink" href="#announcement-user-get-api-announcement" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
 {
@@ -1622,7 +1624,7 @@
 </div>
 </section>
 <section id="contest-admin-get-api-admin-contest">
-<h3>contest/admin GET api/admin/contest/?<a class="headerlink" href="#contest-admin-get-api-admin-contest" title="Permalink to this headline"></a></h3>
+<h3>contest/admin GET api/admin/contest/?<a class="headerlink" href="#contest-admin-get-api-admin-contest" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id &amp; keyword
 </pre></div>
@@ -1652,7 +1654,7 @@
 </div>
 </section>
 <section id="contest-admin-post-api-admin-contest">
-<h3>contest/admin POST api/admin/contest/?<a class="headerlink" href="#contest-admin-post-api-admin-contest" title="Permalink to this headline"></a></h3>
+<h3>contest/admin POST api/admin/contest/?<a class="headerlink" href="#contest-admin-post-api-admin-contest" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -1704,7 +1706,7 @@
 </div>
 </section>
 <section id="contest-admin-put-api-admin-contest">
-<h3>contest/admin PUT api/admin/contest/?<a class="headerlink" href="#contest-admin-put-api-admin-contest" title="Permalink to this headline"></a></h3>
+<h3>contest/admin PUT api/admin/contest/?<a class="headerlink" href="#contest-admin-put-api-admin-contest" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -1760,7 +1762,7 @@
 </div>
 </section>
 <section id="contest-admin-post-api-admin-contest-announcement">
-<h3>contest/admin POST api/admin/contest/announcement/?<a class="headerlink" href="#contest-admin-post-api-admin-contest-announcement" title="Permalink to this headline"></a></h3>
+<h3>contest/admin POST api/admin/contest/announcement/?<a class="headerlink" href="#contest-admin-post-api-admin-contest-announcement" title="Permalink to this heading"></a></h3>
 <p>Create one contest_announcement.
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
@@ -1798,7 +1800,7 @@
 </div>
 </section>
 <section id="contest-admin-put-api-admin-contest-announcement">
-<h3>contest/admin PUT api/admin/contest/announcement/?<a class="headerlink" href="#contest-admin-put-api-admin-contest-announcement" title="Permalink to this headline"></a></h3>
+<h3>contest/admin PUT api/admin/contest/announcement/?<a class="headerlink" href="#contest-admin-put-api-admin-contest-announcement" title="Permalink to this heading"></a></h3>
 <p>update contest_announcement.
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
@@ -1836,7 +1838,7 @@
 </div>
 </section>
 <section id="contest-admin-delete-api-admin-contest-announcement">
-<h3>contest/admin DELETE api/admin/contest/announcement/?<a class="headerlink" href="#contest-admin-delete-api-admin-contest-announcement" title="Permalink to this headline"></a></h3>
+<h3>contest/admin DELETE api/admin/contest/announcement/?<a class="headerlink" href="#contest-admin-delete-api-admin-contest-announcement" title="Permalink to this heading"></a></h3>
 <p>delete one contest_announcement.
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
@@ -1852,7 +1854,7 @@
 </div>
 </section>
 <section id="contest-admin-get-api-admin-contest-announcement">
-<h3>contest/admin GET api/admin/contest/announcement/?<a class="headerlink" href="#contest-admin-get-api-admin-contest-announcement" title="Permalink to this headline"></a></h3>
+<h3>contest/admin GET api/admin/contest/announcement/?<a class="headerlink" href="#contest-admin-get-api-admin-contest-announcement" title="Permalink to this heading"></a></h3>
 <p>Get one contest_announcement or contest_announcement list.
 <code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id &amp; contest_id &amp; keyword
@@ -1873,7 +1875,7 @@
 </div>
 </section>
 <section id="contest-admin-get-api-admin-download-submissions">
-<h3>contest/admin GET api/admin/download_submissions/?<a class="headerlink" href="#contest-admin-get-api-admin-download-submissions" title="Permalink to this headline"></a></h3>
+<h3>contest/admin GET api/admin/download_submissions/?<a class="headerlink" href="#contest-admin-get-api-admin-download-submissions" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: contest_id &amp; exclude_admin 
 </pre></div>
@@ -1896,7 +1898,7 @@ FileResponse(open_file,``kwargs)
 </div>
 </section>
 <section id="contest-user-get-api-contests">
-<h3>contest/user GET api/contests/?<a class="headerlink" href="#contest-user-get-api-contests" title="Permalink to this headline"></a></h3>
+<h3>contest/user GET api/contests/?<a class="headerlink" href="#contest-user-get-api-contests" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: keyword &amp; rule_type &amp; status
 </pre></div>
@@ -1920,7 +1922,7 @@ FileResponse(open_file,``kwargs)
 </div>
 </section>
 <section id="contest-user-get-api-contest">
-<h3>contest/user GET api/contest/?<a class="headerlink" href="#contest-user-get-api-contest" title="Permalink to this headline"></a></h3>
+<h3>contest/user GET api/contest/?<a class="headerlink" href="#contest-user-get-api-contest" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
 </pre></div>
@@ -1953,7 +1955,7 @@ FileResponse(open_file,``kwargs)
 </div>
 </section>
 <section id="contest-user-post-api-contest-password">
-<h3>contest/user POST api/contest/password/?<a class="headerlink" href="#contest-user-post-api-contest-password" title="Permalink to this headline"></a></h3>
+<h3>contest/user POST api/contest/password/?<a class="headerlink" href="#contest-user-post-api-contest-password" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -1981,7 +1983,7 @@ FileResponse(open_file,``kwargs)
 </div>
 </section>
 <section id="contest-user-get-api-contest-announcement">
-<h3>contest/user GET api/contest/announcement/?<a class="headerlink" href="#contest-user-get-api-contest-announcement" title="Permalink to this headline"></a></h3>
+<h3>contest/user GET api/contest/announcement/?<a class="headerlink" href="#contest-user-get-api-contest-announcement" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: contest_id &amp; max_id &amp;
 </pre></div>
@@ -2010,7 +2012,7 @@ FileResponse(open_file,``kwargs)
 </div>
 </section>
 <section id="contest-user-get-api-contest-access">
-<h3>contest/user GET api/contest/access/?<a class="headerlink" href="#contest-user-get-api-contest-access" title="Permalink to this headline"></a></h3>
+<h3>contest/user GET api/contest/access/?<a class="headerlink" href="#contest-user-get-api-contest-access" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: contest_id 
 </pre></div>
@@ -2033,7 +2035,7 @@ FileResponse(open_file,``kwargs)
 </div>
 </section>
 <section id="problem-admin-post-api-admin-problem">
-<h3>problem/admin POST api/admin/problem/?<a class="headerlink" href="#problem-admin-post-api-admin-problem" title="Permalink to this headline"></a></h3>
+<h3>problem/admin POST api/admin/problem/?<a class="headerlink" href="#problem-admin-post-api-admin-problem" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2104,7 +2106,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-admin-get-api-admin-problem">
-<h3>problem/admin GET api/admin/problem/?<a class="headerlink" href="#problem-admin-get-api-admin-problem" title="Permalink to this headline"></a></h3>
+<h3>problem/admin GET api/admin/problem/?<a class="headerlink" href="#problem-admin-get-api-admin-problem" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id &amp; keyword
 </pre></div>
@@ -2135,7 +2137,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-admin-put-api-admin-problem">
-<h3>problem/admin PUT api/admin/problem/?<a class="headerlink" href="#problem-admin-put-api-admin-problem" title="Permalink to this headline"></a></h3>
+<h3>problem/admin PUT api/admin/problem/?<a class="headerlink" href="#problem-admin-put-api-admin-problem" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2171,7 +2173,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-admin-delete-api-admin-problem">
-<h3>problem/admin DELETE api/admin/problem/?<a class="headerlink" href="#problem-admin-delete-api-admin-problem" title="Permalink to this headline"></a></h3>
+<h3>problem/admin DELETE api/admin/problem/?<a class="headerlink" href="#problem-admin-delete-api-admin-problem" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
 </pre></div>
@@ -2191,7 +2193,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-admin-post-api-admin-contest-problem">
-<h3>problem/admin POST api/admin/contest/problem/?<a class="headerlink" href="#problem-admin-post-api-admin-contest-problem" title="Permalink to this headline"></a></h3>
+<h3>problem/admin POST api/admin/contest/problem/?<a class="headerlink" href="#problem-admin-post-api-admin-contest-problem" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2239,7 +2241,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-admin-get-api-admin-contest-problem">
-<h3>problem/admin GET api/admin/contest/problem/?<a class="headerlink" href="#problem-admin-get-api-admin-contest-problem" title="Permalink to this headline"></a></h3>
+<h3>problem/admin GET api/admin/contest/problem/?<a class="headerlink" href="#problem-admin-get-api-admin-contest-problem" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: if &amp; contest_id &amp; keyword
 </pre></div>
@@ -2270,7 +2272,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-admin-put-api-admin-contest-problem">
-<h3>problem/admin PUT api/admin/contest/problem/?<a class="headerlink" href="#problem-admin-put-api-admin-contest-problem" title="Permalink to this headline"></a></h3>
+<h3>problem/admin PUT api/admin/contest/problem/?<a class="headerlink" href="#problem-admin-put-api-admin-contest-problem" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2301,7 +2303,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-admin-delete-api-admin-contest-problem">
-<h3>problem/admin DELETE api/admin/contest/problem/?<a class="headerlink" href="#problem-admin-delete-api-admin-contest-problem" title="Permalink to this headline"></a></h3>
+<h3>problem/admin DELETE api/admin/contest/problem/?<a class="headerlink" href="#problem-admin-delete-api-admin-contest-problem" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id 
 </pre></div>
@@ -2321,7 +2323,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-admin-post-api-admin-contest-problem-make-public">
-<h3>problem/admin POST api/admin/contest_problem/make_public/?<a class="headerlink" href="#problem-admin-post-api-admin-contest-problem-make-public" title="Permalink to this headline"></a></h3>
+<h3>problem/admin POST api/admin/contest_problem/make_public/?<a class="headerlink" href="#problem-admin-post-api-admin-contest-problem-make-public" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2349,7 +2351,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-admin-post-api-admin-contest-add-problem-from-public">
-<h3>problem/admin POST api/admin/contest/add_problem_from_public/?<a class="headerlink" href="#problem-admin-post-api-admin-contest-add-problem-from-public" title="Permalink to this headline"></a></h3>
+<h3>problem/admin POST api/admin/contest/add_problem_from_public/?<a class="headerlink" href="#problem-admin-post-api-admin-contest-add-problem-from-public" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2385,7 +2387,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-admin-get-api-admin-export-problem">
-<h3>problem/admin GET api/admin/export_problem/?<a class="headerlink" href="#problem-admin-get-api-admin-export-problem" title="Permalink to this headline"></a></h3>
+<h3>problem/admin GET api/admin/export_problem/?<a class="headerlink" href="#problem-admin-get-api-admin-export-problem" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2409,7 +2411,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-user-get-api-problem-tags">
-<h3>problem/user GET api/problem/tags/?<a class="headerlink" href="#problem-user-get-api-problem-tags" title="Permalink to this headline"></a></h3>
+<h3>problem/user GET api/problem/tags/?<a class="headerlink" href="#problem-user-get-api-problem-tags" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: keyword
 </pre></div>
@@ -2434,7 +2436,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-user-get-api-problem">
-<h3>problem/user GET api/problem/?<a class="headerlink" href="#problem-user-get-api-problem" title="Permalink to this headline"></a></h3>
+<h3>problem/user GET api/problem/?<a class="headerlink" href="#problem-user-get-api-problem" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: problem_id &amp; limit &amp; tag &amp; keyword
 </pre></div>
@@ -2465,7 +2467,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-user-get-api-pickone">
-<h3>problem/user GET api/pickone/?<a class="headerlink" href="#problem-user-get-api-pickone" title="Permalink to this headline"></a></h3>
+<h3>problem/user GET api/pickone/?<a class="headerlink" href="#problem-user-get-api-pickone" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: problem_id &amp; limit &amp; tag &amp; keyword
 </pre></div>
@@ -2486,7 +2488,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="problem-user-get-api-contest-problem">
-<h3>problem/user GET api/contest/problem/?<a class="headerlink" href="#problem-user-get-api-contest-problem" title="Permalink to this headline"></a></h3>
+<h3>problem/user GET api/contest/problem/?<a class="headerlink" href="#problem-user-get-api-contest-problem" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: problem_id
 </pre></div>
@@ -2535,7 +2537,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="submission-user-post-api-submission">
-<h3>submission/user POST api/submission/?<a class="headerlink" href="#submission-user-post-api-submission" title="Permalink to this headline"></a></h3>
+<h3>submission/user POST api/submission/?<a class="headerlink" href="#submission-user-post-api-submission" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2589,7 +2591,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="submission-user-get-api-submission">
-<h3>submission/user GET api/submission/?<a class="headerlink" href="#submission-user-get-api-submission" title="Permalink to this headline"></a></h3>
+<h3>submission/user GET api/submission/?<a class="headerlink" href="#submission-user-get-api-submission" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id 
 </pre></div>
@@ -2610,7 +2612,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="submission-user-put-api-submission">
-<h3>submission/user PUT api/submission/?<a class="headerlink" href="#submission-user-put-api-submission" title="Permalink to this headline"></a></h3>
+<h3>submission/user PUT api/submission/?<a class="headerlink" href="#submission-user-put-api-submission" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2640,7 +2642,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="submission-user-get-api-submissions">
-<h3>submission/user GET api/submissions/?<a class="headerlink" href="#submission-user-get-api-submissions" title="Permalink to this headline"></a></h3>
+<h3>submission/user GET api/submissions/?<a class="headerlink" href="#submission-user-get-api-submissions" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: limit &amp; contest_id &amp; problem_id &amp; result
 </pre></div>
@@ -2670,7 +2672,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="submission-user-get-api-submission-exists">
-<h3>submission/user GET api/submission_exists/?<a class="headerlink" href="#submission-user-get-api-submission-exists" title="Permalink to this headline"></a></h3>
+<h3>submission/user GET api/submission_exists/?<a class="headerlink" href="#submission-user-get-api-submission-exists" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: problem_id
 </pre></div>
@@ -2691,7 +2693,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="submission-user-get-api-contest-submissions">
-<h3>submission/user GET api/contest_submissions/?<a class="headerlink" href="#submission-user-get-api-contest-submissions" title="Permalink to this headline"></a></h3>
+<h3>submission/user GET api/contest_submissions/?<a class="headerlink" href="#submission-user-get-api-contest-submissions" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: limit &amp; contest_id &amp; problem_id &amp; result
 </pre></div>
@@ -2721,7 +2723,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="submission-admin-get-api-admin-submission-rejudge">
-<h3>submission/admin GET api/admin/submission/rejudge/?<a class="headerlink" href="#submission-admin-get-api-admin-submission-rejudge" title="Permalink to this headline"></a></h3>
+<h3>submission/admin GET api/admin/submission/rejudge/?<a class="headerlink" href="#submission-admin-get-api-admin-submission-rejudge" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
 </pre></div>
@@ -2742,7 +2744,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="submission-admin-post-api-admin-submission-excution">
-<h3>submission/admin POST api/admin/submission/excution/?<a class="headerlink" href="#submission-admin-post-api-admin-submission-excution" title="Permalink to this headline"></a></h3>
+<h3>submission/admin POST api/admin/submission/excution/?<a class="headerlink" href="#submission-admin-post-api-admin-submission-excution" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2772,7 +2774,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="submission-admin-get-api-admin-submission">
-<h3>submission/admin GET api/admin/submission/?<a class="headerlink" href="#submission-admin-get-api-admin-submission" title="Permalink to this headline"></a></h3>
+<h3>submission/admin GET api/admin/submission/?<a class="headerlink" href="#submission-admin-get-api-admin-submission" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id &amp; find_user_id &amp; problem_id &amp; contest_id
 </pre></div>
@@ -2802,7 +2804,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="submission-admin-put-api-admin-submission">
-<h3>submission/admin PUT api/admin/submission/?<a class="headerlink" href="#submission-admin-put-api-admin-submission" title="Permalink to this headline"></a></h3>
+<h3>submission/admin PUT api/admin/submission/?<a class="headerlink" href="#submission-admin-put-api-admin-submission" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2831,7 +2833,7 @@ class Problem(models.Model):
 </div>
 </section>
 <section id="utils-views-post-api-admin-upload-image">
-<h3>utils/views POST api/admin/upload_image/?<a class="headerlink" href="#utils-views-post-api-admin-upload-image" title="Permalink to this headline"></a></h3>
+<h3>utils/views POST api/admin/upload_image/?<a class="headerlink" href="#utils-views-post-api-admin-upload-image" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>    request.POST &amp; request.FILES
 </pre></div>
@@ -2858,7 +2860,7 @@ OR
 </div>
 </section>
 <section id="utils-views-post-api-admin-upload-file">
-<h3>utils/views POST api/admin/upload_file/?<a class="headerlink" href="#utils-views-post-api-admin-upload-file" title="Permalink to this headline"></a></h3>
+<h3>utils/views POST api/admin/upload_file/?<a class="headerlink" href="#utils-views-post-api-admin-upload-file" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>    request.POST &amp; request.FILES
 </pre></div>
@@ -2885,7 +2887,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-get-api-admin-smtp">
-<h3>conf/admin GET api/admin/smtp/?<a class="headerlink" href="#conf-admin-get-api-admin-smtp" title="Permalink to this headline"></a></h3>
+<h3>conf/admin GET api/admin/smtp/?<a class="headerlink" href="#conf-admin-get-api-admin-smtp" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
 {
@@ -2896,7 +2898,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-post-api-admin-smtp">
-<h3>conf/admin POST api/admin/smtp/?<a class="headerlink" href="#conf-admin-post-api-admin-smtp" title="Permalink to this headline"></a></h3>
+<h3>conf/admin POST api/admin/smtp/?<a class="headerlink" href="#conf-admin-post-api-admin-smtp" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2919,7 +2921,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-put-api-admin-smtp">
-<h3>conf/admin PUT api/admin/smtp/?<a class="headerlink" href="#conf-admin-put-api-admin-smtp" title="Permalink to this headline"></a></h3>
+<h3>conf/admin PUT api/admin/smtp/?<a class="headerlink" href="#conf-admin-put-api-admin-smtp" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2946,7 +2948,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-post-api-admin-smtp-test">
-<h3>conf/admin POST api/admin/smtp_test/?<a class="headerlink" href="#conf-admin-post-api-admin-smtp-test" title="Permalink to this headline"></a></h3>
+<h3>conf/admin POST api/admin/smtp_test/?<a class="headerlink" href="#conf-admin-post-api-admin-smtp-test" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -2978,7 +2980,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-get-api-admin-website">
-<h3>conf/admin GET api/admin/website/?<a class="headerlink" href="#conf-admin-get-api-admin-website" title="Permalink to this headline"></a></h3>
+<h3>conf/admin GET api/admin/website/?<a class="headerlink" href="#conf-admin-get-api-admin-website" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="nt">&quot;header&quot;</span><span class="p">:{</span><span class="w"></span>
@@ -3008,7 +3010,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-post-api-admin-website">
-<h3>conf/admin POST api/admin/website/?<a class="headerlink" href="#conf-admin-post-api-admin-website" title="Permalink to this headline"></a></h3>
+<h3>conf/admin POST api/admin/website/?<a class="headerlink" href="#conf-admin-post-api-admin-website" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="nt">&quot;header&quot;</span><span class="p">:{</span><span class="w"></span>
@@ -3036,7 +3038,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-get-api-admin-judge-server">
-<h3>conf/admin GET api/admin/judge_server/?<a class="headerlink" href="#conf-admin-get-api-admin-judge-server" title="Permalink to this headline"></a></h3>
+<h3>conf/admin GET api/admin/judge_server/?<a class="headerlink" href="#conf-admin-get-api-admin-judge-server" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
 {
@@ -3050,7 +3052,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-delete-api-admin-website">
-<h3>conf/admin DELETE api/admin/website/?<a class="headerlink" href="#conf-admin-delete-api-admin-website" title="Permalink to this headline"></a></h3>
+<h3>conf/admin DELETE api/admin/website/?<a class="headerlink" href="#conf-admin-delete-api-admin-website" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: hostname
 </pre></div>
@@ -3065,7 +3067,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-put-api-admin-website">
-<h3>conf/admin PUT api/admin/website/?<a class="headerlink" href="#conf-admin-put-api-admin-website" title="Permalink to this headline"></a></h3>
+<h3>conf/admin PUT api/admin/website/?<a class="headerlink" href="#conf-admin-put-api-admin-website" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;header&quot;:{
@@ -3088,7 +3090,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-get-api-admin-prune-test-case">
-<h3>conf/admin GET api/admin/prune_test_case/?<a class="headerlink" href="#conf-admin-get-api-admin-prune-test-case" title="Permalink to this headline"></a></h3>
+<h3>conf/admin GET api/admin/prune_test_case/?<a class="headerlink" href="#conf-admin-get-api-admin-prune-test-case" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
 {
@@ -3104,7 +3106,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-delete-api-admin-prune-test-case">
-<h3>conf/admin DELETE api/admin/prune_test_case/?<a class="headerlink" href="#conf-admin-delete-api-admin-prune-test-case" title="Permalink to this headline"></a></h3>
+<h3>conf/admin DELETE api/admin/prune_test_case/?<a class="headerlink" href="#conf-admin-delete-api-admin-prune-test-case" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>parameter: id
 </pre></div>
@@ -3119,7 +3121,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-get-api-admin-versions">
-<h3>conf/admin GET api/admin/versions/?<a class="headerlink" href="#conf-admin-get-api-admin-versions" title="Permalink to this headline"></a></h3>
+<h3>conf/admin GET api/admin/versions/?<a class="headerlink" href="#conf-admin-get-api-admin-versions" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
 {
@@ -3130,7 +3132,7 @@ OR
 </div>
 </section>
 <section id="conf-admin-get-api-admin-dashboard-info">
-<h3>conf/admin GET api/admin/dashboard_info/?<a class="headerlink" href="#conf-admin-get-api-admin-dashboard-info" title="Permalink to this headline"></a></h3>
+<h3>conf/admin GET api/admin/dashboard_info/?<a class="headerlink" href="#conf-admin-get-api-admin-dashboard-info" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">response</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>//APIView.success
 {
@@ -3150,9 +3152,9 @@ OR
 </div>
 </section>
 <section id="judgeserver">
-<h3>JudgeServer<a class="headerlink" href="#judgeserver" title="Permalink to this headline"></a></h3>
+<h3>JudgeServer<a class="headerlink" href="#judgeserver" title="Permalink to this heading"></a></h3>
 <section id="post-judge">
-<h4>任务下发 POST /judge<a class="headerlink" href="#post-judge" title="Permalink to this headline"></a></h4>
+<h4>任务下发 POST /judge<a class="headerlink" href="#post-judge" title="Permalink to this heading"></a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>// POST /judge
 {
@@ -3221,7 +3223,7 @@ OR
 </div>
 </section>
 <section id="post-fetch">
-<h4>实验状态查询请求 POST /fetch<a class="headerlink" href="#post-fetch" title="Permalink to this headline"></a></h4>
+<h4>实验状态查询请求 POST /fetch<a class="headerlink" href="#post-fetch" title="Permalink to this heading"></a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">request</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>// POST /fetch
 {
@@ -3265,9 +3267,9 @@ OR
 </section>
 </section>
 <section id="onl-server">
-<h3>ONL Server<a class="headerlink" href="#onl-server" title="Permalink to this headline"></a></h3>
+<h3>ONL Server<a class="headerlink" href="#onl-server" title="Permalink to this heading"></a></h3>
 <section id="put-admin-submission-excution">
-<h4>提交状态更新 PUT admin/submission/excution<a class="headerlink" href="#put-admin-submission-excution" title="Permalink to this headline"></a></h4>
+<h4>提交状态更新 PUT admin/submission/excution<a class="headerlink" href="#put-admin-submission-excution" title="Permalink to this heading"></a></h4>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     //认证 token为控制节点与实验运行节点之间的认证令牌
 	&quot;headers&quot;:{
@@ -3300,8 +3302,7 @@ OR
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="OpenNetLab-Edu-2022 Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="UserGuide.html" class="btn btn-neutral float-right" title="User Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Developer.html" class="btn btn-neutral float-left" title="Advanced Manual: Developer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

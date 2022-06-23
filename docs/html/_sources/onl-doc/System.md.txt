@@ -1,15 +1,16 @@
 # System Design
 
-## 1 系统结构总览
-![系统结构图示](./img/System.png)
-`Controller`：ONL平台的控制节点，管理ONL平台的各项功能。
-`Execution Node`：ONL实验的执行者，对实验的提交进行评判。
-`Client`：与用户交互。
+## 1 Overview
+![](./img/System.png)
+`Controller`: controller node of the ONL platform, which manages all functions of the ONL platform
+`Execution Node`: the executor of the ONL experiment, who judges the submission of the experiment
+`Client`: interact with users
 
-## 2 数据对象
-使用数据库保存各种对象，通过Django的ORM框架操作数据库。
-### 2.1 用户
-`User`继承自Django的`AbstractBaseUser`类，作为ONL平台的用户。
+## 2 Data Objects
+Use the database to save various objects, and operate the database through Django's ORM framework.
+### 2.1 User
+`User` inherits from Django's `AbstractBaseUser` class as a user of the ONL platform.
+
 ```python
 # account/model.py
 class AdminType(object):
@@ -79,10 +80,14 @@ class UserProfile(models.Model):
     class Meta:
         db_table = "user_profile"
 ```
-`User`类包含所有与ONL平台（包括实验）相关的参数，和检查用户信息、权限的函数。
-`UserProfile`类主要是可以自定义的个人信息。
+The `User` class contains all parameters related to the ONL platform (including experiments), and functions to check user information and permissions.
+
+The `UserProfile` class is mainly personal information that can be customized.
+
 ### 2.2 实验
-`Contest`类代表ONL实验。
+
+The `Contest` class represents ONL labs.
+
 ```python
 # /contest/model.py
 class Contest(models.Model):
@@ -96,7 +101,7 @@ class Contest(models.Model):
     create_time = models.DateTimeField(auto_now_add=True)
     last_update_time = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    # 是否可见 false的话相当于删除
+    # is visible. If false, it is equivalent to delete
     visible = models.BooleanField(default=True)
     contest_admin = models.JSONField(default=list)
     allowed_ip_ranges = JSONField(default=list)
@@ -117,8 +122,8 @@ class Contest(models.Model):
         ordering = ("-start_time",)
 ```
 
-### 2.3 问题
-`Problem`是实验的内容，一个实验下可能有多个Problem。
+### 2.3 Problem
+`Problem` is the content of the experiment. There may be multiple Problems in one lab.
 ```python
 class Problem(models.Model):
     # display ID
@@ -133,11 +138,11 @@ class Problem(models.Model):
     description = RichTextField()
     hint = RichTextField(null=True)
     languages = JSONField()
-    #需要的节点数量
+    # number of nodes required
     vm_num = models.IntegerField()
-    #各个节点所需要的端口数量
+    # number of port
     port_num = models.JSONField(default=list)
-    #学生需要编写的代码段数量
+    # Number of code snippets students need to write
     code_num = models.IntegerField()
     template = JSONField(null=True)
     create_time = models.DateTimeField(auto_now_add=True)
@@ -166,8 +171,8 @@ class Problem(models.Model):
     def add_ac_number(self):
         ...
 ```
-### 2.4 提交
-`Submission`是学生的提交，之后会分配执行节点，对提交的代码进行评判。
+### 2.4 Submission
+`Submission` is a student's submission, and then an execution node is assigned to judge the submitted code.
 ```python
 class Submission(models.Model):
     id = models.TextField(default=rand_str, primary_key=True, db_index=True)
@@ -180,11 +185,11 @@ class Submission(models.Model):
     server_list = models.JSONField(default=list)
     ports_list = models.JSONField(default=dict)
     result = models.IntegerField(db_index=True, default=JudgeStatus.PENDING)
-    # 从JudgeServer返回的判题详情
+    # Judgment details returned from JudgeServer
     info = JSONField(default=dict)
     language = models.TextField()
     shared = models.BooleanField(default=False)
-    # 存储该提交所用时间和内存值，方便提交列表显示
+    # Store the time and memory values ​​used by the commit for easy display of the commit list
     # {time_cost: "", memory_cost: "", err_info: "", score: 0}
     ip = models.TextField(null=True)
 
@@ -199,8 +204,8 @@ class Submission(models.Model):
         ordering = ("-create_time",)
 
 ```
-### 2.5 其他
-`Announcement`:用来发布通知。
+### 2.5 Others
+`Announcement`: Used to publish an announcement.
 ```python
 class Announcement(models.Model):
     title = models.TextField()
@@ -215,7 +220,7 @@ class Announcement(models.Model):
         db_table = "announcement"
         ordering = ("-create_time",)
 ```
-`JudgeServer`:表示执行节点的状态。
+`JudgeServer`: Indicates the status of the execution node.
 ```python
 class JudgeServer(models.Model):
     hostname = models.JSONField(null=True)
@@ -247,11 +252,13 @@ class JudgeServer(models.Model):
         db_table = "judge_server"
 ```
 
-## 3 节点介绍
-系统有两类节点：控制器`Controller`与执行节点`Execution Node`
+## 3 Node introduction
+
+There are two types of nodes in the system: the controller `Controller` and the execution node `Execution Node`
 ### 3.1 Controller
 #### account
-账号模块。
+
+Account module
 ```python
 # account.views.admin
 class UserAdminAPI(APIView):
@@ -259,8 +266,8 @@ class UserAdminAPI(APIView):
 class GenerateUserAPI(APIView):
     ...
 ```
-`UserAdminAPI`：用户管理(POST/GET/PUT/DELETE)。
-`GenerateUserAPI`：获取用户表与批量生成用户。
+`UserAdminAPI`: User management (POST/GET/PUT/DELETE).
+`GenerateUserAPI`: Get the user table and generate users in batches.
 ```python
 # account.view.user
 class UserProfileAPI(APIView):
@@ -296,35 +303,35 @@ class OpenAPIAppkeyAPI(APIView):
 class SSOAPI(CSRFExemptAPIView):
     ...
 ```
-`UserProfileAPI`,`UserChangeEmailAPI`,`UserChangePasswordAPI`,`ApplyResetPasswordAPI` and `ResetPasswordAPI`：获取和修改用户信息.
-`UserRegisterAPI`,`UserLoginAPI` and `UserLogoutAPI`：注册，登入与退出。
-其他：账号的安全检测。
+`UserProfileAPI`, `UserChangeEmailAPI`, `UserChangePasswordAPI`, `ApplyResetPasswordAPI` and `ResetPasswordAPI`: Get and modify user information.
+`UserRegisterAPI`, `UserLoginAPI` and `UserLogoutAPI`: register, log in and log out.
+Others: Account security detection.
 
 ```python
 # decorators
 class BasePermissionDecorator(object):
     ...
 ```
-`BasePermissionDecorator`:装饰器的基类，有多个派生类，用于状态检查，如是否已登录、是否有管理权限等。
+`BasePermissionDecorator`: The base class of decorators, there are multiple derived classes for status checking, such as whether you are logged in, whether you have administrative permissions, etc.
 
 #### announcement
-公告模块，用于网站公告和实验通知。
+Announcement module for website announcements and experiment notifications.
 ```python
 # announcement.views.admin
 class AnnouncementAdminAPI(APIView):
     ...
 
 ```
-`AnnouncementAdminAPI`：公告管理（POST/PUT/GET/DELETE）.
+`AnnouncementAdminAPI`: Announcement management (POST/PUT/GET/DELETE).
 
 ```python
 # announcement.views.user
 class AnnouncementAPI(APIView):
 ```
-`AnnouncementAPI`:获取公告
+`AnnouncementAPI`: get the announcement
 
 #### config
-配置模块，管理平台全局的配置信息。
+The configuration module manages the global configuration information of the platform.
 
 ```python
 # conf.views
@@ -334,8 +341,8 @@ class JudgeServerHeartbeatAPI(CSRFExemptAPIView):
     ...
 
 ```
-`JudgeServerAPI`：管理资源节点的状态（GET/PUT）。
-`JudgeServerHeartbeatAPI`：心跳检测，检测到新的资源节点时自动进行资源注册.
+`JudgeServerAPI`: Manage the state of resource nodes (GET/PUT).
+`JudgeServerHeartbeatAPI`: Heartbeat detection, automatic resource registration when a new resource node is detected.
 #### contest
 ```python
 # contest.views.admin
@@ -343,13 +350,13 @@ class ContestAPI(APIView):
     ...
 
 ```
-`ContestAPI`：实验模块，对实验进行操作的方法（POST/PUT/GET）
+`ContestAPI`: Experimental module, methods for operating experiments (POST/PUT/GET)
 ```python
 # contest.views.user
 class ContestAPI(APIView):
     ...
 ```
-`ContestAPI`：获取实验对象（GET）。
+`ContestAPI`: Get the test object (GET).
 
 #### problem
 
@@ -366,8 +373,8 @@ class AddContestProblemAPI(APIView):
 class ExportProblemAPI(APIView):
     ...
 ```
-`ContestProblemAPI`：被教师修改过配置的Problem。
-其他：Problem的操作方法。
+`ContestProblemAPI`: The problem whose configuration has been modified by the teacher.
+Others: How to operate the Problem.
 ```python
 # problem.views.user
 class ProblemTagAPI(APIView):
@@ -379,8 +386,7 @@ class ProblemAPI(APIView):
 class ContestProblemAPI(APIView):
     ...
 ```
-`ContestProblemAPI`：获取单个Problem的详情，或按条件筛选得到的Problem的状态。
-
+`ContestProblemAPI`: Get the details of a single Problem, or filter the status of the Problem obtained by condition.
 #### submission
 ```python
 # submission.views.admin
@@ -389,7 +395,7 @@ class SubmissionAPI(APIView):
 class SubmissionRejudgeAPI(APIView):
     ...
 ```
-管理submission，如获取状态，重新评判，修改分数等。
+Manage submissions, such as obtaining status, re-judging, modifying scores, etc.
 ```python
 # submission.views.user
 class SubmissionAPI(APIView):
@@ -401,7 +407,7 @@ class ContestSubmissionListAPI(APIView):
 class SubmissionUpdateAPI(CSRFExemptAPIView):
     ...
 ```
-获取资源节点上submission的状态变化。
+Get the status change of the submission on the resource node.
 
 #### judge
 ```python
@@ -412,12 +418,11 @@ class JudgeDispatcher(DispatcherBase):
     ...
 def process_pending_task():
 ```
-`ChooseJudgeServer`：分配资源节点作为实验的执行节点。
-`JudgeDispatcher`：任务下发。
-`process_pending_task`：使用队列管理需要下发的任务。
-
+`ChooseJudgeServer`: Allocate resource nodes as execution nodes for experiments.
+`JudgeDispatcher`: The task is dispatched.
+`process_pending_task`: Use queues to manage tasks that need to be delivered.
 #### deploy
-部署平台所需的文件和`entrypoint.sh`
+Required files and `entrypoint.sh` for the deployment platform
 
 ### 3.2 Execution Node
 #### service
@@ -429,9 +434,9 @@ class ResultPushService(BasicService):
 class RsyncService(object):
     ...
 ```
-`HeartBeatService`：心跳检测，定期与控制器交互，进行服务器状态的更新。
-`ResultPushService`：将该执行节点上的submission的状态推送到控制器。
-`RsyncService`：将实验模板同步到该节点。
+`HeartBeatService`: Heartbeat detection, interacts with the controller regularly, and updates the server status.
+`ResultPushService`: Pushes the status of the submission on this execution node to the controller.
+`RsyncService`: Sync experiment templates to this node.
 
 #### server
 ```python
@@ -440,14 +445,13 @@ class JudgeServer:
 def server(path):
     ...
 ```
-`JudgeServer`：实现执行节点的各项功能的方法（ping/judge/fetch/sync）。
-`server`：根据Controller访问请求的类型，调用`JudgeServer`的方法进行回复
-
-## 4 节点通信
-ONL平台节点之间主要使用Python的requests库，基于HTTP进行通信。
-![节点通信](img/Communication.drawio.png)
-### 控制器与执行节点
-+ 心跳检测，检测执行节点的可用性。
+`JudgeServer`: Implements methods for executing various functions of the node (ping/judge/fetch/sync).
+`server`: According to the type of Controller access request, call the method of `JudgeServer` to reply
+## 4 Node communication
+The ONL platform nodes mainly use the Python requests library to communicate based on HTTP.
+![](img/Communication.drawio.png)
+### Controller and Execution Node
++ Heartbeat detection to detect the availability of execution nodes.
 ```python
 class HeartBeatService(BasicService):
     def heartbeat(self):
@@ -460,7 +464,7 @@ class HeartBeatService(BasicService):
         print(self.backend_url)
         return self._request(data=data, route="/judge_server_heartbeat", action="HeatBeat")
 ```
-+ 更新submissions的评判状态，将该执行节点上运行的submission的状态推送到Controller。
++ Update the evaluation status of submissions, and push the status of submissions running on the execution node to the Controller.
 ```python
 class ResultPushService(BasicService):
     def result_push(self, submission_id):
@@ -468,20 +472,20 @@ class ResultPushService(BasicService):
         self._request(data=data, route="/submission/update", action="Submission update")
 ```
 
-### 执行节点之间
-实验运行的数据传输，基于ONL协议。
-### 用户与平台的交互
-使用ONL Client与控制节点连接。
-`Login`：登录和注册模块
-`main.py`：通过命令行进行操作。
+### Execution Nodes
+The data transmission of the experimental run is based on the ONL protocol.
+### User interaction with the platform
+Use ONL Client to connect with the control node.
+`Login`: login and registration module
+`main.py`: Operates from the command line.
 
 
-## 5 部署ONL平台
-控制节点**Controller**、执行节点**Execution node**和客户端**Client**使用安装脚本部署。
+## 5 Deploy ONL platform
+The controller node, the execution node and the client are deployed using the installation script.
 `Controller`:
 `Execution node`:
 `Client`:
-## 6 API说明
+## 6 API description
 
 #### account/admin POST api/admin/user/?
 ``request``

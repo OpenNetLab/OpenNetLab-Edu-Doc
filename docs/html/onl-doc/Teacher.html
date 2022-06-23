@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Manual: Teacher &mdash; OpenNetLab-Edu-2022 0.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Advanced Manual: Developer" href="Developer.html" />
+    <link rel="prev" title="User Manual" href="User.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> OpenNetLab-Edu-2022
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="User.html">User Manual</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Manual: Teacher</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-features">1 Advanced Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#permission-description">1.1 Permission Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#permission-teacher">1.2 Permission: Teacher</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#onl-instruction">2 ONL Instruction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#publish-a-lab">2.1 Publish A Lab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manage-labs">2.2 Manage Labs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manage-problems">2.3 Manage Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#view-submissions">2.4 View Submissions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#teacher-guidance">3 Teacher Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gbn-sender">3.1 GBN sender</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Developer.html">Advanced Manual: Developer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="System.html">System Design</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OpenNetLab-Edu-2022</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Advanced Manual: Teacher</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/onl-doc/Teacher.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="advanced-manual-teacher">
+<h1>Advanced Manual: Teacher<a class="headerlink" href="#advanced-manual-teacher" title="Permalink to this heading"></a></h1>
+<section id="advanced-features">
+<h2>1 Advanced Features<a class="headerlink" href="#advanced-features" title="Permalink to this heading"></a></h2>
+<section id="permission-description">
+<h3>1.1 Permission Description<a class="headerlink" href="#permission-description" title="Permalink to this heading"></a></h3>
+<p>In addition to the general experimental functions, the ONL platform also provides advanced functions that can be used at higher levels of access.</p>
+<p><em>权限的表</em></p>
+<p>Before introducing the advanced features, special permissions need to be described.</p>
+</section>
+<section id="permission-teacher">
+<h3>1.2 Permission: Teacher<a class="headerlink" href="#permission-teacher" title="Permalink to this heading"></a></h3>
+<p>The ONL platform provides a functional module for teachers to publish experiments.</p>
+<p>There are several lab templates available on the ONL platform, each corresponding to one type of network experiment. Users with “Teacher” status can create a lab on the ONL platform by selecting the desired lab template and providing the lab configuration.</p>
+<p>To facilitate the teaching of network courses, teachers can add teaching assistant users (called tutors) when creating labs. A tutor is not a separate identity; it is dependent on the “Teacher” and has additional privileges only in the corresponding lab.</p>
+</section>
+</section>
+<section id="onl-instruction">
+<h2>2 ONL Instruction<a class="headerlink" href="#onl-instruction" title="Permalink to this heading"></a></h2>
+<p>This section describes how teachers can publish labs.</p>
+<section id="publish-a-lab">
+<h3>2.1 Publish A Lab<a class="headerlink" href="#publish-a-lab" title="Permalink to this heading"></a></h3>
+<p><img alt="" src="../_images/Lab.png" /></p>
+<p>Different lab templates are provided on the ONL platform, and teachers can publish labs based on existing lab templates. When creating a lab, fill in the information:</p>
+<ul class="simple">
+<li><p>Experimental attributes. For example, title, Tag, public or not.</p></li>
+<li><p>Tutors. Add the list of tutors for the lab. Students who become tutors can obtain special privileges under the experiment and view the submission records.</p></li>
+</ul>
+</section>
+<section id="manage-labs">
+<h3>2.2 Manage Labs<a class="headerlink" href="#manage-labs" title="Permalink to this heading"></a></h3>
+<p><strong>client bash</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; contest create <span class="o">(</span>lab_list config path<span class="o">)</span>
+</pre></div>
+</div>
+<p><strong>example (take the TCP GBN Sender experiment as an example)</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># show lab_list</span>
+root &gt;&gt;&gt; contests
+id      title   description
+<span class="c1"># create lab_list</span>
+root &gt;&gt;&gt; contest create Contest.json
+contest create success
+<span class="c1"># show lab_list</span>
+root &gt;&gt;&gt; contests
+id      title   description
+<span class="m">1</span> B_01   Test contest
+</pre></div>
+</div>
+<p><strong>Contest.json</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">{</span>
+  <span class="s2">&quot;title&quot;</span>: <span class="s2">&quot;B_01&quot;</span>,
+  <span class="s2">&quot;description&quot;</span>: <span class="s2">&quot;Test contest&quot;</span>,
+  <span class="s2">&quot;password&quot;</span>: <span class="s2">&quot;&quot;</span>,
+  <span class="s2">&quot;visible&quot;</span>: true,
+  <span class="s2">&quot;contest_admin&quot;</span>: <span class="o">[]</span>,
+  <span class="s2">&quot;allowed_ip_ranges&quot;</span>: null
+<span class="o">}</span>
+</pre></div>
+</div>
+</section>
+<section id="manage-problems">
+<h3>2.3 Manage Problems<a class="headerlink" href="#manage-problems" title="Permalink to this heading"></a></h3>
+<p>Teachers can edit labs, such as modifying experimental attributes, deleting labs, and managing problems.</p>
+<p><strong>client bash</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; contest modify <span class="o">(</span>config path<span class="o">)</span>
+</pre></div>
+</div>
+</section>
+<section id="view-submissions">
+<h3>2.4 View Submissions<a class="headerlink" href="#view-submissions" title="Permalink to this heading"></a></h3>
+<p>Teacher users can view and export all submission records under the lab.</p>
+<p><strong>client bash</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; contest submissions <span class="o">(</span>contest_id<span class="o">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="teacher-guidance">
+<h2>3 Teacher Guidance<a class="headerlink" href="#teacher-guidance" title="Permalink to this heading"></a></h2>
+<p>In this section, we present the available experiment templates.This section is continuously updated.</p>
+<section id="gbn-sender">
+<h3>3.1 GBN sender<a class="headerlink" href="#gbn-sender" title="Permalink to this heading"></a></h3>
+<section id="overview">
+<h4>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p>How does the experimental code work</p></li>
+</ul>
+</section>
+<section id="configuration">
+<h4>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h4>
+<p>The test cases and lab specific configuration fields is stored in <code class="docutils literal notranslate"><span class="pre">lab_config.json</span></code> file. The configuration options are as follows (<em>default</em>):</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;seqno_width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;loss_rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;max_delay&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;timeout&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;testcases&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;this_is_some_text&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="User.html" class="btn btn-neutral float-left" title="User Manual" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Developer.html" class="btn btn-neutral float-right" title="Advanced Manual: Developer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, zdszero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Manual: Developer &mdash; OpenNetLab-Edu-2022 0.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="System Design" href="System.html" />
+    <link rel="prev" title="Advanced Manual: Teacher" href="Teacher.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> OpenNetLab-Edu-2022
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="User.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Teacher.html">Advanced Manual: Teacher</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Manual: Developer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-features">1 Advanced Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#permission-description">1.1 Permission Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#permission-developer">1.2 Permission: Developer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#developer-guidance">2 Developer Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#onl-protocol-and-experiments">2.1 ONL Protocol And Experiments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onl-nodes">2.1.1 ONL Nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">2.1.2 Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#build-a-lab-template">2.2 Build A Lab Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manage-lab-templates">2.2 Manage Lab templates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="System.html">System Design</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OpenNetLab-Edu-2022</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Advanced Manual: Developer</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/onl-doc/Developer.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="advanced-manual-developer">
+<h1>Advanced Manual: Developer<a class="headerlink" href="#advanced-manual-developer" title="Permalink to this heading"></a></h1>
+<section id="advanced-features">
+<h2>1 Advanced Features<a class="headerlink" href="#advanced-features" title="Permalink to this heading"></a></h2>
+<section id="permission-description">
+<h3>1.1 Permission Description<a class="headerlink" href="#permission-description" title="Permalink to this heading"></a></h3>
+<p>In addition to the general experimental functions, the ONL platform also provides advanced functions that can be used at higher levels of access.</p>
+<p><em>权限的表</em></p>
+<p>Before introducing the advanced features, special permissions need to be described.</p>
+</section>
+<section id="permission-developer">
+<h3>1.2 Permission: Developer<a class="headerlink" href="#permission-developer" title="Permalink to this heading"></a></h3>
+<p>“Experimentation” is a core feature of the ONL platform.  The ONL platform supports extensions to experimental categories. In the ONL platform, each experiment has a corresponding lab template. The lab templates are saved in the Azure cloud and synchronized to execution node. All experimental tasks are run based on code framework provided by their lab templates.</p>
+<p>The developer is the role for developing lab templates in ONL. The design method of the lab template will be described in <span class="xref myst">2 Developer Guidance</span>.</p>
+</section>
+</section>
+<section id="developer-guidance">
+<h2>2 Developer Guidance<a class="headerlink" href="#developer-guidance" title="Permalink to this heading"></a></h2>
+<section id="onl-protocol-and-experiments">
+<h3>2.1 ONL Protocol And Experiments<a class="headerlink" href="#onl-protocol-and-experiments" title="Permalink to this heading"></a></h3>
+<p>Description of the ONL protocol and how to design ONL experiments</p>
+<section id="onl-nodes">
+<h4>2.1.1 ONL Nodes<a class="headerlink" href="#onl-nodes" title="Permalink to this heading"></a></h4>
+<section id="user-defined-sender">
+<h5>User-defined Sender<a class="headerlink" href="#user-defined-sender" title="Permalink to this heading"></a></h5>
+</section>
+<section id="user-defined-receiver">
+<h5>User-defined Receiver<a class="headerlink" href="#user-defined-receiver" title="Permalink to this heading"></a></h5>
+</section>
+<section id="student-task">
+<h5>Student Task<a class="headerlink" href="#student-task" title="Permalink to this heading"></a></h5>
+</section>
+<section id="ultilities">
+<h5>Ultilities<a class="headerlink" href="#ultilities" title="Permalink to this heading"></a></h5>
+</section>
+</section>
+<section id="configuration">
+<h4>2.1.2 Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h4>
+<p>How to design configurable items for the experiment template.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;seqno_width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;loss_rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;max_delay&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;timeout&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;testcases&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;this_is_some_text&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="build-a-lab-template">
+<h3>2.2 Build A Lab Template<a class="headerlink" href="#build-a-lab-template" title="Permalink to this heading"></a></h3>
+<p>The main body of the experiment template includes:</p>
+<ul class="simple">
+<li><p>a docker image that holds the experimental code implemented using the ONL protocol</p></li>
+<li><p>the startup file for the experiment</p></li>
+<li><p>the configuration file of the lab template (resource requirements and configurable items)</p></li>
+</ul>
+<p><img alt="Lab Template" src="../_images/Lab_Template.png" /></p>
+<p><strong>client bash</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_problem</span> <span class="p">(</span><span class="n">config</span> <span class="n">file</span> <span class="n">path</span><span class="p">)</span> <span class="o">-</span><span class="n">r</span> <span class="p">(</span><span class="n">docker</span> <span class="n">file</span> <span class="n">path</span><span class="p">)</span> <span class="p">(</span><span class="n">docker</span> <span class="n">exucute</span> <span class="n">script</span> <span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>example (take the TCP GBN Sender experiment as an example)</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># first login as a administrator</span>
+&gt;&gt;&gt; please assign your login info
+&gt;&gt;&gt; username: root
+&gt;&gt;&gt; password: ********
+Login success
+sessionid :  wvtjkk9cdr13zful0imd931g5sseje3h
+
+<span class="c1"># add lab template </span>
+root &gt;&gt;&gt; add_problem GBN.json -r image.tar cmd.json
+<span class="c1"># IF success: </span>
+add_problem success
+<span class="c1"># IF failed:</span>
+add_problem failed
+<span class="c1"># show lab templates</span>
+root &gt;&gt;&gt; problems
+id      title   description     tags
+<span class="m">1</span>        Basic-01        TCP_GBN_LAB     tcp transmission        <span class="o">[</span><span class="s1">&#39;tcp&#39;</span>, <span class="s1">&#39;reliable transmission&#39;</span>, <span class="s1">&#39;transport layer&#39;</span><span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Configuration</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># GBN.json</span>
+<span class="o">{</span>
+  <span class="s2">&quot;_id&quot;</span>: <span class="s2">&quot;Basic-01&quot;</span>,
+  <span class="s2">&quot;languages&quot;</span>: <span class="o">[</span><span class="s2">&quot;python&quot;</span><span class="o">]</span>,
+  <span class="s2">&quot;tags&quot;</span>: <span class="o">[</span><span class="s2">&quot;tcp&quot;</span>, <span class="s2">&quot;reliable transmission&quot;</span>, <span class="s2">&quot;transport layer&quot;</span><span class="o">]</span>,
+  <span class="s2">&quot;is_public&quot;</span>: true,
+  <span class="s2">&quot;title&quot;</span>: <span class="s2">&quot;TCP_GBN_LAB&quot;</span>,
+  <span class="s2">&quot;description&quot;</span>: <span class="s2">&quot;tcp transmission&quot;</span>,
+  <span class="s2">&quot;lab_config&quot;</span>: <span class="o">{</span>
+                  <span class="s2">&quot;seqno_width&quot;</span>: <span class="m">4</span>,
+                  <span class="s2">&quot;loss_rate&quot;</span>: <span class="m">0</span>,
+                  <span class="s2">&quot;timeout&quot;</span>: <span class="m">0</span>.5,
+                  <span class="s2">&quot;testcases&quot;</span>: <span class="o">[</span>
+                    ...
+                  <span class="o">]</span>
+                <span class="o">}</span>,
+  <span class="s2">&quot;hint&quot;</span>: <span class="s2">&quot;&quot;</span>,
+  <span class="s2">&quot;vm_num&quot;</span>: <span class="m">2</span>,
+  <span class="s2">&quot;port_num&quot;</span>: <span class="o">[</span><span class="m">1</span>,1<span class="o">]</span>,
+  <span class="s2">&quot;code_num&quot;</span>: <span class="m">2</span>,
+  <span class="s2">&quot;template&quot;</span>: <span class="s2">&quot;&quot;</span>,
+  <span class="s2">&quot;total_score&quot;</span>: <span class="m">100</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p><strong>docker image and setup file</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># cmd.json</span>
+image: image.tar
+cmd: <span class="o">[</span><span class="s2">&quot;bash ../receiver.sh&quot;</span>,<span class="s2">&quot;bash ../sender.sh&quot;</span><span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section id="manage-lab-templates">
+<h3>2.2 Manage Lab templates<a class="headerlink" href="#manage-lab-templates" title="Permalink to this heading"></a></h3>
+<p>ONL platform saves all lab templates in Azure cloud and synchronizes them to resource nodes periodically.
+<img alt="Lab Template Sync" src="../_images/Lab_Template_Sync.png" />
+The advantage of using Azure to save lab templates is that they can be easily managed:</p>
+<ul class="simple">
+<li><p>Modifications to lab templates (including deletion) do not require too much involvement of the controller, reducing the work pressure on the controller;</p></li>
+<li><p>lab templates can be easily synchronized to the resource nodes in a timely manner.</p></li>
+</ul>
+<p><strong>client bash</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">problem</span> <span class="k">del</span> <span class="p">(</span><span class="n">lab</span> <span class="n">template</span> <span class="nb">id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>example (take the TCP GBN Sender experiment as an example)</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># show lab templates</span>
+root &gt;&gt;&gt; problems
+id      title   description     tags
+<span class="m">1</span>        Basic-01        TCP_GBN_LAB     tcp transmission        <span class="o">[</span><span class="s1">&#39;tcp&#39;</span>, <span class="s1">&#39;reliable transmission&#39;</span>, <span class="s1">&#39;transport layer&#39;</span><span class="o">]</span>
+<span class="c1"># delete lab template</span>
+root &gt;&gt;&gt; problem del <span class="m">1</span>
+<span class="c1"># IF success</span>
+delete success
+<span class="c1"># IF failed</span>
+delete failed
+<span class="c1"># show lab templates</span>
+root &gt;&gt;&gt; problems 
+id      title   description     tags
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Teacher.html" class="btn btn-neutral float-left" title="Advanced Manual: Teacher" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="System.html" class="btn btn-neutral float-right" title="System Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, zdszero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
