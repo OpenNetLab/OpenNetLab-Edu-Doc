@@ -14,6 +14,13 @@ OpenNetLab-Edu-2022 Documentation
    ./onl-doc/Teacher.md
    ./onl-doc/Developer.md
    ./onl-doc/System.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Lab Manuals:
+
+   ./onl-doc/gbn_sender_manual.md
+
 Library Reference
 ==================
 

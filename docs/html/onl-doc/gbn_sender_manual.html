@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GBN Sender Lab &mdash; OpenNetLab-Edu-2022 0.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="System Design" href="System.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> OpenNetLab-Edu-2022
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="User.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Teacher.html">Advanced Manual: Teacher</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Developer.html">Advanced Manual: Developer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="System.html">System Design</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Lab Manuals:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GBN Sender Lab</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gettting-started">Gettting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gbn-sender-pseudocode">GBN sender pseudocode</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OpenNetLab-Edu-2022</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>GBN Sender Lab</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/onl-doc/gbn_sender_manual.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gbn-sender-lab">
+<h1>GBN Sender Lab<a class="headerlink" href="#gbn-sender-lab" title="Permalink to this headline"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<p>Go-Back-N ARQ is a specific instance of the automatic repeat request (ARQ) protocol, in which the sending process continues to send a number of frames specified by a window size even without receiving an acknowledgement (ACK) packet from the receiver. It is a special case of the general sliding window protocol with the transmit window size of N and receive window size of 1. It can transmit N frames to the peer before requiring an ACK.</p>
+<p>In this lab, you need to implement the sender part of GBN.</p>
+</section>
+<section id="gettting-started">
+<h2>Gettting Started<a class="headerlink" href="#gettting-started" title="Permalink to this headline"></a></h2>
+<ol class="arabic simple">
+<li><p>Download <code class="docutils literal notranslate"><span class="pre">gbn_skeleton.py</span></code> from OpenNetLab webpage</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">StudentGBNSender</span><span class="p">(</span><span class="n">GBNSender</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">student_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>you should implement the following functions in the skeleton code:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">setup</span></code>: This functions is executed before using the <code class="docutils literal notranslate"><span class="pre">student_task</span></code> function to run each test case. You should setup data structure that is used in this lab.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">student_task</span></code>: Main routine for sending message to receiver. The message is a string, you should encapsulate each character of the string into a packet. And send all the packets to the receiver using GBN protocol.</p></li>
+</ul>
+<p>Besides, you could add your own functions to help you complete this lab.</p>
+<ol class="arabic simple" start="2">
+<li><p>Getting familiar with OpenNetLab API</p></li>
+</ol>
+<p>variables you can use in this lab:</p>
+<ul class="simple">
+<li><p>time_out: max time(ms) before next retransimission</p></li>
+<li><p>window_size: GBN sender window size</p></li>
+<li><p>seqno_range: the seqno range from 1 to 2^n-1, where n is seqno bit width</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>Uplaod your code to online judge</p></li>
+</ol>
+</section>
+<section id="gbn-sender-pseudocode">
+<h2>GBN sender pseudocode<a class="headerlink" href="#gbn-sender-pseudocode" title="Permalink to this headline"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sender():
+    upon Start:
+        send winsize packets to destination
+        add sent packets to buffer
+        start timer
+
+    upon Receiving Packet:
+        if ackno is not valid:
+            return
+        remove the acked packets from buffer
+        send remaining packets to destination (until buffer is full)
+        add sent packets to buffer
+        reset timer
+
+    upon Timer Timeout:
+        resend all the packets in buffer
+        reset timer
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="System.html" class="btn btn-neutral float-left" title="System Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, zdszero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

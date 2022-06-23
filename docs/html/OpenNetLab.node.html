@@ -14,7 +14,6 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -43,6 +42,10 @@
 <li class="toctree-l1"><a class="reference internal" href="onl-doc/Developer.html">Advanced Manual: Developer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="onl-doc/System.html">System Design</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Lab Manuals:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="onl-doc/gbn_sender_manual.html">GBN Sender Lab</a></li>
+</ul>
 
         </div>
       </div>
@@ -69,21 +72,208 @@
            <div itemprop="articleBody">
              
   <section id="opennetlab-node-package">
-<h1>OpenNetLab.node package<a class="headerlink" href="#opennetlab-node-package" title="Permalink to this heading"></a></h1>
+<h1>OpenNetLab.node package<a class="headerlink" href="#opennetlab-node-package" title="Permalink to this headline"></a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </section>
-<section id="opennetlab-node-client-module">
-<h2>OpenNetLab.node.client module<a class="headerlink" href="#opennetlab-node-client-module" title="Permalink to this heading"></a></h2>
+<section id="module-OpenNetLab.node.client">
+<span id="opennetlab-node-client-module"></span><h2>OpenNetLab.node.client module<a class="headerlink" href="#module-OpenNetLab.node.client" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="OpenNetLab.node.client.TCPClientNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">OpenNetLab.node.client.</span></span><span class="sig-name descname"><span class="pre">TCPClientNode</span></span><a class="headerlink" href="#OpenNetLab.node.client.TCPClientNode" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.client.TCPClientNode.finish">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">finish</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.client.TCPClientNode.finish" title="Permalink to this definition"></a></dt>
+<dd><p>Finish the expirement</p>
+<p>Send a message to server to close the connection.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="OpenNetLab.node.client.TCPClientNode.loss_rate">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">loss_rate</span></span><a class="headerlink" href="#OpenNetLab.node.client.TCPClientNode.loss_rate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="OpenNetLab.node.client.TCPClientNode.max_delay">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_delay</span></span><a class="headerlink" href="#OpenNetLab.node.client.TCPClientNode.max_delay" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.client.TCPClientNode.recv_next_packet">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">recv_next_packet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.client.TCPClientNode.recv_next_packet" title="Permalink to this definition"></a></dt>
+<dd><p>Receive the next packet from server</p>
+<p>This function is a NON-BLOCKING function. If it receives a packet, then
+the packet is returned. Else None is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.client.TCPClientNode.run">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.client.TCPClientNode.run" title="Permalink to this definition"></a></dt>
+<dd><p>Run the client node</p>
+<p>This is the entry function for the client node, which includes the following procedures:</p>
+<ol class="arabic simple">
+<li><p>setup the expirement data</p></li>
+<li><p>try connecting to server</p></li>
+<li><p>call testcase_handler until all the test cases have been finished</p></li>
+<li><p>finish the expirement</p></li>
+<li><p>teardown the expirement data</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.client.TCPClientNode.send">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.client.TCPClientNode.send" title="Permalink to this definition"></a></dt>
+<dd><p>Send expirement data to server, the type of data can be any python
+basic data types</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.client.TCPClientNode.setup">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.client.TCPClientNode.setup" title="Permalink to this definition"></a></dt>
+<dd><p>Setup the client node</p>
+<p>This function should be overriden by derived class. The tasks which
+derived class add to this function might include:</p>
+<ol class="arabic simple">
+<li><p>parse the lab config file</p></li>
+<li><p>create data structure required by expirement</p></li>
+<li><p>read in all the test cases</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.client.TCPClientNode.teardown">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">teardown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.client.TCPClientNode.teardown" title="Permalink to this definition"></a></dt>
+<dd><p>Tear down the client node</p>
+<p>This function should be overriden by derived class. teardown is
+executed when all the test cases have finished. Derived class can
+teardown its data structure in this function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.client.TCPClientNode.testcase_handler">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">testcase_handler</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.client.TCPClientNode.testcase_handler" title="Permalink to this definition"></a></dt>
+<dd><p>Return true if the justed finished test is the last one</p>
+<p>This function should be overriden by derived class. Derived class
+should implement the client node logic of the expirement in this
+function. This function might include the following parts:</p>
+<ol class="arabic simple">
+<li><p>reset the data structure used by lab to prepare for this test case</p></li>
+<li><p>parse the test case, send packets and waiting for server’s reponse and handle the packets received.</p></li>
+<li><p>return when all the packets have been sent and received</p></li>
+</ol>
+<p>To get intuitive impression, please check the example expirements composed
+using OpenNetLab.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="opennetlab-node-common-module">
-<h2>OpenNetLab.node.common module<a class="headerlink" href="#opennetlab-node-common-module" title="Permalink to this heading"></a></h2>
+<section id="module-OpenNetLab.node.common">
+<span id="opennetlab-node-common-module"></span><h2>OpenNetLab.node.common module<a class="headerlink" href="#module-OpenNetLab.node.common" title="Permalink to this headline"></a></h2>
 </section>
-<section id="opennetlab-node-server-module">
-<h2>OpenNetLab.node.server module<a class="headerlink" href="#opennetlab-node-server-module" title="Permalink to this heading"></a></h2>
+<section id="module-OpenNetLab.node.server">
+<span id="opennetlab-node-server-module"></span><h2>OpenNetLab.node.server module<a class="headerlink" href="#module-OpenNetLab.node.server" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="OpenNetLab.node.server.TCPServerNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">OpenNetLab.node.server.</span></span><span class="sig-name descname"><span class="pre">TCPServerNode</span></span><a class="headerlink" href="#OpenNetLab.node.server.TCPServerNode" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.server.TCPServerNode.evaulate_testcase">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaulate_testcase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.server.TCPServerNode.evaulate_testcase" title="Permalink to this definition"></a></dt>
+<dd><p>Evalate the test case.</p>
+<p>This function is called when the END_TESTCASE packet has been received.</p>
+<p>The following tasks should be incorporated in this function:</p>
+<ol class="arabic simple">
+<li><p>Evaluate the result</p></li>
+<li><p>Reset the internal data structure</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="OpenNetLab.node.server.TCPServerNode.recorder">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">recorder</span></span><a class="headerlink" href="#OpenNetLab.node.server.TCPServerNode.recorder" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.server.TCPServerNode.recv_callback">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">recv_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.server.TCPServerNode.recv_callback" title="Permalink to this definition"></a></dt>
+<dd><p>Handling the received data.</p>
+<p>This function should be overriden by derived class. It is a callback
+function which is called when receiving packet containing the
+expirement data.</p>
+<p>The main logic of the designed expirement should be implemented in this
+function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.server.TCPServerNode.run">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.server.TCPServerNode.run" title="Permalink to this definition"></a></dt>
+<dd><p>Run the server node</p>
+<p>This is the entry function for the server node, which includes the
+following procedures:</p>
+<ol class="arabic simple">
+<li><p>setup the expirement’s data</p></li>
+<li><p>wait for client’s connection</p></li>
+<li><dl class="simple">
+<dt>enter the loop of receiving packet from client</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>if the packet is EXPIREMENT_DATA packet,</dt><dd><p>then call recv_callback function</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>if the packet is END_TESTCASE packet, then</dt><dd><p>call evaulate_testcase function</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>if the packet is END_NOTIFY packet, then</dt><dd><p>break the loop.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>tear down the expirement data.</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.server.TCPServerNode.send">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packet_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PacketType.EXPIREMENT_DATA</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.server.TCPServerNode.send" title="Permalink to this definition"></a></dt>
+<dd><p>Send expirement data to client, the type of data can be any python
+basic data types</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.server.TCPServerNode.setup">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.server.TCPServerNode.setup" title="Permalink to this definition"></a></dt>
+<dd><p>Setup the server node</p>
+<p>This function should be overriden by derived class. The tasks which
+derived class add to this function might include:</p>
+<ol class="arabic simple">
+<li><p>parse the lab config file</p></li>
+<li><p>create data structure required by expirement</p></li>
+<li><p>read in all the test cases</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.node.server.TCPServerNode.teardown">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">teardown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.node.server.TCPServerNode.teardown" title="Permalink to this definition"></a></dt>
+<dd><p>Tear down the client node</p>
+<p>This function should be overriden by derived class. teardown is
+executed when all the test cases have finished. Derived class can
+teardown its data structure in this function.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="module-OpenNetLab.node">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-OpenNetLab.node" title="Permalink to this headline"></a></h2>
 </section>
 </section>
 

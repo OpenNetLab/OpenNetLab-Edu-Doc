@@ -14,7 +14,6 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -62,6 +61,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="System.html">System Design</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Lab Manuals:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gbn_sender_manual.html">GBN Sender Lab</a></li>
+</ul>
 
         </div>
       </div>
@@ -88,43 +91,43 @@
            <div itemprop="articleBody">
              
   <section id="advanced-manual-developer">
-<h1>Advanced Manual: Developer<a class="headerlink" href="#advanced-manual-developer" title="Permalink to this heading"></a></h1>
+<h1>Advanced Manual: Developer<a class="headerlink" href="#advanced-manual-developer" title="Permalink to this headline"></a></h1>
 <section id="advanced-features">
-<h2>1 Advanced Features<a class="headerlink" href="#advanced-features" title="Permalink to this heading"></a></h2>
+<h2>1 Advanced Features<a class="headerlink" href="#advanced-features" title="Permalink to this headline"></a></h2>
 <section id="permission-description">
-<h3>1.1 Permission Description<a class="headerlink" href="#permission-description" title="Permalink to this heading"></a></h3>
+<h3>1.1 Permission Description<a class="headerlink" href="#permission-description" title="Permalink to this headline"></a></h3>
 <p>In addition to the general experimental functions, the ONL platform also provides advanced functions that can be used at higher levels of access.</p>
 <p><em>权限的表</em></p>
 <p>Before introducing the advanced features, special permissions need to be described.</p>
 </section>
 <section id="permission-developer">
-<h3>1.2 Permission: Developer<a class="headerlink" href="#permission-developer" title="Permalink to this heading"></a></h3>
+<h3>1.2 Permission: Developer<a class="headerlink" href="#permission-developer" title="Permalink to this headline"></a></h3>
 <p>“Experimentation” is a core feature of the ONL platform.  The ONL platform supports extensions to experimental categories. In the ONL platform, each experiment has a corresponding lab template. The lab templates are saved in the Azure cloud and synchronized to execution node. All experimental tasks are run based on code framework provided by their lab templates.</p>
 <p>The developer is the role for developing lab templates in ONL. The design method of the lab template will be described in <span class="xref myst">2 Developer Guidance</span>.</p>
 </section>
 </section>
 <section id="developer-guidance">
-<h2>2 Developer Guidance<a class="headerlink" href="#developer-guidance" title="Permalink to this heading"></a></h2>
+<h2>2 Developer Guidance<a class="headerlink" href="#developer-guidance" title="Permalink to this headline"></a></h2>
 <section id="onl-protocol-and-experiments">
-<h3>2.1 ONL Protocol And Experiments<a class="headerlink" href="#onl-protocol-and-experiments" title="Permalink to this heading"></a></h3>
+<h3>2.1 ONL Protocol And Experiments<a class="headerlink" href="#onl-protocol-and-experiments" title="Permalink to this headline"></a></h3>
 <p>Description of the ONL protocol and how to design ONL experiments</p>
 <section id="onl-nodes">
-<h4>2.1.1 ONL Nodes<a class="headerlink" href="#onl-nodes" title="Permalink to this heading"></a></h4>
+<h4>2.1.1 ONL Nodes<a class="headerlink" href="#onl-nodes" title="Permalink to this headline"></a></h4>
 <section id="user-defined-sender">
-<h5>User-defined Sender<a class="headerlink" href="#user-defined-sender" title="Permalink to this heading"></a></h5>
+<h5>User-defined Sender<a class="headerlink" href="#user-defined-sender" title="Permalink to this headline"></a></h5>
 </section>
 <section id="user-defined-receiver">
-<h5>User-defined Receiver<a class="headerlink" href="#user-defined-receiver" title="Permalink to this heading"></a></h5>
+<h5>User-defined Receiver<a class="headerlink" href="#user-defined-receiver" title="Permalink to this headline"></a></h5>
 </section>
 <section id="student-task">
-<h5>Student Task<a class="headerlink" href="#student-task" title="Permalink to this heading"></a></h5>
+<h5>Student Task<a class="headerlink" href="#student-task" title="Permalink to this headline"></a></h5>
 </section>
 <section id="ultilities">
-<h5>Ultilities<a class="headerlink" href="#ultilities" title="Permalink to this heading"></a></h5>
+<h5>Ultilities<a class="headerlink" href="#ultilities" title="Permalink to this headline"></a></h5>
 </section>
 </section>
 <section id="configuration">
-<h4>2.1.2 Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h4>
+<h4>2.1.2 Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline"></a></h4>
 <p>How to design configurable items for the experiment template.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;seqno_width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"></span>
@@ -141,7 +144,7 @@
 </section>
 </section>
 <section id="build-a-lab-template">
-<h3>2.2 Build A Lab Template<a class="headerlink" href="#build-a-lab-template" title="Permalink to this heading"></a></h3>
+<h3>2.2 Build A Lab Template<a class="headerlink" href="#build-a-lab-template" title="Permalink to this headline"></a></h3>
 <p>The main body of the experiment template includes:</p>
 <ul class="simple">
 <li><p>a docker image that holds the experimental code implemented using the ONL protocol</p></li>
@@ -207,7 +210,7 @@ cmd: <span class="o">[</span><span class="s2">&quot;bash ../receiver.sh&quot;</s
 </div>
 </section>
 <section id="manage-lab-templates">
-<h3>2.2 Manage Lab templates<a class="headerlink" href="#manage-lab-templates" title="Permalink to this heading"></a></h3>
+<h3>2.2 Manage Lab templates<a class="headerlink" href="#manage-lab-templates" title="Permalink to this headline"></a></h3>
 <p>ONL platform saves all lab templates in Azure cloud and synchronizes them to resource nodes periodically.
 <img alt="Lab Template Sync" src="../_images/Lab_Template_Sync.png" />
 The advantage of using Azure to save lab templates is that they can be easily managed:</p>

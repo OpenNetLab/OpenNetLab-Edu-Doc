@@ -14,7 +14,6 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -43,6 +42,10 @@
 <li class="toctree-l1"><a class="reference internal" href="onl-doc/Developer.html">Advanced Manual: Developer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="onl-doc/System.html">System Design</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Lab Manuals:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="onl-doc/gbn_sender_manual.html">GBN Sender Lab</a></li>
+</ul>
 
         </div>
       </div>
@@ -69,15 +72,63 @@
            <div itemprop="articleBody">
              
   <section id="opennetlab-protocol-package">
-<h1>OpenNetLab.protocol package<a class="headerlink" href="#opennetlab-protocol-package" title="Permalink to this heading"></a></h1>
+<h1>OpenNetLab.protocol package<a class="headerlink" href="#opennetlab-protocol-package" title="Permalink to this headline"></a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </section>
-<section id="opennetlab-protocol-packet-module">
-<h2>OpenNetLab.protocol.packet module<a class="headerlink" href="#opennetlab-protocol-packet-module" title="Permalink to this heading"></a></h2>
+<section id="module-OpenNetLab.protocol.packet">
+<span id="opennetlab-protocol-packet-module"></span><h2>OpenNetLab.protocol.packet module<a class="headerlink" href="#module-OpenNetLab.protocol.packet" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="OpenNetLab.protocol.packet.ONLPacket">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">OpenNetLab.protocol.packet.</span></span><span class="sig-name descname"><span class="pre">ONLPacket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">packet_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.protocol.packet.ONLPacket" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.protocol.packet.ONLPacket.from_bytes">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.protocol.packet.ONLPacket.from_bytes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="OpenNetLab.protocol.packet.ONLPacket.to_bytes">
+<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.protocol.packet.ONLPacket.to_bytes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="OpenNetLab.protocol.packet.PacketType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">OpenNetLab.protocol.packet.</span></span><span class="sig-name descname"><span class="pre">PacketType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpenNetLab.protocol.packet.PacketType" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.IntEnum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="OpenNetLab.protocol.packet.PacketType.END_EXPERIMENT">
+<span class="sig-name descname"><span class="pre">END_EXPERIMENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#OpenNetLab.protocol.packet.PacketType.END_EXPERIMENT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="OpenNetLab.protocol.packet.PacketType.END_TESTCASE">
+<span class="sig-name descname"><span class="pre">END_TESTCASE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#OpenNetLab.protocol.packet.PacketType.END_TESTCASE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="OpenNetLab.protocol.packet.PacketType.EXPIREMENT_DATA">
+<span class="sig-name descname"><span class="pre">EXPIREMENT_DATA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#OpenNetLab.protocol.packet.PacketType.EXPIREMENT_DATA" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="OpenNetLab.protocol.packet.PacketType.START_EXPERIMENT">
+<span class="sig-name descname"><span class="pre">START_EXPERIMENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#OpenNetLab.protocol.packet.PacketType.START_EXPERIMENT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="OpenNetLab.protocol.packet.PacketType.START_TESTCASE">
+<span class="sig-name descname"><span class="pre">START_TESTCASE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#OpenNetLab.protocol.packet.PacketType.START_TESTCASE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="module-OpenNetLab.protocol">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-OpenNetLab.protocol" title="Permalink to this headline"></a></h2>
 </section>
 </section>
 

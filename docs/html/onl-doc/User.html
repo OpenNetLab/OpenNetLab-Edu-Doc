@@ -14,7 +14,6 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -63,6 +62,10 @@
 <li class="toctree-l1"><a class="reference internal" href="Developer.html">Advanced Manual: Developer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="System.html">System Design</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Lab Manuals:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gbn_sender_manual.html">GBN Sender Lab</a></li>
+</ul>
 
         </div>
       </div>
@@ -89,11 +92,11 @@
            <div itemprop="articleBody">
              
   <section id="user-manual">
-<h1>User Manual<a class="headerlink" href="#user-manual" title="Permalink to this heading"></a></h1>
+<h1>User Manual<a class="headerlink" href="#user-manual" title="Permalink to this headline"></a></h1>
 <section id="opennetlab">
-<h2>1 OpenNetLab<a class="headerlink" href="#opennetlab" title="Permalink to this heading"></a></h2>
+<h2>1 OpenNetLab<a class="headerlink" href="#opennetlab" title="Permalink to this headline"></a></h2>
 <section id="what-is-opennetlab">
-<h3>1.1 What is OpenNetLab<a class="headerlink" href="#what-is-opennetlab" title="Permalink to this heading"></a></h3>
+<h3>1.1 What is OpenNetLab<a class="headerlink" href="#what-is-opennetlab" title="Permalink to this headline"></a></h3>
 <p>OpenNetLab(ONL) is an online network experiment platform. ONL is dedicated to provide a near-real network experiment environment for teaching computer network courses. In the ONL project, device resources contributed by different institutions are managed in a unified manner, and experiments will be assigned to run on free devices according to resource requirements.</p>
 <p>To develop a uniform style of experimentation, the ONL project provides the ONL protocol to build experiment templates. The ONL protocol uses a client-server architecture to provide a common approach to the design of network experiments.</p>
 <p>A description of the terminology specific to the ONL platform is given here：</p>
@@ -107,7 +110,7 @@
 </ul>
 </section>
 <section id="what-you-can-do">
-<h3>1.2 What you can do<a class="headerlink" href="#what-you-can-do" title="Permalink to this heading"></a></h3>
+<h3>1.2 What you can do<a class="headerlink" href="#what-you-can-do" title="Permalink to this headline"></a></h3>
 <p>The ONL platform provides a variety of lab templates, allowing users with special permissions to add lab templates or publish web labs based on them.</p>
 <p>ONL users can participate in labs and submit solutions, and the platform allocates resources to experimental tasks and judges solutions.</p>
 <p>Based on the actions (permissions) that users can perform on the ONL platform, users can be divided into three categories：
@@ -120,10 +123,10 @@
 </section>
 </section>
 <section id="onl-instruction">
-<h2>2 ONL Instruction<a class="headerlink" href="#onl-instruction" title="Permalink to this heading"></a></h2>
+<h2>2 ONL Instruction<a class="headerlink" href="#onl-instruction" title="Permalink to this headline"></a></h2>
 <p>In this section, you will learn how to use the ONL platform.</p>
 <section id="experimental-process">
-<h3>2.1 Experimental Process<a class="headerlink" href="#experimental-process" title="Permalink to this heading"></a></h3>
+<h3>2.1 Experimental Process<a class="headerlink" href="#experimental-process" title="Permalink to this headline"></a></h3>
 <p>The core function of the ONL platform is undoubtedly “experimentation”. On the ONL platform, you can see a “lab list” and participate in the lab you are interested in.</p>
 <ul class="simple">
 <li><p>You will not always be able to participate in the experiments you are interested in, and some experiments will have restrictions on participant status.</p></li>
@@ -133,7 +136,7 @@
 <p>After the code snippet is successfully submitted, the controller of the platform will generate the experimental task and add it to the waiting queue. When computing resources are obtained, the task is distributed to the resource nodes for the network experiment. At the end of the experimental task (i.e., a submission), the achievement is reported back to the user. You can view it in the submission record.</p>
 </section>
 <section id="participate-in-a-lab">
-<h3>2.2 Participate in a lab<a class="headerlink" href="#participate-in-a-lab" title="Permalink to this heading"></a></h3>
+<h3>2.2 Participate in a lab<a class="headerlink" href="#participate-in-a-lab" title="Permalink to this headline"></a></h3>
 <p>The entries in the experiment list have the following format:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="p">|</span> lab title <span class="p">|</span> lab property <span class="p">|</span> lab status <span class="p">|</span>
 </pre></div>
@@ -158,7 +161,7 @@ id      title   description     tags
 </div>
 </section>
 <section id="submit-an-answer">
-<h3>2.3 Submit an answer<a class="headerlink" href="#submit-an-answer" title="Permalink to this heading"></a></h3>
+<h3>2.3 Submit an answer<a class="headerlink" href="#submit-an-answer" title="Permalink to this headline"></a></h3>
 <p>Select a problem and you can see the details. Analyze the description of the problem and submit the code that meets the requirements.</p>
 <p>In order to help you better understand the experiment content and complete the code, more instructions are given in the lab manual section of OpenNetLab for education website.</p>
 <p><strong>client bash</strong></p>
@@ -188,9 +191,9 @@ submit success
 </div>
 </section>
 <section id="view-submissions">
-<h3>2.4 View Submissions<a class="headerlink" href="#view-submissions" title="Permalink to this heading"></a></h3>
+<h3>2.4 View Submissions<a class="headerlink" href="#view-submissions" title="Permalink to this headline"></a></h3>
 <section id="user-submissions-records">
-<h4>User Submissions Records<a class="headerlink" href="#user-submissions-records" title="Permalink to this heading"></a></h4>
+<h4>User Submissions Records<a class="headerlink" href="#user-submissions-records" title="Permalink to this headline"></a></h4>
 <p>Users can view the history of submissions. The submission history shows the status of the experiment task corresponding to each submission.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># the status of the experiment task:</span>
     <span class="n">COMPILE_ERROR</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>  
@@ -227,7 +230,7 @@ A-01     <span class="m">2022</span>-05-26T06:37:02.034758Z     ACCEPTED        
 </div>
 </section>
 <section id="lab-submissions-records">
-<h4>Lab Submissions Records<a class="headerlink" href="#lab-submissions-records" title="Permalink to this heading"></a></h4>
+<h4>Lab Submissions Records<a class="headerlink" href="#lab-submissions-records" title="Permalink to this headline"></a></h4>
 <p>Users with tutor status can view submissions for that lab. The submission record of the lab will show the submission of all users participating in the lab (including the corresponding problem, evaluation status and result of the submission).</p>
 </section>
 </section>

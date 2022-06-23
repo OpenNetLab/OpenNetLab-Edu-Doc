@@ -14,7 +14,6 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -43,6 +42,10 @@
 <li class="toctree-l1"><a class="reference internal" href="Developer.html">Advanced Manual: Developer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="System.html">System Design</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Lab Manuals:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gbn_sender_manual.html">GBN Sender Lab</a></li>
+</ul>
 
         </div>
       </div>
@@ -69,28 +72,28 @@
            <div itemprop="articleBody">
              
   <section id="user-guide">
-<h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this heading"></a></h1>
+<h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline"></a></h1>
 <section id="onl">
-<h2>1 ONL介绍<a class="headerlink" href="#onl" title="Permalink to this heading"></a></h2>
+<h2>1 ONL介绍<a class="headerlink" href="#onl" title="Permalink to this headline"></a></h2>
 <p>在本节中，我们将对ONL平台的一些概念进行说明，并介绍如何部署ONL平台。</p>
 <section id="id1">
-<h3>1.1 用户<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<h3>1.1 用户<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
 <p>ONL平台账号有三种类型：实验开发者Lab Developer，教师Teacher与学生Student。</p>
 <section id="lab-developer">
-<h4>Lab Developer<a class="headerlink" href="#lab-developer" title="Permalink to this heading"></a></h4>
+<h4>Lab Developer<a class="headerlink" href="#lab-developer" title="Permalink to this headline"></a></h4>
 <p>可以创建新的实验模板（Lab Template）供教师使用。</p>
 </section>
 <section id="teacher">
-<h4>Teacher<a class="headerlink" href="#teacher" title="Permalink to this heading"></a></h4>
+<h4>Teacher<a class="headerlink" href="#teacher" title="Permalink to this headline"></a></h4>
 <p>教师可以创建实验（Lab），并通过修改实验模板的配置文件来为实验添加问题（Problem），查看学生对问题的提交（Submission）。</p>
 </section>
 <section id="student">
-<h4>Student<a class="headerlink" href="#student" title="Permalink to this heading"></a></h4>
+<h4>Student<a class="headerlink" href="#student" title="Permalink to this headline"></a></h4>
 <p>学生可以参加平台上的实验并提交解答。</p>
 </section>
 </section>
 <section id="id2">
-<h3>1.2 实验<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<h3>1.2 实验<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
 <ul class="simple">
 <li><p><strong>ONL实验[ONL Lab]</strong>：基于ONL协议设计的网络实验。ONL实验主要包含发送端Sender，接收端Receiver与配置Configuration。</p>
 <ul>
@@ -114,21 +117,21 @@
 </ul>
 </section>
 <section id="id3">
-<h3>1.3 部署ONL平台<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<h3>1.3 部署ONL平台<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
 <section id="controller">
-<h4>控制器Controller<a class="headerlink" href="#controller" title="Permalink to this heading"></a></h4>
+<h4>控制器Controller<a class="headerlink" href="#controller" title="Permalink to this headline"></a></h4>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>安装脚本
 </pre></div>
 </div>
 </section>
 <section id="execution-node">
-<h4>执行节点Execution Node<a class="headerlink" href="#execution-node" title="Permalink to this heading"></a></h4>
+<h4>执行节点Execution Node<a class="headerlink" href="#execution-node" title="Permalink to this headline"></a></h4>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>安装脚本
 </pre></div>
 </div>
 </section>
 <section id="client">
-<h4>客户端Client<a class="headerlink" href="#client" title="Permalink to this heading"></a></h4>
+<h4>客户端Client<a class="headerlink" href="#client" title="Permalink to this headline"></a></h4>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>安装脚本
 </pre></div>
 </div>
@@ -136,28 +139,28 @@
 </section>
 </section>
 <section id="lab-developer-guide">
-<h2>2 实验开发者使用说明Lab Developer Guide<a class="headerlink" href="#lab-developer-guide" title="Permalink to this heading"></a></h2>
+<h2>2 实验开发者使用说明Lab Developer Guide<a class="headerlink" href="#lab-developer-guide" title="Permalink to this headline"></a></h2>
 <p>在本节中，我们将对ONL协议进行介绍，并说明实验开发者如何使用ONL协议设计新的实验模板。</p>
 <section id="id4">
-<h3>2.1 ONL协议与实验<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<h3>2.1 ONL协议与实验<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h3>
 <p>对ONL协议进行说明，并介绍如何设计ONL实验</p>
 <section id="id5">
-<h4>2.1.1 ONL节点<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h4>
+<h4>2.1.1 ONL节点<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h4>
 <section id="user-defined-sender">
-<h5>User-defined Sender<a class="headerlink" href="#user-defined-sender" title="Permalink to this heading"></a></h5>
+<h5>User-defined Sender<a class="headerlink" href="#user-defined-sender" title="Permalink to this headline"></a></h5>
 </section>
 <section id="user-defined-receiver">
-<h5>User-defined Receiver<a class="headerlink" href="#user-defined-receiver" title="Permalink to this heading"></a></h5>
+<h5>User-defined Receiver<a class="headerlink" href="#user-defined-receiver" title="Permalink to this headline"></a></h5>
 </section>
 <section id="student-task">
-<h5>Student Task<a class="headerlink" href="#student-task" title="Permalink to this heading"></a></h5>
+<h5>Student Task<a class="headerlink" href="#student-task" title="Permalink to this headline"></a></h5>
 </section>
 <section id="ultilities">
-<h5>Ultilities<a class="headerlink" href="#ultilities" title="Permalink to this heading"></a></h5>
+<h5>Ultilities<a class="headerlink" href="#ultilities" title="Permalink to this headline"></a></h5>
 </section>
 </section>
 <section id="configuration">
-<h4>2.1.2 配置Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h4>
+<h4>2.1.2 配置Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline"></a></h4>
 <p>如何设计实验模板的可配置项。
 例子：</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
@@ -175,7 +178,7 @@
 </section>
 </section>
 <section id="id6">
-<h3>2.2 创建实验模板<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<h3>2.2 创建实验模板<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h3>
 <p>实验模板需要三个文件：</p>
 <ul class="simple">
 <li><p>含有ONL实验代码及其运行环境的docker镜像</p></li>
@@ -240,7 +243,7 @@ cmd: <span class="o">[</span><span class="s2">&quot;bash ../receiver.sh&quot;</s
 </div>
 </section>
 <section id="id7">
-<h3>2.3 管理实验模板<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<h3>2.3 管理实验模板<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h3>
 <p>实验模板将被上传至Azure，并同步到运行实验的资源节点。
 <img alt="Lab Template Sync" src="../_images/Lab_Template_Sync.png" /></p>
 <ul class="simple">
@@ -270,12 +273,12 @@ id      title   description     tags
 </section>
 </section>
 <section id="teacher-guide">
-<h2>3 教师使用说明Teacher Guide<a class="headerlink" href="#teacher-guide" title="Permalink to this heading"></a></h2>
+<h2>3 教师使用说明Teacher Guide<a class="headerlink" href="#teacher-guide" title="Permalink to this headline"></a></h2>
 <p>在本节中，我们将介绍教师如何使用ONL平台和已有的实验模板来发布实验。</p>
 <section id="id8">
-<h3>3.1 使用ONL平台<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<h3>3.1 使用ONL平台<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h3>
 <section id="id9">
-<h4>3.1.1 发布实验<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h4>
+<h4>3.1.1 发布实验<a class="headerlink" href="#id9" title="Permalink to this headline"></a></h4>
 <p>在ONL平台上提供了不同的实验模板，教师可以根据现有的实验模板发布实验。创建实验时需要填写实验信息：</p>
 <ol class="arabic simple">
 <li><p>实验属性。如实验标题，Tag，是否公开等。</p></li>
@@ -311,7 +314,7 @@ id      title   description
 </div>
 </section>
 <section id="id10">
-<h4>3.1.2 管理实验<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h4>
+<h4>3.1.2 管理实验<a class="headerlink" href="#id10" title="Permalink to this headline"></a></h4>
 <p>教师能够对实验进行编辑，比如修改实验属性，删除实验，管理问题等。</p>
 <p><strong>client bash</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; contest modify <span class="o">(</span>config path<span class="o">)</span>
@@ -319,7 +322,7 @@ id      title   description
 </div>
 </section>
 <section id="id11">
-<h4>3.1.3 管理问题<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h4>
+<h4>3.1.3 管理问题<a class="headerlink" href="#id11" title="Permalink to this headline"></a></h4>
 <p>实验有一个包含若干个问题的问题列表。问题的添加、修改、删除均可以在列表中进行。</p>
 <ul class="simple">
 <li><p>实验初始状态只有对应实验模板的配置文件的一个问题。</p></li>
@@ -353,7 +356,7 @@ id      title   description     tags
 </div>
 </section>
 <section id="id12">
-<h4>3.1.4 查看提交<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h4>
+<h4>3.1.4 查看提交<a class="headerlink" href="#id12" title="Permalink to this headline"></a></h4>
 <p>教师用户可以查看实验下的所有提交记录并导出。</p>
 <p><strong>client bash</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; contest submissions <span class="o">(</span>contest_id<span class="o">)</span>
@@ -362,17 +365,17 @@ id      title   description     tags
 </section>
 </section>
 <section id="id13">
-<h3>3.2 实验模板介绍<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
+<h3>3.2 实验模板介绍<a class="headerlink" href="#id13" title="Permalink to this headline"></a></h3>
 <section id="gbn-sender">
-<h4>3.2.1 GBN sender<a class="headerlink" href="#gbn-sender" title="Permalink to this heading"></a></h4>
+<h4>3.2.1 GBN sender<a class="headerlink" href="#gbn-sender" title="Permalink to this headline"></a></h4>
 <section id="overview">
-<h5>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h5>
+<h5>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h5>
 <ul class="simple">
 <li><p>How does the experimental code work</p></li>
 </ul>
 </section>
 <section id="id14">
-<h5>Configuration<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h5>
+<h5>Configuration<a class="headerlink" href="#id14" title="Permalink to this headline"></a></h5>
 <p>The test cases and lab specific configuration fields is stored in <code class="docutils literal notranslate"><span class="pre">lab_config.json</span></code> file. The configuration options are as follows (<em>default</em>):</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;seqno_width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"></span>
@@ -389,16 +392,16 @@ id      title   description     tags
 </section>
 </section>
 <section id="id15">
-<h4>3.2.2 …<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h4>
+<h4>3.2.2 …<a class="headerlink" href="#id15" title="Permalink to this headline"></a></h4>
 </section>
 </section>
 </section>
 <section id="student-guide">
-<h2>4 学生使用说明Student Guide<a class="headerlink" href="#student-guide" title="Permalink to this heading"></a></h2>
+<h2>4 学生使用说明Student Guide<a class="headerlink" href="#student-guide" title="Permalink to this headline"></a></h2>
 <section id="id16">
-<h3>4.1 使用ONL平台<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h3>
+<h3>4.1 使用ONL平台<a class="headerlink" href="#id16" title="Permalink to this headline"></a></h3>
 <section id="id17">
-<h4>4.1.1 参与实验<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h4>
+<h4>4.1.1 参与实验<a class="headerlink" href="#id17" title="Permalink to this headline"></a></h4>
 <p>所有已被发布的实验都会被展示在实验列表中。</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># 实验列表条目为如下形式：</span>
 <span class="p">|</span>实验名称<span class="p">|</span>属性<span class="p">|</span>公开（Y/N）<span class="p">|</span>
@@ -424,7 +427,7 @@ id      title   description     tags
 </div>
 </section>
 <section id="id18">
-<h4>4.1.2 提交解答<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h4>
+<h4>4.1.2 提交解答<a class="headerlink" href="#id18" title="Permalink to this headline"></a></h4>
 <p>学生可以查看实验下的问题列表。
 <img alt="问题列表与问题详情（等待补充）" src="../_images/onl-doc" />
 选择问题列表中的一项进入问题详情界面。学生需要提交对问题的解答（代码段），称为一次<strong>提交Submission</strong>，由平台生成任务进行评判。</p>
@@ -455,7 +458,7 @@ submit success
 </div>
 </section>
 <section id="id19">
-<h4>4.1.3 查看提交记录<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h4>
+<h4>4.1.3 查看提交记录<a class="headerlink" href="#id19" title="Permalink to this headline"></a></h4>
 <p>学生可以查看自己的提交记录。提交记录会展示每一次提交的所属实验、提交状态、评判结果等信息。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># 提交状态分别为：</span>
     <span class="n">COMPILE_ERROR</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>  <span class="c1"># 编译错误</span>
@@ -492,12 +495,12 @@ A-01     <span class="m">2022</span>-05-26T06:37:02.034758Z     ACCEPTED        
 </section>
 </section>
 <section id="id20">
-<h3>4.2 实验说明<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h3>
+<h3>4.2 实验说明<a class="headerlink" href="#id20" title="Permalink to this headline"></a></h3>
 <p>在本节中，我们将介绍实验模板考察的计算机网络知识，并对实验考察方式与学生任务进行说明。</p>
 <section id="id21">
-<h4>4.2.1 GBN sender<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h4>
+<h4>4.2.1 GBN sender<a class="headerlink" href="#id21" title="Permalink to this headline"></a></h4>
 <section id="id22">
-<h5>Overview<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h5>
+<h5>Overview<a class="headerlink" href="#id22" title="Permalink to this headline"></a></h5>
 <ul class="simple">
 <li><p>what is GBN</p>
 <ul>
@@ -509,7 +512,7 @@ A-01     <span class="m">2022</span>-05-26T06:37:02.034758Z     ACCEPTED        
 </ul>
 </section>
 <section id="get-started">
-<h5>Get Started<a class="headerlink" href="#get-started" title="Permalink to this heading"></a></h5>
+<h5>Get Started<a class="headerlink" href="#get-started" title="Permalink to this headline"></a></h5>
 <p>Given skeleton code template, explain to the students:</p>
 <ul class="simple">
 <li><p>the usage of other usable functions in ONL</p></li>
@@ -532,16 +535,16 @@ A-01     <span class="m">2022</span>-05-26T06:37:02.034758Z     ACCEPTED        
 </div>
 </section>
 <section id="development-and-debugging-advice">
-<h5>Development and debugging advice<a class="headerlink" href="#development-and-debugging-advice" title="Permalink to this heading"></a></h5>
+<h5>Development and debugging advice<a class="headerlink" href="#development-and-debugging-advice" title="Permalink to this headline"></a></h5>
 <p>how to run the code on ONL platform and how to check the logging to find the problems in your code</p>
 </section>
 <section id="submission">
-<h5>Submission<a class="headerlink" href="#submission" title="Permalink to this heading"></a></h5>
+<h5>Submission<a class="headerlink" href="#submission" title="Permalink to this headline"></a></h5>
 <p>how to submit the code to ONL platform</p>
 </section>
 </section>
 <section id="id23">
-<h4>4.2.2 …<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h4>
+<h4>4.2.2 …<a class="headerlink" href="#id23" title="Permalink to this headline"></a></h4>
 </section>
 </section>
 </section>

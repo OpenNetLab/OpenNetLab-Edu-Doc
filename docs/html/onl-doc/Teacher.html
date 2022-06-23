@@ -14,7 +14,6 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -67,6 +66,10 @@
 <li class="toctree-l1"><a class="reference internal" href="Developer.html">Advanced Manual: Developer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="System.html">System Design</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Lab Manuals:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gbn_sender_manual.html">GBN Sender Lab</a></li>
+</ul>
 
         </div>
       </div>
@@ -93,27 +96,27 @@
            <div itemprop="articleBody">
              
   <section id="advanced-manual-teacher">
-<h1>Advanced Manual: Teacher<a class="headerlink" href="#advanced-manual-teacher" title="Permalink to this heading"></a></h1>
+<h1>Advanced Manual: Teacher<a class="headerlink" href="#advanced-manual-teacher" title="Permalink to this headline"></a></h1>
 <section id="advanced-features">
-<h2>1 Advanced Features<a class="headerlink" href="#advanced-features" title="Permalink to this heading"></a></h2>
+<h2>1 Advanced Features<a class="headerlink" href="#advanced-features" title="Permalink to this headline"></a></h2>
 <section id="permission-description">
-<h3>1.1 Permission Description<a class="headerlink" href="#permission-description" title="Permalink to this heading"></a></h3>
+<h3>1.1 Permission Description<a class="headerlink" href="#permission-description" title="Permalink to this headline"></a></h3>
 <p>In addition to the general experimental functions, the ONL platform also provides advanced functions that can be used at higher levels of access.</p>
 <p><em>权限的表</em></p>
 <p>Before introducing the advanced features, special permissions need to be described.</p>
 </section>
 <section id="permission-teacher">
-<h3>1.2 Permission: Teacher<a class="headerlink" href="#permission-teacher" title="Permalink to this heading"></a></h3>
+<h3>1.2 Permission: Teacher<a class="headerlink" href="#permission-teacher" title="Permalink to this headline"></a></h3>
 <p>The ONL platform provides a functional module for teachers to publish experiments.</p>
 <p>There are several lab templates available on the ONL platform, each corresponding to one type of network experiment. Users with “Teacher” status can create a lab on the ONL platform by selecting the desired lab template and providing the lab configuration.</p>
 <p>To facilitate the teaching of network courses, teachers can add teaching assistant users (called tutors) when creating labs. A tutor is not a separate identity; it is dependent on the “Teacher” and has additional privileges only in the corresponding lab.</p>
 </section>
 </section>
 <section id="onl-instruction">
-<h2>2 ONL Instruction<a class="headerlink" href="#onl-instruction" title="Permalink to this heading"></a></h2>
+<h2>2 ONL Instruction<a class="headerlink" href="#onl-instruction" title="Permalink to this headline"></a></h2>
 <p>This section describes how teachers can publish labs.</p>
 <section id="publish-a-lab">
-<h3>2.1 Publish A Lab<a class="headerlink" href="#publish-a-lab" title="Permalink to this heading"></a></h3>
+<h3>2.1 Publish A Lab<a class="headerlink" href="#publish-a-lab" title="Permalink to this headline"></a></h3>
 <p><img alt="" src="../_images/Lab.png" /></p>
 <p>Different lab templates are provided on the ONL platform, and teachers can publish labs based on existing lab templates. When creating a lab, fill in the information:</p>
 <ul class="simple">
@@ -122,7 +125,7 @@
 </ul>
 </section>
 <section id="manage-labs">
-<h3>2.2 Manage Labs<a class="headerlink" href="#manage-labs" title="Permalink to this heading"></a></h3>
+<h3>2.2 Manage Labs<a class="headerlink" href="#manage-labs" title="Permalink to this headline"></a></h3>
 <p><strong>client bash</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; contest create <span class="o">(</span>lab_list config path<span class="o">)</span>
 </pre></div>
@@ -153,7 +156,7 @@ id      title   description
 </div>
 </section>
 <section id="manage-problems">
-<h3>2.3 Manage Problems<a class="headerlink" href="#manage-problems" title="Permalink to this heading"></a></h3>
+<h3>2.3 Manage Problems<a class="headerlink" href="#manage-problems" title="Permalink to this headline"></a></h3>
 <p>Teachers can edit labs, such as modifying experimental attributes, deleting labs, and managing problems.</p>
 <p><strong>client bash</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; contest modify <span class="o">(</span>config path<span class="o">)</span>
@@ -161,7 +164,7 @@ id      title   description
 </div>
 </section>
 <section id="view-submissions">
-<h3>2.4 View Submissions<a class="headerlink" href="#view-submissions" title="Permalink to this heading"></a></h3>
+<h3>2.4 View Submissions<a class="headerlink" href="#view-submissions" title="Permalink to this headline"></a></h3>
 <p>Teacher users can view and export all submission records under the lab.</p>
 <p><strong>client bash</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; contest submissions <span class="o">(</span>contest_id<span class="o">)</span>
@@ -170,18 +173,18 @@ id      title   description
 </section>
 </section>
 <section id="teacher-guidance">
-<h2>3 Teacher Guidance<a class="headerlink" href="#teacher-guidance" title="Permalink to this heading"></a></h2>
+<h2>3 Teacher Guidance<a class="headerlink" href="#teacher-guidance" title="Permalink to this headline"></a></h2>
 <p>In this section, we present the available experiment templates.This section is continuously updated.</p>
 <section id="gbn-sender">
-<h3>3.1 GBN sender<a class="headerlink" href="#gbn-sender" title="Permalink to this heading"></a></h3>
+<h3>3.1 GBN sender<a class="headerlink" href="#gbn-sender" title="Permalink to this headline"></a></h3>
 <section id="overview">
-<h4>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h4>
+<h4>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h4>
 <ul class="simple">
 <li><p>How does the experimental code work</p></li>
 </ul>
 </section>
 <section id="configuration">
-<h4>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h4>
+<h4>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline"></a></h4>
 <p>The test cases and lab specific configuration fields is stored in <code class="docutils literal notranslate"><span class="pre">lab_config.json</span></code> file. The configuration options are as follows (<em>default</em>):</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;seqno_width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"></span>
