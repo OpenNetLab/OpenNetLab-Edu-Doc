@@ -1,0 +1,38 @@
+# Testing
+
+## How to use
+
+你可以使用我们的测试程序来测试实验。每个实验所属目录下都有一个可执行测试文件：
+
+你可以从命令行在每个实验各自目录单独运行每个测试文件，以dns实验为例：
+
+```
+$ cd dns
+$ ./tester 
+```
+这些测试只是将用于评估实验的所有测试的一个子集。你应该自己编写额外的测试用例来检查实现的完整功能。
+
+## Help
+你可以带参数“-h”来查看帮助信息：
+
+
+```
+$ ./tester -h
+usage: Tester [-h] [-t testcase_index] [-d] [-l]
+
+Testing onl program
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t testcase_index, --testcase testcase_index
+                        running the ith testcase
+  -d, --debug           use debug mode to show program output
+  -l, --log             redirect testcase output to a log file
+
+Get more help on onl online doc
+```
+所以你可以:
+- 通过传递-t参数来运行指定测试用例；
+- 通过传递-d参数使用debug模式显示程序输出；
+- 通过传递-l参数将测试用例输出重定向到日志文件，生成的日志文件在实验所属目录下的logs文件夹中，每一个测试用例i生成一个"testcasei.log"文件。
+

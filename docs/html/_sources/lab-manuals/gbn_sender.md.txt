@@ -1,0 +1,147 @@
+# GBN Sender Lab
+
+## Overview
+
+Go-Back-N是自动重复请求(ARQ)协议的一个特定实例，在该协议中，即使没有收到来自接收方的确认(ACK)包，发送过程也会继续发送由窗口大小指定的分组数。它是一般滑动窗口协议的一种特殊情况，发送窗口大小为N，接收窗口大小为1。当收到接收方的确认时，发送方将窗口向后移动，并且发送其他可以发送的分组。
+
+在这个实验中，你的任务是实现一个搭建在OpenNetLab上的使用GBN协议的发送端。
+
+## Getting Started
+
+1. [下载实验资源](./gbn.zip)，解压后进入gbn文件夹，其中包含两个子文件夹，resource文件夹中包含完成该实现所需阅读的文档以及实验报告模板，code文件夹中包含基础的实验代码模板。实验代码主要框架为：
+
+   - main.py：本地调试运行文件；
+   
+   - receiver.py：接收方文件，无需修改；
+   
+   - sender.py：发送方文件，`TODO`部分待编写。
+   
+   - testcases.json：本地评测配置文件。
+   
+   - tester：本地评测运行文件，使用说明见相关文档。
+
+2. 阅读实验任务，完成代码模板中`TODO`部分的代码片段。
+
+3. 进行本地测试，完成本地测试后将代码提交到OpenNetLab在线平台进行远程评测。
+
+## Tasks
+
+在这个实验中，你需要将一个字符串中的每个字符封装为分组发送给接收方，并且遵循GBN协议：
+
+- 开始时发送滑动窗口内所有可以发送的分组。
+
+- 每发送一个分组，保存该分组在缓冲区中，表示已发送但还未被确认。
+
+- 缓冲区使用一个定时器，当定时器超时的时候，重新发送缓冲区中的所有分组。
+
+- 当收到接收方的确认后，判断该确认是否有效。如果无效的话，什么也不做；如果有效的话，采取累计确认，移动滑动窗口，将已经被确认的分组从缓冲区中删除，并且发送接下来可以发送的分组，重置定时器。
+
+你可以通过 [GBN交互演示](https://www2.tkn.tu-berlin.de/teaching/rn/animations/gbn_sr/) 来帮助自己更好地理解GBN的过程。
+
+该实验`TODO`部分的伪代码如下：
+
+```c
+function run() {
+    # send available packets, add these packets to buffer
+    while (sequence number is available) {
+        encapsulate messages into new packets 
+        send new packets
+        add these packets to buffer
+    }
+    reset timer
+    Check whether to terminate the sending process
+}
+
+function put(packet) {
+    # Process packets received from the receiver
+    if ackno is valid {
+        remove acked packets from the buffer
+    }
+    send the following available packets
+    if all packets are sent and acked {
+        Inform to terminate the sending process
+    }
+}
+
+function timeout_callback() {
+    for all packets in the buffer {
+        send packet
+    }
+}
+```
+
+## Testing
+
+1. 进行本地测试
+
+在本机运行 *main.py* 程序。 *main.py* 程序会使用本地的一个测试用例对GBN发送端的正确性进行评测并输出运行日志。
+
+```
+$ python3 main.py
+```
+首先要了解Wire类，根据netdev目录下wire.py内容，该类主要目的是实现sender与receiver之间的数据传输，通过put方法调用其store(sender or receiver)实例下的put方法。
+
+*main* 首先实例化 *onl.sim* 中的类 *Environment*，创建一个基于事件的模拟的执行环境。然后main在模拟的执行环境中实例化GBNsender、GBNreceiver、Wire类，创建由sender，receiver，wire1，wire2构成的网络回路进行数据包传输，流程如下图所示：
+
+![<img src="./main.png" title="" alt="" data-align="center">](main.png)
+
+主要流程分为四步：
+
+- (1) sender通过wire1实现数据包的发送
+
+- (2) receiver通过wire1中的方法，获取sender发送的数据包
+
+- (3) receiver通过wire2实现数据包的发送
+
+- (4) sender通过wire2中的方法，获取receiver发送的确认数据包
+
+
+完成程序基本功能的调试后，可以运行可执行文件tester进行多个测试用例评测，更详细的使用说明见相关文档。
+
+```
+$ ./tester
+```
+
+2. 提交代码进行远程评测
+
+在OpenNetLab上提交代码进行远程评测：
+
+- 选择实验
+
+![<img src="./onl_sub1.png" title="" alt="" data-align="center">](onl_sub1.png)
+
+- 提交代码
+
+![<img src="./onl_sub2.png" title="" alt="" data-align="center">](onl_sub2.png)
+
+- 查看评估结果
+
+![<img src="./onl_sub3.png" title="" alt="" data-align="center">](onl_sub3.png)
+
+## Tips
+
+sender.py和receiver.py中一些属性和方法的解释：
+
+- self.seqno_range：序列空间大小，请注意序列空间的序号是从0开始的；
+
+- self.window_size：窗口大小；
+
+- self.timer：发送方的定时器；
+
+- self.env：程序运行的环境；
+
+- self.debug：控制运行过程中日志信息输出，可以设置为True以方便调试；
+
+- self.proc：发送方的进程；
+
+- new_packet()：将信息封装进新分组并返回；
+
+- timeout_callback()：超时处理；
+
+- send_packet()：发送分组；
+
+- run()：在给定的环境中运行发送端；
+
+- put()：收到分组并处理；
+
+- dprint()：打印运行日志信息。

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SR Sender Lab &mdash; OpenNetLab USTC 2023 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="GBN Sender Lab" href="gbn_sender.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            OpenNetLab USTC 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Platform Introduction:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../platform/intro.html">OpenNetLab for Education Intro</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Lab Manuals:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tester.html">Testing using tester</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns_server.html">DNS Server Lab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gbn_sender.html">GBN Sender Lab</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SR Sender Lab</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tasks">Tasks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tips">Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OpenNetLab USTC 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">SR Sender Lab</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/lab-manuals/sr_sender.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sr-sender-lab">
+<h1>SR Sender Lab<a class="headerlink" href="#sr-sender-lab" title="Permalink to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>选择性重传(Selective Repeat)是自动重复请求(ARQ)的一部分。使用选择性重复，发送方发送由窗口大小指定的帧数，甚至不需要像Go-Back-N ARQ中那样等待接收方的单个ACK。接收端可以选择性地拒绝单个帧，该帧可以单独重传；这与其他形式的ARQ形成了鲜明的对比，后者必须从那个点再次发送每一帧。在选择性重传协议中，接收端接收乱序帧并缓冲它们，发送方分别重新传输已经超时的帧。</p>
+<p>在这个实验中，你的任务是实现一个搭建在OpenNetLab上的使用SR协议的发送端。</p>
+<section id="getting-started">
+<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><a class="reference download internal" download="" href="../_downloads/351bad4fb3354110d8e0e1a2f06f64d2/sr.zip"><code class="xref download docutils literal notranslate"><span class="pre">下载实验资源</span></code></a> ，解压后进入sr文件夹，其中包含两个子文件夹，<code class="file docutils literal notranslate"><span class="pre">resource</span></code> 文件夹中包含完成该实现所需阅读的文档以及实验报告模板，<code class="file docutils literal notranslate"><span class="pre">code</span></code> 文件夹中包含基础的实验代码模板。实验代码包含如下文件：</p>
+<ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">main.py</span></code> ：本地调试运行文件；</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">receiver.py</span></code> ：接收方文件，无需修改；</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">sender.py</span></code> ：发送方文件， <cite>TODO</cite> 部分待编写。</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">testcases.json</span></code> ：本地评测配置文件。</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">tester</span></code> ：本地评测运行文件，使用说明见相关文档。</p></li>
+</ul>
+</li>
+<li><p>阅读实验任务，完成代码模板中 <cite>TODO</cite> 部分的代码片段。</p></li>
+<li><p>进行本地测试，完成本地测试后将代码提交到OpenNetLab在线平台进行远程评测。</p></li>
+</ol>
+</section>
+<section id="tasks">
+<h3>Tasks<a class="headerlink" href="#tasks" title="Permalink to this heading"></a></h3>
+<p>在这个实验中，你需要实现sender.py中的send_available方法以及put方法的设计，并且遵循SR协议：</p>
+<ul class="simple">
+<li><p>在send_available方法中需要满足以下几点:</p>
+<ul>
+<li><p>当收到接收方的确认后，判断该确认是否合法。如果不合法的话，什么也不做；如果合法的话，将对应缓冲区中的帧标记为被确认，如果被确认的帧位于滑动窗口头部，移动滑动窗口直到头部的帧未被确认，并且发送接下来可以发送的帧。</p></li>
+<li><p>每发送一个帧时，保存该帧在缓冲区中。</p></li>
+<li><p>每个缓冲区内的帧对应一个定时器，当定时器超时的时候，重新发送对应的帧。</p></li>
+</ul>
+</li>
+<li><p>put方法表示接收来自receiver数据，由相应的Wire实例调用，用于接收来自receiver的确认数据包。</p></li>
+</ul>
+<p>该实验 <cite>TODO</cite> 部分的伪代码如下：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>function send_available(packet) {
+    # sender初始化时已定义相应的 buffer 和 times
+    create buffer : outbound: Deque[QueueItem] = deque()
+    create times  : timers: Deque[Timer] = deque()
+    if len(buffer) &gt; 0 and the head of buffer is acked:
+        update buffer
+        update times
+
+    while (condition) {
+        send packets
+        add these packets to buffer and times
+    }
+}
+
+# 实验模板已经给出send_packet方法的具体实现
+def send_packet(self, packet: Packet):
+        self.dprint(f&quot;send {packet.payload} on seqno {packet.packet_id}&quot;)
+        assert self.out
+        self.out.put(packet)
+
+func put(packet):
+    receive Packet from SR receiver as p
+    if p[&#39;ackno&#39;] is valid ackno {
+        mark the corresponding packet in buffer as acked
+        send available packet
+    }
+    if all packets are sent and acked {
+        self.finish_channel.put(True)  //finish_channel表示结束条件
+    }
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="tips">
+<h2>Tips<a class="headerlink" href="#tips" title="Permalink to this heading"></a></h2>
+<p>你可以通过 <a class="reference external" href="https://www2.tkn.tu-berlin.de/teaching/rn/animations/gbn_sr/">SR交互演示</a> 来帮助自己更好地理解SR的过程。</p>
+<p>sender.py和receiver.py中一些属性和方法的解释：</p>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">self.</span></span><span class="sig-name descname"><span class="pre">seqno_range</span></span></dt>
+<dd><p>序号空间大小。请注意序号空间的序号是从0开始的；</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">self.</span></span><span class="sig-name descname"><span class="pre">window_size</span></span></dt>
+<dd><p>滑动窗口大小；</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">self.</span></span><span class="sig-name descname"><span class="pre">timers</span></span></dt>
+<dd><p>发送方的定时器；</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">self.</span></span><span class="sig-name descname"><span class="pre">env</span></span></dt>
+<dd><p>程序运行的环境；</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">self.</span></span><span class="sig-name descname"><span class="pre">debug</span></span></dt>
+<dd><p>控制运行过程中日志信息输出，可以设置为True以方便调试；</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">self.</span></span><span class="sig-name descname"><span class="pre">proc</span></span></dt>
+<dd><p>发送方的进程；</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">new_packet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seqno</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Packet</span></span></span></dt>
+<dd><p>将需要传输的信息内容封装为一个数据包；</p>
+<p>&#64;参数: seqno - 数据包的序列号</p>
+<p>&#64;参数: data - 数据包所携带的数据内容</p>
+<p>&#64;返回类型: 已封装好的一个数据包实例</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">timeout_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packet</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>超时处理的回调函数，当sr sender中的超时器超时会自动调用该函数，该函数发送指定的数据包；</p>
+<p>&#64;参数: packet - 需要发送的一个数据包实例</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">send_packet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packet</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>发送数据包packet到receiver；</p>
+<p>&#64;参数: packet - 需要发送的一个数据包实例</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>在给定的环境中运行发送端；</p>
+<p>&#64;参数: env - 程序的运行环境；</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packet</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>处理确认数据包并且发送余下的数据；</p>
+<p>&#64;参数: packet - sender接受到的来自receiver的确认数据包</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">dprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>打印运行日志信息。</p>
+<p>&#64;参数: msg - 需要打印的信息</p>
+</dd></dl>
+
+</section>
+<hr class="docutils" />
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>进行本地测试</p></li>
+</ol>
+<p>在本机运行 <em>main.py</em> 程序。 <em>main.py</em> 程序会使用本地的一个测试用例对SR发送端的正确性进行评测并输出运行日志。</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>main.py
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><cite>main.py</cite> 首先实例化类 <cite>Environment</cite> ，创建一个基于事件的网络模拟执行环境。然后 <cite>main.py</cite> 在模拟环境中实例化 GBNsender、GBNreceiver、Wire 类，创建由 <cite>sender</cite> , <cite>receiver</cite> , <cite>wire1</cite> , <cite>wire2</cite> 构成的网络回路进行数据包传输，<cite>Wire</cite> 类主要目的是实现 <cite>sender</cite> 与 <cite>receiver</cite> 之间不可靠的数据传输（模拟数据包的发送时延、丢失和乱序的情况），流程主要分为四步：</p>
+<ol class="arabic simple">
+<li><p><cite>sender</cite> 通过 <cite>wire1</cite> 实现数据包的发送</p></li>
+<li><p><cite>receiver</cite> 通过 <cite>wire1</cite> 中的方法，获取 <cite>sender</cite> 发送的数据包</p></li>
+<li><p><cite>receiver</cite> 通过 <cite>wire2</cite> 实现数据包的发送</p></li>
+<li><p><cite>sender</cite> 通过 <cite>wire2</cite> 中的方法，获取 <cite>receiver</cite> 发送的确认数据包</p></li>
+</ol>
+</div>
+<figure class="align-center" id="gbn-main-process">
+<a class="reference internal image-reference" href="../_images/main.png"><img alt="image cannot be loaded" src="../_images/main.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-text">main.py 模拟流程</span><a class="headerlink" href="#gbn-main-process" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>完成程序基本功能的调试后，可以运行可执行文件 <cite>tester</cite> 进行多个测试用例评测，更详细的使用说明见 <a class="reference external" href="./tester.html">相关文档</a></p>
+<ol class="arabic simple" start="2">
+<li><p><a class="reference external" href="../platform/intro.html">提交代码进行远程评测</a></p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gbn_sender.html" class="btn btn-neutral float-left" title="GBN Sender Lab" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, OpenNetLab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

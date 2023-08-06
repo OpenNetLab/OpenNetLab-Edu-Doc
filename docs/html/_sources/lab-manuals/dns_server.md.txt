@@ -1,0 +1,129 @@
+# DNS Server Lab
+
+## Overview
+
+DNS（Domain Name System）是互联网中用于将域名（例如www.example.com）转换为对应IP地址的系统。在互联网上，设备之间通信需要使用IP地址进行定位，但IP地址不便于人们记忆和使用。DNS充当了一个类似电话簿的角色，将易于记忆的域名映射到相应的IP地址，从而使得用户可以通过域名来访问网站或者发送电子邮件，而无需记住复杂的IP地址。当用户在浏览器中输入一个域名时，系统会通过DNS查询将域名解析为对应的IP地址，然后进行通信。DNS起到了极为重要的转换和定位功能，是互联网通信的基础。
+
+在这个实验中，你的任务是实现一个搭建在OpenNetLab上的DNS服务器，该服务器具备拦截特定域名，以及返回域名对应IP的功能。
+
+## Getting Started
+
+1. [下载实验资源](./dns.zip)，解压后进入dns文件夹，其中包含两个子文件夹，resource文件夹中包含完成该实现所需阅读的文档以及实验报告模板，code文件夹中包含基础的实验代码模板。实验代码主要框架为：
+   
+   - client.py：客户端文件，无需修改。
+   
+   - dns_packet.py：DNS数据包解析和编码文件，无需修改。
+   
+   - ipconf.txt：本地调试配置文件。
+   
+   - main.py：本地调试文件。
+   
+   - server.py：服务器文件，`TODO`部分待编写
+   
+   - testcases.json：本地评测配置文件。
+   
+   - tester：本地评测文件，使用说明见相关文档。
+
+2. 阅读实验任务，完成代码模板中 `TODO` 部分的代码片段。
+
+3. 进行本地测试，完成本地测试后将代码提交到OpenNetLab在线平台进行远程评测。
+
+4. <u>推荐实验环境：Linux操作系统，Python版本3.6以上。</u>
+
+## Tasks
+
+1. 处理DNS请求
+
+从配置文件 `example.txt` 中读取 `domain name --- IP address` 的映射，并且按照如下规则处理DNS请求：
+
+- Intercept：如果请求的DNS域名在配置文件的映射中并且对应的IP为 `0.0.0.0` ，对该域名进行拦截，向客户端返回“域名不存在”的报错信息。
+
+- Local Resolve：如果请求的DNS域名在配置文件的映射中并且对应的IP是合法的，返回对应IP地址给客户端。
+
+- Relay：如果请求的DNS域名不在配置文件，将对应的DNS请求转发给公网上的DNS服务器，当收到该服务器的应答时，将应答转发给客户端。
+
+该实验TODO部分对应的伪代码如下：
+
+```
+# process DNS requests
+function recv_callback(data){
+    resolve data to DNS frame recvdp
+    if recvdp is a query message{
+        if recvdp.qname is in url_ip table{
+            if url_ip[recvdp.qname]="0.0.0.0"{
+                generate a reply error data
+            }
+            else{
+                generate response data
+            }
+        }
+        else{
+            send query message to public DNS server
+            receive data from public server
+        }
+        send data to client
+    }
+}
+```
+
+
+
+## Testing
+
+1. 进行本地测试
+
+在本机运行 *main* 程序，会使用本地的测试用例对DNS服务器的正确性进行评测并输出运行日志。
+
+```python
+python3 main.py
+```
+
+*main* 首先实例化*onl.sim*中的类*Environment*，创建一个基于事件的模拟的执行环境。然后main在模拟的执行环境中实例化DNSClient、DNSServer类，并直接连接客户端、服务器的实例进行数据包传输。
+
+完成调试后可以运行可执行文件tester进行调试。
+
+```python
+./tester
+```
+
+2. 提交代码进行远程评测
+
+在OpenNetLab上提交代码进行远程评测：
+
+- 选择实验
+
+![<img src="./onl_sub1.png" title="" alt="" data-align="center">](onl_sub1.png)
+
+- 提交代码
+
+![<img src="./onl_sub2.png" title="" alt="" data-align="center">](onl_sub2.png)
+
+- 查看评估状态
+
+![<img src="./onl_sub3.png" title="" alt="" data-align="center">](onl_sub3.png)
+
+## Tips
+
+1.对client.py和server.py 中一些属性和方法的解释:
+
+- self.debug：控制运行过程中日志信息输出，可以设置为True以方便调试。
+
+- self.env：程序运行的环境。
+
+- self.proc：客户端的进程。
+
+- run()：在给定的环境中开始发送DNS查询信息。
+
+2.DNSClient类和DNSServer类都继承了UDPDevice类，server向client发送数据包的方式可以参考client发送DNS请求数据包。
+
+3.DNS server通过socket与public DNS server建立通信连接，以发送接收DNS数据包。以下代码片段表示DNS server向上游DNS服务器（指定为"223.5.5.5"，port 53）发送DNS查询，并监听本地的1088端口得到查询结果。
+
+```python
+self.name_server = ("223.5.5.5", 53)
+self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+self.server_socket.bind(("", 1088))
+self.server_socket.setblocking(True)
+```
+
+4.阅读[RFC1035](https://datatracker.ietf.org/doc/html/rfc1035)，理解DNS请求和应答报文中各个字段的含义。

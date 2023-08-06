@@ -1,0 +1,141 @@
+# SR Sender Lab
+
+## Overview
+
+选择性重传(Selective Repeat)是自动重复请求(ARQ)的一部分。使用选择性重复，发送方发送由窗口大小指定的帧数，甚至不需要像Go-Back-N ARQ中那样等待接收方的单个ACK。接收端可以选择性地拒绝单个帧，该帧可以单独重传；这与其他形式的ARQ形成了鲜明的对比，后者必须从那个点再次发送每一帧。在选择性重传协议中，接收端接收乱序帧并缓冲它们，发送方分别重新传输已经超时的帧。
+
+在这个实验中，你的任务是实现一个搭建在OpenNetLab上的使用SR协议的发送端。
+
+## Getting Started
+
+1. [下载实验资源](./sr.zip)，解压后进入sr文件夹，其中包含两个子文件夹，resource文件夹中包含完成该实现所需阅读的文档以及实验报告模板，code文件夹中包含基础的实验代码模板。
+2. 阅读实验任务，完成代码模板中 `TODO` 部分的代码片段。
+3. 进行本地测试，完成本地测试后将代码提交到在线平台进行远程评测。
+
+## Introduction
+当下载好相关的实验资源时，进入code文件夹，其中主要由main.py、receiver.py 和 sender.py 组成，其中：
+- main.py用于本地测试，对SR发送端代码的正确性进行评测，其代码如下：
+```python
+"""" 序列号 窗口大小 丢包率 超时时间以及发送消息初始化"""
+seqno_width = 4    
+window_size = 8
+loss_rate = 0.1
+timeout = 30.0
+message = """ *** """
+env = Environment()  # 初始化环境
+"""初始化sender、receiver、以及两个wire"""
+sender = SRSender(
+    env,
+    seqno_width=seqno_width,
+    timeout=timeout,
+    window_size=window_size,
+    message=message,
+    debug=True,
+)
+receiver = SRReceiver(
+    env,
+    seqno_width=seqno_width,
+    window_size=window_size,
+    debug=True
+)
+wire1 = Wire(env, delay_dist=lambda: 10, loss_rate=loss_rate, debug=False)
+wire2 = Wire(env, delay_dist=lambda: 10, loss_rate=loss_rate, debug=False)
+sender.out = wire1
+wire1.out = receiver
+receiver.out = wire2
+wire2.out = sender
+
+env.run(sender.proc)
+
+assert receiver.message == message          #判断接收到的数据是否为原message内容
+```
+
+- 对于sender.py 和 receiver.py
+    1. 发送和接收窗口大小要小于等于序列号长度的一半：因为当窗口大小超过序列号空间的一半，那么发送方和接收方在处理序列号溢出时可能会混淆帧的顺序，从而导致协议的错误行为。
+    2. sender以及receiver中都包含put方法，表示获取数据包并进行有效性判断处理，例如对于receiver中的put方法：
+        - 该方法由相应的Wire实例调用，获取sender发送的数据包，根据数据包序列号的有效性进行判断(<u>重点理解lwnd_start以及rwnd_start，为了应对特殊情况，如下图所示便于理解处理lwnd_start的情况</u>)
+        ![<img src="./SR_lwnd_start.png" title="" alt="" data-align="center">](SR_lwnd_start.png)
+
+
+- 总体流程图
+  <br>首先要了解Wire类，根据netdev目录下wire.py内容，该类主要目的是实现sender与receiver之间的数据传输，通过put方法调用其store(sender or receiver)实例下的put方法。</br>
+
+  通过main.py，创建由sender，receiver，wire1，wire2构成的网络，如下图所示:
+  ![<img src="./main.png" title="" alt="" data-align="center">](main.png)
+
+
+## Tasks
+
+在这个实验中，你需要实现sender.py中的send_available方法以及put方法的设计，并且遵循SR协议：
+- 在send_available方法中需要满足以下几点:
+    - 当收到接收方的确认后，判断该确认是否合法。如果不合法的话，什么也不做；如果合法的话，将对应缓冲区中的帧标记为被确认，如果被确认的帧位于滑动窗口头部，移动滑动窗口直到头部的帧未被确认，并且发送接下来可以发送的帧。
+    - 每发送一个帧时，保存该帧在缓冲区中。
+    - 每个缓冲区内的帧对应一个定时器，当定时器超时的时候，重新发送对应的帧。
+- put方法表示接收来自receiver数据，由相应的Wire实例调用，用于接收来自receiver的确认数据包。
+
+你可以通过 [SR交互演示](https://www2.tkn.tu-berlin.de/teaching/rn/animations/gbn_sr/) 来帮助自己更好地理解SR的过程。
+
+该实验的伪代码如下：
+
+```text
+
+function send_available(packet) {
+    # sender初始化时已定义相应的 buffer 和 times
+    create buffer : outbound: Deque[QueueItem] = deque()
+    create times  : timers: Deque[Timer] = deque()
+    if len(buffer) > 0 and the head of buffer is acked:
+        update buffer
+        update times
+
+    while (condition) {
+        send packets
+        add these packets to buffer and times
+    }
+}
+
+# 实验模板已经给出send_packet方法的具体实现
+def send_packet(self, packet: Packet):
+        self.dprint(f"send {packet.payload} on seqno {packet.packet_id}")
+        assert self.out
+        self.out.put(packet)
+
+func put(packet):
+    receive Packet from SR receiver as p
+    if p['ackno'] is valid ackno {
+        mark the corresponding packet in buffer as acked
+        send available packet
+    }
+    if all packets are sent and acked {
+        self.finish_channel.put(True)  //finish_channel表示结束条件
+    }
+
+
+```
+
+## Testing
+
+### 1. 进行本地测试
+
+在本机运行 main程序，会使用本地的测试用例对SR发送端和接收端的正确性进行评测。
+
+```python
+
+python3 main.py
+
+```
+
+### 2. 提交代码进行远程评测
+
+在OpenNetLab上提交代码进行远程评测：
+
+- 选择实验
+
+![<img src="./onl_sub1.png" title="" alt="" data-align="center">](onl_sub1.png)
+
+- 提交代码
+
+![<img src="./onl_sub2.png" title="" alt="" data-align="center">](onl_sub2.png)
+
+- 查看评估状态
+
+![<img src="./onl_sub3.png" title="" alt="" data-align="center">](onl_sub3.png)

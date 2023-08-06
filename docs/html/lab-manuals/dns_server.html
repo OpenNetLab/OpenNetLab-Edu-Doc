@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DNS Server Lab &mdash; OpenNetLab USTC 2023 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="GBN Sender Lab" href="gbn_sender.html" />
+    <link rel="prev" title="Testing using tester" href="tester.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            OpenNetLab USTC 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lab Manuals:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tester.html">Testing using tester</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DNS Server Lab</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tasks">Tasks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tips">Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gbn_sender.html">GBN Sender Lab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sr_sender.html">SR Sender Lab</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OpenNetLab USTC 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">DNS Server Lab</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/lab-manuals/dns_server.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dns-server-lab">
+<h1>DNS Server Lab<a class="headerlink" href="#dns-server-lab" title="Permalink to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>DNS（Domain Name System）是互联网中用于将域名（例如www.example.com）转换为对应IP地址的系统。在互联网上，设备之间通信需要使用IP地址进行定位，但IP地址不便于人们记忆和使用。DNS充当了一个类似电话簿的角色，将易于记忆的域名映射到相应的IP地址，从而使得用户可以通过域名来访问网站或者发送电子邮件，而无需记住复杂的IP地址。当用户在浏览器中输入一个域名时，系统会通过DNS查询将域名解析为对应的IP地址，然后进行通信。DNS起到了极为重要的转换和定位功能，是互联网通信的基础。</p>
+<p>在这个实验中，你的任务是实现一个搭建在OpenNetLab上的DNS服务器，该服务器具备拦截特定域名，以及返回域名对应IP的功能。</p>
+<section id="getting-started">
+<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><a class="reference download internal" download="" href="../_downloads/37acb953d9fd263e9be477a0aa7fd3ca/dns.zip"><code class="xref download docutils literal notranslate"><span class="pre">下载实验资源</span></code></a> ，解压后进入dns文件夹，其中包含两个子文件夹，<code class="file docutils literal notranslate"><span class="pre">resource</span></code> 文件夹中包含完成该实现所需阅读的文档以及实验报告模板，<code class="file docutils literal notranslate"><span class="pre">code</span></code> 文件夹中包含基础的实验代码模板。实验代码包含如下文件：</p>
+<ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">main.py</span></code> ：本地调试运行文件。</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">ipconf.txt</span></code> : 本地调试配置文件。</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">client.py</span></code> ：客户端文件，无需修改。</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">server.py</span></code> ：服务器文件， <cite>TODO</cite> 部分待编写。</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">dns_packet.py</span></code> : DNS数据包解析和编码文件，无需修改。</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">testcases.json</span></code> ：本地评测配置文件。</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">tester</span></code> ：本地评测运行文件，使用说明见相关文档。</p></li>
+</ul>
+</li>
+<li><p>阅读实验任务，完成代码模板中 <cite>TODO</cite> 部分的代码片段。</p></li>
+<li><p>进行本地测试，完成本地测试后将代码提交到OpenNetLab在线平台进行远程评测。</p></li>
+<li><p>推荐实验环境：Linux操作系统，Python版本3.6以上。</p></li>
+</ol>
+</section>
+<section id="tasks">
+<h3>Tasks<a class="headerlink" href="#tasks" title="Permalink to this heading"></a></h3>
+<p>在这个实验中，服务器从配置文件 <code class="file docutils literal notranslate"><span class="pre">ipconf.txt</span></code> 中读取 <code class="docutils literal notranslate"><span class="pre">domain</span> <span class="pre">name</span> <span class="pre">---</span> <span class="pre">IP</span> <span class="pre">address</span></code> 的映射。你需要按照如下规则处理DNS请求：</p>
+<ul class="simple">
+<li><p>Intercept：如果请求的DNS域名在配置文件的映射中并且对应的IP为 <code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code> ，对该域名进行拦截，向客户端返回“域名不存在”的报错信息。</p></li>
+<li><p>Local Resolve：如果请求的DNS域名在配置文件的映射中并且对应的IP是合法的，返回对应IP地址给客户端。</p></li>
+<li><p>Relay：如果请求的DNS域名不在配置文件，将对应的DNS请求转发给公网上的DNS服务器，当收到该服务器的应答时，将应答转发给客户端。</p></li>
+</ul>
+<p>该实验 <cite>TODO</cite> 部分的伪代码如下：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>function recv_callback(data){
+    # process DNS requests
+    resolve data to DNS frame recvdp
+    if recvdp is a query message{
+        if recvdp.qname is in url_ip table{
+            if url_ip[recvdp.qname]=&quot;0.0.0.0&quot;{
+                generate a reply error data
+            }
+            else{
+                generate response data
+            }
+        }
+        else{
+            send query message to public DNS server
+            receive data from public server
+        }
+        send data to client
+    }
+}
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="tips">
+<h2>Tips<a class="headerlink" href="#tips" title="Permalink to this heading"></a></h2>
+<p>1.client.py和server.py中一些属性和方法的解释：</p>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">self.</span></span><span class="sig-name descname"><span class="pre">env</span></span></dt>
+<dd><p>程序运行的环境。</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">self.</span></span><span class="sig-name descname"><span class="pre">debug</span></span></dt>
+<dd><p>控制运行过程中日志信息输出，可以设置为True以方便调试。</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">self.</span></span><span class="sig-name descname"><span class="pre">proc</span></span></dt>
+<dd><p>客户端的进程；</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>在给定的环境中运行客户端。</p>
+<p>&#64;参数: env - 程序的运行环境</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">recv_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>接收并保存服务器发送的DNS应答数据包。使用 <code class="docutils literal notranslate"><span class="pre">self.finish_channel.put(True)</span></code> 来终止客户端的发送进程。</p>
+<p>&#64;参数: data - 接收到的数据</p>
+</dd></dl>
+
+<p>2.服务器通过socket与公共DNS服务器建立通信连接，以发送接收DNS数据包。以下代码片段表示服务器向上游DNS服务器（指定为”223.5.5.5”，port 53）发送DNS查询，并监听本地的1088端口得到查询结果。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">name_server</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;223.5.5.5&quot;</span><span class="p">,</span> <span class="mi">53</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">server_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">server_socket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">server_socket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">1088</span><span class="p">))</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">server_socket</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>3.DNSClient类和DNSServer类都继承了UDPDevice类，服务器如何向客户端发送数据包可以参考client.py中如何发送DNS请求数据包。</p>
+</section>
+<hr class="docutils" />
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>进行本地测试</p></li>
+</ol>
+<p>在本机运行 <em>main.py</em> 程序。 <em>main.py</em> 程序会使用本地的一个测试用例对DNS服务器的正确性进行评测并输出运行日志。</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>main.py
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><cite>main.py</cite> 首先实例化类 <cite>Environment</cite> ，创建一个基于事件的网络模拟执行环境。然后 <cite>main.py</cite> 在模拟环境中实例化 DNSClient、DNSServer 类，并直接连接客户端、服务器的实例进行数据包传输。</p>
+</div>
+<p>完成程序基本功能的调试后，可以运行可执行文件 <cite>tester</cite> 进行多个测试用例评测，更详细的使用说明见 <a class="reference external" href="./tester.html">相关文档</a></p>
+<ol class="arabic simple" start="2">
+<li><p><a class="reference external" href="../platform/intro.html">提交代码进行远程评测</a></p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tester.html" class="btn btn-neutral float-left" title="Testing using tester" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gbn_sender.html" class="btn btn-neutral float-right" title="GBN Sender Lab" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, OpenNetLab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
