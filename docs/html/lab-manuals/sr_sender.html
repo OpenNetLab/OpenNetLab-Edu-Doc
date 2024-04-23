@@ -1,24 +1,27 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SR Sender Lab &mdash; OpenNetLab USTC 2023 1.0 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Switch Lab" href="switch.html" />
     <link rel="prev" title="GBN Sender Lab" href="gbn_sender.html" /> 
 </head>
 
@@ -61,6 +64,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="switch.html">Switch Lab</a></li>
 </ul>
 
         </div>
@@ -88,15 +92,15 @@
            <div itemprop="articleBody">
              
   <section id="sr-sender-lab">
-<h1>SR Sender Lab<a class="headerlink" href="#sr-sender-lab" title="Permalink to this heading"></a></h1>
+<h1>SR Sender Lab<a class="headerlink" href="#sr-sender-lab" title="Link to this heading"></a></h1>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <p>选择性重传(Selective Repeat)是自动重复请求(ARQ)的一部分。使用选择性重复，发送方发送由窗口大小指定的帧数，甚至不需要像Go-Back-N ARQ中那样等待接收方的单个ACK。接收端可以选择性地拒绝单个帧，该帧可以单独重传；这与其他形式的ARQ形成了鲜明的对比，后者必须从那个点再次发送每一帧。在选择性重传协议中，接收端接收乱序帧并缓冲它们，发送方分别重新传输已经超时的帧。</p>
 <p>在这个实验中，你的任务是实现一个搭建在OpenNetLab上的使用SR协议的发送端。</p>
 <section id="getting-started">
-<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h3>
+<h3>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
-<li><p><code class="xref download docutils literal notranslate"><span class="pre">下载实验资源</span></code> ，解压后进入sr文件夹，其中包含两个子文件夹，<code class="file docutils literal notranslate"><span class="pre">resource</span></code> 文件夹中包含完成该实现所需阅读的文档以及实验报告模板，<code class="file docutils literal notranslate"><span class="pre">code</span></code> 文件夹中包含基础的实验代码模板。实验代码包含如下文件：</p>
+<li><p><a class="reference download internal" download="" href="../_downloads/351bad4fb3354110d8e0e1a2f06f64d2/sr.zip"><code class="xref download docutils literal notranslate"><span class="pre">下载实验资源</span></code></a> ，解压后进入sr文件夹，其中包含基础的实验代码模板。实验代码包含如下文件：</p>
 <ul class="simple">
 <li><p><code class="file docutils literal notranslate"><span class="pre">main.py</span></code> ：本地调试运行文件；</p></li>
 <li><p><code class="file docutils literal notranslate"><span class="pre">receiver.py</span></code> ：接收方文件，无需修改；</p></li>
@@ -110,7 +114,7 @@
 </ol>
 </section>
 <section id="tasks">
-<h3>Tasks<a class="headerlink" href="#tasks" title="Permalink to this heading"></a></h3>
+<h3>Tasks<a class="headerlink" href="#tasks" title="Link to this heading"></a></h3>
 <p>在这个实验中，你需要实现sender.py中的send_available方法以及put方法的设计，并且遵循SR协议：</p>
 <ul class="simple">
 <li><p>在send_available方法中需要满足以下几点:</p>
@@ -158,7 +162,7 @@ func put(packet):
 </section>
 <hr class="docutils" />
 <section id="tips">
-<h2>Tips<a class="headerlink" href="#tips" title="Permalink to this heading"></a></h2>
+<h2>Tips<a class="headerlink" href="#tips" title="Link to this heading"></a></h2>
 <p>你可以通过 <a class="reference external" href="https://www2.tkn.tu-berlin.de/teaching/rn/animations/gbn_sr/">SR交互演示</a> 来帮助自己更好地理解SR的过程。</p>
 <p>sender.py和receiver.py中一些属性和方法的解释：</p>
 <dl class="py attribute">
@@ -244,7 +248,7 @@ func put(packet):
 </section>
 <hr class="docutils" />
 <section id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this heading"></a></h2>
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h2>
 <ol class="arabic simple">
 <li><p>进行本地测试</p></li>
 </ol>
@@ -265,12 +269,12 @@ func put(packet):
 <figure class="align-center" id="gbn-main-process">
 <a class="reference internal image-reference" href="../_images/main.png"><img alt="image cannot be loaded" src="../_images/main.png" style="width: 600px;" /></a>
 <figcaption>
-<p><span class="caption-text">main.py 模拟流程</span><a class="headerlink" href="#gbn-main-process" title="Permalink to this image"></a></p>
+<p><span class="caption-text">main.py 模拟流程</span><a class="headerlink" href="#gbn-main-process" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>完成程序基本功能的调试后，可以运行可执行文件 <cite>tester</cite> 进行多个测试用例评测，更详细的使用说明见 <a class="reference external" href="./tester.html">相关文档</a></p>
 <ol class="arabic simple" start="2">
-<li><p><a class="reference external" href="../platform/intro.html">提交代码进行远程评测</a></p></li>
+<li><p><a class="reference external" href="http://20.247.32.90">提交代码进行远程评测</a></p></li>
 </ol>
 </section>
 </section>
@@ -280,6 +284,7 @@ func put(packet):
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="gbn_sender.html" class="btn btn-neutral float-left" title="GBN Sender Lab" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="switch.html" class="btn btn-neutral float-right" title="Switch Lab" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

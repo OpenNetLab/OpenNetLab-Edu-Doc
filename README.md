@@ -15,4 +15,5 @@ pip3 install sphinx_rtd_theme --user
 
 # make
 make html
+# For Windows use 'sphinx-build -M html . docs' to make
 ```

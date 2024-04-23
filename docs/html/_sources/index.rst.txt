@@ -22,3 +22,4 @@ OpenNetLab USTC 2023 Documentation
    ./lab-manuals/dns_server.rst
    ./lab-manuals/gbn_sender.rst
    ./lab-manuals/sr_sender.rst
+   ./lab-manuals/switch.rst

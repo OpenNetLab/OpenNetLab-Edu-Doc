@@ -20,7 +20,7 @@ DNS（Domain Name System）是互联网中用于将域名（例如www.example.co
 Getting Started
 ---------------
 
-1. :download:`下载实验资源 <./resources/dns.zip>` ，解压后进入dns文件夹，其中包含两个子文件夹，:file:`resource` 文件夹中包含完成该实现所需阅读的文档以及实验报告模板，:file:`code` 文件夹中包含基础的实验代码模板。实验代码包含如下文件：
+1. :download:`下载实验资源 <./resources/dns.zip>` ，解压后进入dns文件夹，其中包含基础的实验代码模板。实验代码包含如下文件：
 
    - :file:`main.py` ：本地调试运行文件。
    - :file:`ipconf.txt` : 本地调试配置文件。
@@ -143,7 +143,7 @@ Testing
 完成程序基本功能的调试后，可以运行可执行文件 `tester` 进行多个测试用例评测，更详细的使用说明见 `相关文档 <./tester.html>`_
 
 
-2. `提交代码进行远程评测 <../platform/intro.html>`_
+2. `提交代码进行远程评测 <http://20.247.32.90>`_
 
 
 
