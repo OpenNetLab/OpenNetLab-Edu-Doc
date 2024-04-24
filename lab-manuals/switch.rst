@@ -40,7 +40,7 @@ Getting Started
 Tasks
 -----
 
-在这个实验中，framegenerator从待发送的帧列表中获取endpoint的MAC地址，并向其发送帧，你需要按照如下规则实现endpoint.py 和switch.py中的put方法的设计：
+在这个实验中，framegenerator从待发送的帧列表中获取endpoint的MAC地址，并向其发送帧，你需要按照如下规则实现endpoint.py中的put方法和switch.py中的recv方法的设计：
 
 - 在endpoint.py中，put方法表示接收来自switch的帧，并根据帧的frame_type进行相应处理。
   
@@ -50,7 +50,7 @@ Tasks
     - 检查目的mac地址是否与endpoint的mac地址相同，若相同则返回一个ACK帧给switch
     - 否则，不做处理
 
-- 在switch.py中，put方法表示接收来自framegenerator的数据帧和endpoint确认帧，并根据帧的frame_type进行相应处理。
+- 在switch.py中，recv方法表示接收来自framegenerator的数据帧和endpoint确认帧，并根据帧的frame_type进行相应处理。
   
     - 首先，你需要根据实际需求,选择合适的数据结构先实现switch的forward_table（转发表）,要求至少包含mac地址和对应的端口号
     - 若frame_type为DATA
@@ -88,7 +88,7 @@ Tasks
 
     # switch
     forward_table to be define #根据需求选择合适的数据结构实现转发表
-    function put(frame){
+    function recv(frame){
         # process the reception of frames
         receive frame from framegenerator or endpoint
         if frame_type is DATA{
@@ -101,7 +101,7 @@ Tasks
             }
         }
         else if frame_type is ACK{
-            add the entry into forward_table
+            add the entry to forward_table
         }
 
 
@@ -157,18 +157,19 @@ Tips
 
    @参数: msg - 需要打印的信息
 
-.. py:function:: forward(self, port_num, frame):
+.. py:function:: forward(self, port_num, frame)
    :noindex:
 
    向给定端口转发帧，并记录转发的端口信息。
 
    @参数: port_num - 转发端口号
+
    @参数: frame - 数据帧
 
  
 
 
-2.framegenerator、switch、endpoint之间均通过Wire完成帧的传输，其中framegenerator和switch之间有一条Wire，endpoint和switch之间各有两条Wire。
+2.framegenerator、switch、endpoint之间通过Wire或Cable完成帧的传输，其中framegenerator和switch之间有一条Wire，endpoint和switch之间各有一条Cable(可以进行双向传输)。
 
 3.若switch.log与expected_res一致，则说明设计成功。
 

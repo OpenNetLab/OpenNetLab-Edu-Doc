@@ -116,7 +116,7 @@
 </section>
 <section id="tasks">
 <h3>Tasks<a class="headerlink" href="#tasks" title="Link to this heading"></a></h3>
-<p>在这个实验中，framegenerator从待发送的帧列表中获取endpoint的MAC地址，并向其发送帧，你需要按照如下规则实现endpoint.py 和switch.py中的put方法的设计：</p>
+<p>在这个实验中，framegenerator从待发送的帧列表中获取endpoint的MAC地址，并向其发送帧，你需要按照如下规则实现endpoint.py中的put方法和switch.py中的recv方法的设计：</p>
 <ul>
 <li><p>在endpoint.py中，put方法表示接收来自switch的帧，并根据帧的frame_type进行相应处理。</p>
 <ul class="simple">
@@ -129,7 +129,7 @@
 </li>
 </ul>
 </li>
-<li><p>在switch.py中，put方法表示接收来自framegenerator的数据帧和endpoint确认帧，并根据帧的frame_type进行相应处理。</p>
+<li><p>在switch.py中，recv方法表示接收来自framegenerator的数据帧和endpoint确认帧，并根据帧的frame_type进行相应处理。</p>
 <blockquote>
 <div><ul>
 <li><p>首先，你需要根据实际需求,选择合适的数据结构先实现switch的forward_table（转发表）,要求至少包含mac地址和对应的端口号</p></li>
@@ -174,7 +174,7 @@ function put(frame){
 
 # switch
 forward_table to be define #根据需求选择合适的数据结构实现转发表
-function put(frame){
+function recv(frame){
     # process the reception of frames
     receive frame from framegenerator or endpoint
     if frame_type is DATA{
@@ -187,7 +187,7 @@ function put(frame){
         }
     }
     else if frame_type is ACK{
-        add the entry into forward_table
+        add the entry to forward_table
     }
 </pre></div>
 </div>
@@ -249,13 +249,13 @@ function put(frame){
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">forward(self,</span> <span class="pre">port_num,</span> <span class="pre">frame):</span></span></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>向给定端口转发帧，并记录转发的端口信息。</p>
-<p>&#64;参数: port_num - 转发端口号
-&#64;参数: frame - 数据帧</p>
+<p>&#64;参数: port_num - 转发端口号</p>
+<p>&#64;参数: frame - 数据帧</p>
 </dd></dl>
 
-<p>2.framegenerator、switch、endpoint之间均通过Wire完成帧的传输，其中framegenerator和switch之间有一条Wire，endpoint和switch之间各有两条Wire。</p>
+<p>2.framegenerator、switch、endpoint之间通过Wire或Cable完成帧的传输，其中framegenerator和switch之间有一条Wire，endpoint和switch之间各有一条Cable(可以进行双向传输)。</p>
 <p>3.若switch.log与expected_res一致，则说明设计成功。</p>
 </section>
 <hr class="docutils" />
